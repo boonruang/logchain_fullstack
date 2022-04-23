@@ -1,8 +1,7 @@
-import React, { Component } from 'react'
-import { connect, useDispatch } from 'react-redux'
+import React from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 import * as loginActions from '../../actions/login.action'
-import { server } from '../../constants'
 
 const Header = (props) => {
   const dispatch = useDispatch()

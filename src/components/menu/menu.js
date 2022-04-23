@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
-
 import * as loginActions from '../../actions/login.action'
 import { useDispatch } from 'react-redux'
-import { server } from '../../constants'
 
 const Menu = (props) => {
   const { pathname } = props.location

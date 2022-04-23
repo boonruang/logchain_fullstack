@@ -10,7 +10,7 @@ const Dashboard = (props) => {
   useEffect(() => {
     dispatch(blockActions.getBlockCount())
     dispatch(systemActions.getSystems())
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const blockReducer = useSelector(({ blockReducer }) => blockReducer)
   const systemReducer = useSelector(({ systemReducer }) => systemReducer)

@@ -8,9 +8,13 @@ import { withRouter } from 'react-router-dom'
 
 const Report = () => {
   useEffect(() => {
+    fetchList()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const fetchList = () => {
     dispatch(blockActions.getBlockCount())
     dispatch(systemActions.getSystems())
-  }, [])
+  }
 
   const [chart, setChart] = useState({
     chartType: 'bar',
@@ -122,24 +126,24 @@ const Report = () => {
         {/* /.container-fluid */}
       </section>
       <section className="content-header">
-        <div class="btn-group">
+        <div className="btn-group">
           <button
             type="button"
-            class="btn btn-info"
+            className="btn btn-info"
             onClick={() => setChart({ chartType: 'line' })}
           >
             Line
           </button>
           <button
             type="button"
-            class="btn btn-danger"
+            className="btn btn-danger"
             onClick={() => setChart({ chartType: 'bar' })}
           >
             Bar
           </button>
           <button
             type="button"
-            class="btn btn-primary"
+            className="btn btn-primary"
             onClick={() => setChart({ chartType: 'pie' })}
           >
             Pie

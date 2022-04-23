@@ -7,7 +7,7 @@ const Blockdata = (props) => {
   useEffect(() => {
     let id = props.match.params.blockid
     dispatch(blockDataActions.getBlockById(id))
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const blockDataReducer = useSelector(
     ({ blockDataReducer }) => blockDataReducer,
@@ -15,6 +15,8 @@ const Blockdata = (props) => {
   const dispatch = useDispatch()
 
   const { result, isFetching } = blockDataReducer
+
+  const mouseClick = () => {}
 
   return (
     <div class="content-wrapper">

@@ -1,15 +1,8 @@
 import React, { useEffect } from 'react'
-import * as actions from '../../actions/block.action'
 import { useDispatch, useSelector } from 'react-redux'
-
-import { imageUrl } from '../../constants'
-import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import Moment from 'react-moment'
-import NumberFormat from 'react-number-format'
 import './logchain.css'
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
 import moment from 'moment'
 import * as blockActions from '../../actions/block.action'
 import * as systemActions from '../../actions/system.action'
@@ -17,15 +10,19 @@ import { withRouter } from 'react-router-dom'
 
 const Logchain = (props) => {
   useEffect(() => {
-    const script = document.createElement('script')
-    script.src = `js/content.js`
-    script.async = true
-    document.body.appendChild(script)
+    callJQuery()
 
     dispatch(blockActions.getBlocks())
     dispatch(blockActions.getBlockCount())
     dispatch(systemActions.getSystems())
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const callJQuery = () => {
+    const script = document.createElement('script')
+    script.src = `js/content.js`
+    script.async = true
+    document.body.appendChild(script)
+  }
 
   const blockReducer = useSelector(({ blockReducer }) => blockReducer)
   const systemReducer = useSelector(({ systemReducer }) => systemReducer)
@@ -33,52 +30,58 @@ const Logchain = (props) => {
   const { result, isFetching, count } = blockReducer
   const { sysResult } = systemReducer
 
-  // mouseClick = () => {}
+  // const mouseClick = () => {}
 
   const CreateRows = () => {
-    return (
-      !isFetching &&
-      result != null &&
-      result.map((item) => (
-        <tr key={item.timestamp}>
-          <td style={{ textAlign: 'center' }}>
-            <Moment format="DD/MM/YYYY HH:mm:ss">{item.login}</Moment>
-          </td>
-          <td>{item.user}</td>
-          <td>{item.action}</td>
-          <td>{item.api}</td>
-          <td style={{ textAlign: 'center' }}>
-            {moment
-              .utc(
-                moment(item.logout, 'YYYY-MM-DD HH:mm:ss').diff(
-                  moment(item.login, 'YYYY-MM-DD HH:mm:ss'),
-                ),
-              )
-              .format('HH:mm')}
-          </td>
-          <td style={{ textAlign: 'center' }}>
-            <Moment format="DD/MM/YYYY HH:mm:ss">{item.login}</Moment>
-          </td>
-          <td style={{ textAlign: 'center' }}>
-            <Moment format="DD/MM/YYYY HH:mm:ss">{item.logout}</Moment>
-          </td>
-          <td style={{ textAlign: 'center' }}>
-            <button
-              onClick={() => props.history.push(`/blockdata/${item.timestamp}`)}
-              type="button"
-              className="btn btn-info"
-            >
-              รายละเอียด
-            </button>
-          </td>
-        </tr>
-      ))
-    )
+    try {
+      return (
+        !isFetching &&
+        result != null &&
+        result.map((item) => (
+          <tr key={item.timestamp}>
+            <td style={{ textAlign: 'center' }}>
+              <Moment format="DD/MM/YYYY HH:mm:ss">{item.login}</Moment>
+            </td>
+            <td>{item.user}</td>
+            <td>{item.action}</td>
+            <td>{item.api}</td>
+            <td style={{ textAlign: 'center' }}>
+              {moment
+                .utc(
+                  moment(item.logout, 'YYYY-MM-DD HH:mm:ss').diff(
+                    moment(item.login, 'YYYY-MM-DD HH:mm:ss'),
+                  ),
+                )
+                .format('HH:mm')}
+            </td>
+            <td style={{ textAlign: 'center' }}>
+              <Moment format="DD/MM/YYYY HH:mm:ss">{item.login}</Moment>
+            </td>
+            <td style={{ textAlign: 'center' }}>
+              <Moment format="DD/MM/YYYY HH:mm:ss">{item.logout}</Moment>
+            </td>
+            <td style={{ textAlign: 'center' }}>
+              <button
+                onClick={() =>
+                  props.history.push(`/blockdata/${item.timestamp}`)
+                }
+                type="button"
+                className="btn btn-info"
+              >
+                รายละเอียด
+              </button>
+            </td>
+          </tr>
+        ))
+      )
+    } catch (error) {
+      alert(error)
+    }
   }
 
   const onChange = (e) => {
     e.persist()
-    props.debounceSearch(e)
+    this.debounceSearch(e)
   }
 
   return (

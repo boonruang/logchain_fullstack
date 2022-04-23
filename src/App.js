@@ -12,18 +12,11 @@ import {
   Redirect,
   Switch,
 } from 'react-router-dom'
-import { server, YES } from './constants'
-// import { setApp } from './actions/app.action'
 import { useDispatch, useSelector } from 'react-redux'
 import Report from './components/report'
 import Blockdata from './components/blockdata'
 import Blockview from './components/blockview'
 import * as loginActions from './actions/login.action'
-// import loginReducer from './reducers/login.reducer'
-
-// const isLoggedIn = () => {
-//   return localStorage.getItem(server.LOGIN_PASSED) === YES
-// }
 
 const SecureRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -55,14 +48,10 @@ export default function App() {
   const loginReducer = useSelector(({ loginReducer }) => loginReducer)
   const dispatch = useDispatch()
 
-  // componentDidMount() {
-  //   this.props.setApp(this)
-  // }
-
   useEffect(() => {
     console.log('App Created')
     dispatch(loginActions.reLogin())
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // const redirectToLogin = () => {
   //   return <Redirect to="/login" />
@@ -86,7 +75,11 @@ export default function App() {
             path="/"
             component={() => <Redirect to="/login" />}
           />
-          {/* <Route path="*" exact={true} component={() => <Redirect to="/login" />} /> */}
+          <Route
+            path="*"
+            exact={true}
+            component={() => <Redirect to="/login" />}
+          />
         </Switch>
         {loginReducer.result && !loginReducer.isError && <Footer />}
       </div>
