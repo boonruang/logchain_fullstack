@@ -5,24 +5,33 @@ const Sequelize = require('sequelize')
 const Blockchain = require('../blockchain')
 const blockchain = require('../models/blockchain')
 const constants = require('../constant')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 const bc = new Blockchain()
 const p2pServer = new P2pServer(bc)
 
-router.get('/blocks', async (req, res) => {
+//  @route                  GET  /api/v2/blockchain/blocks
+//  @desc                   Get blockchain all blocks
+//  @access                 Private
+router.get('/blocks', JwtMiddleware.checkToken, async (req, res) => {
   let result = await blockchain.findAll({
     order: Sequelize.literal('timestamp DESC'),
   })
   res.json(result)
 })
 
-router.get('/count', async (req, res) => {
+//  @route                  GET  /api/v2/blockchain/count
+//  @desc                   Get blockchain recond count number
+//  @access                 Private
+router.get('/count', JwtMiddleware.checkToken, async (req, res) => {
   let result = await blockchain.count()
   res.json(result)
 })
 
-// Get Block by Id
-router.get('/blocks/:id', async (req, res) => {
+//  @route                  GET  /api/v2/blockchain/blocks/:id
+//  @desc                   Get Block by Id
+//  @access                 Private
+router.get('/blocks/:id', JwtMiddleware.checkToken, async (req, res) => {
   let result = await blockchain.findOne({ where: { timestamp: req.params.id } })
   if (result) {
     res.json(result)
@@ -31,7 +40,10 @@ router.get('/blocks/:id', async (req, res) => {
   }
 })
 
-router.post('/mine', async (req, res) => {
+//  @route                  POST  /api/v2/blockchain/mine
+//  @desc                   Add Block to blockchain
+//  @access                 Private
+router.post('/mine', JwtMiddleware.checkToken, async (req, res) => {
   const block = bc.addBlock(req.body)
 
   // create table first
@@ -56,8 +68,6 @@ router.post('/mine', async (req, res) => {
   } catch (error) {
     res.json({ result: constants.kResultNok, message: error })
   }
-
-  // res.redirect('/blocks')
 })
 
 module.exports = router

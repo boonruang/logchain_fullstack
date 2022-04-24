@@ -22,3 +22,5 @@ https://github.com/15Dkatz/sf-chain-guides
 
 npm i elliptic --save
 npm i uuid --save
+
+npm i jsonwebtoken

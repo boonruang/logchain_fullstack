@@ -16,7 +16,8 @@ app.use(express.json())
 
 app.use('/api/v2/system', require('./api_system'))
 app.use('/api/v2/blockchain', require('./api_blockchain'))
-app.use('/api/v2/authen', require('./api_authen'))
+app.use('/api/v2/user', require('./api_user'))
+app.use('/api/v2/auth', require('./api_auth'))
 
 app.listen(HTTP_PORT, () => console.log(`Listening on port ${HTTP_PORT}`))
 p2pServer.listen()

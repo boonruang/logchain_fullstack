@@ -72,11 +72,13 @@ export const NO = 'NO'
 export const OK = 'ok'
 export const NOK = 'nok'
 export const LOGIN_STATUS = 'LOGIN_STATUS'
+export const TOKEN = 'LogChainToken'
 
 export const server = {
-  LOGIN_URL: `authen/login`,
-  REGISTER_URL: `authen/register`,
+  LOGIN_URL: `user/login`,
+  REGISTER_URL: `user/register`,
   BLOCK_URL: `blockchain/blocks`,
+  AUTH_URL: `authen`,
   BC_URL: `blockchain`,
   SYSTEM_URL: `system`,
   MINE_URL: `blockchain/mine`,

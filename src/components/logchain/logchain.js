@@ -10,12 +10,18 @@ import { withRouter } from 'react-router-dom'
 
 const Logchain = (props) => {
   useEffect(() => {
-    callJQuery()
+    callActions()
 
+    setTimeout(() => {
+      callJQuery()
+    }, 100)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const callActions = () => {
     dispatch(blockActions.getBlocks())
     dispatch(blockActions.getBlockCount())
     dispatch(systemActions.getSystems())
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }
 
   const callJQuery = () => {
     const script = document.createElement('script')

@@ -51,22 +51,6 @@ export const isLoggedIn = () => {
   return loginStatus == 'ok'
 }
 
-// export const login = ({ history, username, password }) => {
-//   return async (dispatch, getState) => {
-//     dispatch(setLoginStateToFetching())
-//     console.log('username: ', username)
-//     let result = await httpClient.post(server.LOGIN_URL, { username, password })
-//     if (result.data.result == OK) {
-//       localStorage.setItem(server.LOGIN_PASSED, YES)
-//       // getState().appReducer.app.forceUpdate()
-//       history.push('/logchain')
-//       dispatch(setLoginStateToSuccess(result))
-//     } else {
-//       dispatch(setLoginStateToFailed())
-//     }
-//   }
-// }
-
 export const login = ({ username, password, history }) => {
   return async (dispatch) => {
     dispatch(setLoginStateToFetching())

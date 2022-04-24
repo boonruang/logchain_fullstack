@@ -10,7 +10,6 @@ const initialState = {
   isFetching: false,
   isError: false,
   count: null,
-  node: null,
 }
 
 export default (state = initialState, { type, payload }) => {
