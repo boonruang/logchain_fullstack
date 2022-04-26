@@ -53,10 +53,6 @@ export default function App() {
     dispatch(loginActions.reLogin())
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // const redirectToLogin = () => {
-  //   return <Redirect to="/login" />
-  // }
-
   return (
     <Router>
       <div>

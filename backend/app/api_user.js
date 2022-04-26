@@ -33,8 +33,7 @@ router.post('/login', async (req, res) => {
       )
 
       res.status(200).json({
-        // result: constants.kResultOk,
-        // message: userFound,
+        result: constants.kResultOk,
         token: userToken,
       })
     } else {

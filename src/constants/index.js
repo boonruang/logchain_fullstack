@@ -77,6 +77,7 @@ export const TOKEN = 'LogChainToken'
 export const server = {
   LOGIN_URL: `user/login`,
   REGISTER_URL: `user/register`,
+  VERIFY_URL: `user/verify`,
   BLOCK_URL: `blockchain/blocks`,
   AUTH_URL: `authen`,
   BC_URL: `blockchain`,

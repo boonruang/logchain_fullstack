@@ -1,13 +1,14 @@
 const JWT = require('jsonwebtoken')
 const JwtConfig = require('./Jwt-Config')
 
-const checkToken = (req, res, next) => {
-  let userToken = req.headers['authorization']
-
+const checkToken = async (req, res, next) => {
+  let userToken = await req.headers['authorization']
+  // console.log('req header in Middleware: ', req.headers)
   JWT.verify(userToken, JwtConfig.secret, (error, data) => {
     if (error) {
-      return res.status(500).json({
-        error: error,
+      // console.log('JWT Error: ', error)
+      return res.status(501).json({
+        error,
       })
     } else {
       res.user = data

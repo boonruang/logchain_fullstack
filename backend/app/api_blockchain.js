@@ -14,6 +14,7 @@ const p2pServer = new P2pServer(bc)
 //  @desc                   Get blockchain all blocks
 //  @access                 Private
 router.get('/blocks', JwtMiddleware.checkToken, async (req, res) => {
+  // console.log('req header: ', req.headers)
   let result = await blockchain.findAll({
     order: Sequelize.literal('timestamp DESC'),
   })

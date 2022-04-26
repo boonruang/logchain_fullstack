@@ -1,11 +1,13 @@
+import { configure } from '@testing-library/react'
 import {
   HTTP_LOGIN_FAILED,
   HTTP_LOGIN_FETCHING,
   HTTP_LOGIN_SUCCESS,
-  LOGIN_STATUS,
   server,
   YES,
   HTTP_LOGOUT,
+  LOGIN_STATUS,
+  TOKEN,
   OK,
 } from '../constants'
 
@@ -29,13 +31,13 @@ export const setLoginStateToLogout = () => ({
   type: HTTP_LOGOUT,
 })
 
-export const autoLogin = (history) => {
-  return () => {
-    if (localStorage.getItem(server.LOGIN_PASSED) == YES) {
-      setTimeout(() => history.push('/logchain'), 100)
-    }
-  }
-}
+// export const autoLogin = (history) => {
+//   return () => {
+//     if (localStorage.getItem(server.LOGIN_PASSED) == YES) {
+//       setTimeout(() => history.push('/logchain'), 100)
+//     }
+//   }
+// }
 
 export const reLogin = () => {
   return (dispatch) => {
@@ -48,6 +50,7 @@ export const reLogin = () => {
 
 export const isLoggedIn = () => {
   const loginStatus = localStorage.getItem(LOGIN_STATUS)
+  //return true or false
   return loginStatus == 'ok'
 }
 
@@ -60,7 +63,11 @@ export const login = ({ username, password, history }) => {
     })
     if (result.data.result == 'ok') {
       localStorage.setItem(LOGIN_STATUS, 'ok')
-      dispatch(setLoginStateToSuccess('ok'))
+      localStorage.setItem(TOKEN, result.data.token)
+      dispatch(
+        // setLoginStateToSuccess({ status: 'ok', token: result.data.token }),
+        setLoginStateToSuccess('ok'),
+      )
       history.push('/blockview')
       // alert(JSON.stringify(result.data));
     } else {
@@ -73,7 +80,7 @@ export const login = ({ username, password, history }) => {
 export const logout = ({ history }) => {
   return (dispatch) => {
     localStorage.removeItem(LOGIN_STATUS)
-
+    localStorage.removeItem(TOKEN)
     dispatch(setLoginStateToLogout())
     history.push('/')
   }

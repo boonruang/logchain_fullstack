@@ -1,11 +1,11 @@
-import { act } from '@testing-library/react'
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import { Form, InputGroup } from 'react-bootstrap'
 
-import { connect, useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import * as loginActions from './../../actions/login.action'
 
-export default function Login(props) {
+const Login = (props) => {
   const [account, setAccount] = useState({
     username: 'admin',
     password: '1234',
@@ -74,7 +74,7 @@ export default function Login(props) {
                   <span className="glyphicon glyphicon-lock form-control-feedback" />
                 </div>
 
-                {loginReducer.isError ? this.showError() : null}
+                {loginReducer.isError ? showError() : null}
 
                 {/* Login */}
                 {/* /.col */}
@@ -113,3 +113,5 @@ export default function Login(props) {
     </div>
   )
 }
+
+export default withRouter(Login)

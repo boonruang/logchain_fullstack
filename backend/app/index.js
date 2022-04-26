@@ -12,7 +12,7 @@ const p2pServer = new P2pServer(bc)
 
 app.use(cors())
 app.use(express.json())
-// app.use(express.urlencoded())
+app.use(express.urlencoded())
 
 app.use('/api/v2/system', require('./api_system'))
 app.use('/api/v2/blockchain', require('./api_blockchain'))
