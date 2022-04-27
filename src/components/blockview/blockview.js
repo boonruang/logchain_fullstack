@@ -191,9 +191,9 @@ const Blockview = (props) => {
                         textAlign: 'center',
                       }}
                     >
-                      ลำดับ
+                      timestamp
                     </th>
-                    <th style={{ width: '10%', textAlign: 'center' }}>เวลา</th>
+                    <th style={{ width: '10%', textAlign: 'center' }}>Login</th>
                     <th style={{ width: '20%', textAlign: 'center' }}>Hash</th>
                     <th style={{ width: '20%', textAlign: 'center' }}>
                       LastHash

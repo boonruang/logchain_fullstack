@@ -3,8 +3,11 @@ const P2pServer = require('./p2p-server')
 const cors = require('cors')
 const Blockchain = require('../blockchain')
 const bc = new Blockchain()
+const BlockSystem = require('./blocksystem')
 
 const HTTP_PORT = process.env.HTTP_PORT || 3001
+const P2P_PORT = process.env.P2P_PORT || 5001
+const NODE_NAME = process.env.NODE_NAME || 'NODE1'
 
 const app = express()
 
@@ -21,3 +24,9 @@ app.use('/api/v2/auth', require('./api_auth'))
 
 app.listen(HTTP_PORT, () => console.log(`Listening on port ${HTTP_PORT}`))
 p2pServer.listen()
+
+BlockSys = new BlockSystem(NODE_NAME, 1, HTTP_PORT, P2P_PORT)
+
+BlockSys.monitoring()
+
+console.log('BlockSystem : ', BlockSys)
