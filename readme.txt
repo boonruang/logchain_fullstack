@@ -21,3 +21,7 @@ https://medium.com/taleless/dev-diary-%E0%B8%AB%E0%B8%B1%E0%B8%94%E0%B9%83%E0%B8
 
 net module
 https://www.tutorialspoint.com/nodejs/nodejs_net_module.htm
+
+Create React Component folder
+$ npm install --save-dev create-react-component-folder
+$ npx crcf myComponent

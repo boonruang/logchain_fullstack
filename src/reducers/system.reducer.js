@@ -8,6 +8,7 @@ const initialState = {
   sysResult: null,
   isFetching: false,
   isError: false,
+  nodeCount: null,
 }
 
 export default (state = initialState, { type, payload }) => {

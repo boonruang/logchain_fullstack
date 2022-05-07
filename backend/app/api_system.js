@@ -4,6 +4,7 @@ const P2pServer = require('./p2p-server')
 const constants = require('../constant')
 const JwtMiddleware = require('../config/Jwt-Middleware')
 const Node = require('../models/node')
+const Blockchain = require('../models/blockchain')
 
 var net = require('net')
 blockSrv = [
@@ -16,9 +17,43 @@ blockSrv = [
 //  @access                 Private
 
 router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
-  let all_nodes = 3
-  let active_nodes = 3
-  let users = 12
+  let all_nodes = await Node.count()
+  let active_nodes = await Node.count()
+  let users = await Blockchain.count({ distinct: 'user' })
+
+  const activeNode = await Node.findOne({
+    where: { nodename: 'NODE1' },
+  })
+
+  const { server_ip, http_port } = activeNode
+
+  console.log('Server and IP', server_ip + ':' + http_port)
+
+  // var client = net.connect({ server_ip, http_port }, function () {
+  //   console.log(`Connected to server! ${server_ip}:${phttp_portort}`)
+  //   res.status(200).json({
+  //     message: 'ok',
+  //     result: `Connected to server!! ${server_ip}:${http_port}`,
+  //   })
+  // })
+
+  // client.on('error', function (error) {
+  //   console.log('what is this error', error.toString())
+  //   res.status(500).json({
+  //     message: 'nok',
+  //     Error: error,
+  //   })
+  // })
+
+  // client.on('data', function (data) {
+  //   console.log('what is this data', data.toString())
+  //   client.end()
+  // })
+
+  // client.on('end', function () {
+  //   console.log('disconnected from server')
+  // })
+
   res.json({ nodes: all_nodes, active: active_nodes, users })
 })
 
