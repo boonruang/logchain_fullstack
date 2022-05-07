@@ -5,26 +5,28 @@ import {
   NOT_CONNECT_NETWORK,
   NETWORK_CONNECTION_MESSAGE,
   TOKEN,
+  LOGIN_STATUS,
 } from '../constants'
 
 const isAbsoluteURLRegex = /^(?:\w+:)\/\//
 
-axios.interceptors.request.use(async (config) => {
-  if (!isAbsoluteURLRegex.test(config.url)) {
-    const jwtToken = await localStorage.getItem(TOKEN)
-    if (jwtToken !== null) {
-      config.headers = {
-        Authorization: jwtToken,
+axios.interceptors.request.use(
+  async (config) => {
+    if (!isAbsoluteURLRegex.test(config.url)) {
+      const jwtToken = await localStorage.getItem(TOKEN)
+      if (jwtToken !== null) {
+        config.headers = {
+          Authorization: jwtToken,
+        }
       }
+      config.url = join(apiUrl, config.url)
     }
-    config.url = join(apiUrl, config.url)
-  }
-  config.timeout = 10000 // 10 Second
-  return config
-},
-error => {
-  return Promise.reject(error)
-}
+    config.timeout = 10000 // 10 Second
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  },
 )
 
 axios.interceptors.response.use(
@@ -32,9 +34,16 @@ axios.interceptors.response.use(
     return response
   },
   (error) => {
-    debugger
-    console.log(JSON.stringify(error, undefined, 2))
-    if (axios.isCancel(error)) {
+    // debugger
+    console.log(
+      'Axios Interceptor error: ',
+      JSON.stringify(error, undefined, 2),
+    )
+    if (error.message === 'Request failed with status code 501') {
+      localStorage.setItem(LOGIN_STATUS, 'nok')
+      window.location.href = '/login'
+      return error
+    } else if (axios.isCancel(error)) {
       return Promise.reject(error)
     } else if (!error.response) {
       return Promise.reject({

@@ -13,6 +13,10 @@ const node = sequelize.define(
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
+    server_ip: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
     http_port: {
       type: Sequelize.STRING,
       allowNull: false,

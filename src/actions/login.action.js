@@ -1,4 +1,3 @@
-import { configure } from '@testing-library/react'
 import {
   HTTP_LOGIN_FAILED,
   HTTP_LOGIN_FETCHING,

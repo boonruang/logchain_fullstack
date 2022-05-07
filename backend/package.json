@@ -14,13 +14,14 @@
   "license": "ISC",
   "devDependencies": {
     "jest": "^27.4.7",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.16"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
     "express": "^4.17.2",
+    "is-port-reachable": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
     "sequelize": "^6.19.0",
     "sqlite3": "^5.0.3",
