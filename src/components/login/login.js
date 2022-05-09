@@ -8,7 +8,7 @@ import * as loginActions from './../../actions/login.action'
 const Login = (props) => {
   const [account, setAccount] = useState({
     username: 'admin',
-    password: '1234',
+    password: '11111',
   })
 
   const loginReducer = useSelector(({ loginReducer }) => loginReducer)

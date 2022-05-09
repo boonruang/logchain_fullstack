@@ -1,11 +1,15 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import * as loginActions from '../../actions/login.action'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Menu = (props) => {
   const { pathname } = props.location
+
+  const loginReducer = useSelector(({ loginReducer }) => loginReducer)
   const dispatch = useDispatch()
+
+  const { result } = loginReducer
 
   return (
     <div>
@@ -35,7 +39,7 @@ const Menu = (props) => {
             </div>
             <div className="info">
               <Link to="/" className="d-block">
-                System Admin
+                {result.username}
               </Link>
             </div>
           </div>

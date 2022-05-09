@@ -11,6 +11,7 @@ import {
 } from '../constants'
 
 import { httpClient } from '../utils/HttpClient'
+import jwtDecode from 'jwt-decode'
 
 export const setLoginStateToFetching = () => ({
   type: HTTP_LOGIN_FETCHING,
@@ -30,19 +31,16 @@ export const setLoginStateToLogout = () => ({
   type: HTTP_LOGOUT,
 })
 
-// export const autoLogin = (history) => {
-//   return () => {
-//     if (localStorage.getItem(server.LOGIN_PASSED) == YES) {
-//       setTimeout(() => history.push('/logchain'), 100)
-//     }
-//   }
-// }
-
 export const reLogin = () => {
   return (dispatch) => {
     const loginStatus = localStorage.getItem(LOGIN_STATUS)
+    const userToken = localStorage.getItem(TOKEN)
+    const userToken_decoded = jwtDecode(userToken)
+    // console.log('User Token Decoded: ', userToken_decoded)
+    const { username } = userToken_decoded
     if (loginStatus == 'ok') {
-      dispatch(setLoginStateToSuccess({}))
+      // dispatch(setLoginStateToSuccess({}))
+      dispatch(setLoginStateToSuccess({ status: 'ok', username }))
     }
   }
 }
@@ -65,7 +63,8 @@ export const login = ({ username, password, history }) => {
       localStorage.setItem(TOKEN, result.data.token)
       dispatch(
         // setLoginStateToSuccess({ status: 'ok', token: result.data.token }),
-        setLoginStateToSuccess('ok'),
+        // setLoginStateToSuccess('ok'),
+        setLoginStateToSuccess({ status: 'ok', username }),
       )
       history.push('/blockview')
       // alert(JSON.stringify(result.data));

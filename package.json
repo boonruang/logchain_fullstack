@@ -11,6 +11,7 @@
     "formidable": "^1.2.2",
     "formik": "^2.2.6",
     "ionicons": "2.0.1",
+    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "react": "^17.0.1",
