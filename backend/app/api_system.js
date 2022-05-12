@@ -21,41 +21,57 @@ router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
   let active_nodes = await Node.count()
   let users = await Blockchain.count({ distinct: 'user' })
 
-  const activeNode = await Node.findOne({
-    where: { nodename: 'NODE1' },
-  })
+  const activeNode = await Node.findAll()
 
-  const { server_ip, http_port } = activeNode
+  if (activeNode) {
+    console.log('Active Node: ', activeNode)
+    // res.status(200).json(activeNode)
+    activeNode.map((node) => {
+      var { server_ip, http_port, p2p_port } = node
 
-  console.log('Server and IP', server_ip + ':' + http_port)
+      console.log(
+        `Server IP: ${server_ip} Http Port: ${http_port} P2P Port: ${p2p_port}`,
+      )
 
-  // var client = net.connect({ server_ip, http_port }, function () {
-  //   console.log(`Connected to server! ${server_ip}:${phttp_portort}`)
-  //   res.status(200).json({
-  //     message: 'ok',
-  //     result: `Connected to server!! ${server_ip}:${http_port}`,
-  //   })
-  // })
+      var socket = net.connect({ host: server_ip, port: http_port }, () => {
+        console.log(`Connected to server! ${server_ip}:${http_port}`)
+        var n = n + 1
+        console.log('n: ', n)
+      })
 
-  // client.on('error', function (error) {
-  //   console.log('what is this error', error.toString())
-  //   res.status(500).json({
-  //     message: 'nok',
-  //     Error: error,
-  //   })
-  // })
+      socket.on('error', function (error) {
+        console.log('what is this error', error.toString())
+      })
+    })
+  } else {
+    res.status(500).json({
+      status: 'nok',
+      message: 'Node not available',
+    })
+  }
 
-  // client.on('data', function (data) {
-  //   console.log('what is this data', data.toString())
-  //   client.end()
-  // })
-
-  // client.on('end', function () {
-  //   console.log('disconnected from server')
-  // })
+  // active_nodes = n
 
   res.json({ nodes: all_nodes, active: active_nodes, users })
 })
+
+const checkServer = (a_node) => {
+  let { server_ip, http_port } = a_node
+
+  // return new Promise(function (resolve, reject) {
+  //   var socket = net.connect({ host: server_ip, port: http_port }, () => {
+  //     console.log(`Connected to server! ${server_ip}:${http_port}`)
+  //     // resolve(socket)
+  //     resolve(true)
+  //   })
+
+  //   socket.on('error', function (error) {
+  //     console.log('what is this error', error.toString())
+  //     // reject(error)
+  //     resolve(false)
+  //   })
+  // })
+}
 
 //  @route                  GET  /api/v2/blockchain/info/:id
 //  @desc                   Get system by Id
