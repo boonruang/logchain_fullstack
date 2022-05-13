@@ -5,12 +5,40 @@ const constants = require('../constant')
 const JwtMiddleware = require('../config/Jwt-Middleware')
 const Node = require('../models/node')
 const Blockchain = require('../models/blockchain')
+const net = require('net')
 
-var net = require('net')
-blockSrv = [
-  { port: 5001, host: '192.168.0.150' },
-  { port: 5002, host: '192.168.0.151' },
-]
+router.get('/test', async (req, res) => {
+  const activeNode = await Node.findAll()
+
+  if (activeNode) {
+    res.status(200).json({
+      status: 'ok',
+      result: activeNode,
+    })
+  } else {
+    res.status(500).json({
+      status: 'nok',
+    })
+  }
+})
+
+//  @route                  GET  /api/v2/system/node
+//  @desc                   Get all node
+//  @access                 Private
+router.get('/node', JwtMiddleware.checkToken, async (req, res) => {
+  const activeNode = await Node.findAll()
+
+  if (activeNode) {
+    res.status(200).json({
+      status: 'ok',
+      result: activeNode,
+    })
+  } else {
+    res.status(500).json({
+      status: 'nok',
+    })
+  }
+})
 
 //  @route                  GET  /api/v2/system/info
 //  @desc                   Get mock info
@@ -18,28 +46,30 @@ blockSrv = [
 
 router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
   let all_nodes = await Node.count()
-  let active_nodes = await Node.count()
+  let active_nodes = 0
   let users = await Blockchain.count({ distinct: 'user' })
 
   const activeNode = await Node.findAll()
 
+  // console.log('promiseSocketStream: ', promiseSocket.stream)
+
+  var n = 0
   if (activeNode) {
-    console.log('Active Node: ', activeNode)
-    // res.status(200).json(activeNode)
-    activeNode.map((node) => {
+    var test_n = activeNode.map((node) => {
       var { server_ip, http_port, p2p_port } = node
 
       console.log(
         `Server IP: ${server_ip} Http Port: ${http_port} P2P Port: ${p2p_port}`,
       )
 
-      var socket = net.connect({ host: server_ip, port: http_port }, () => {
+      var nodeSrv = net.connect({ host: server_ip, port: http_port }, () => {
         console.log(`Connected to server! ${server_ip}:${http_port}`)
-        var n = n + 1
+        n = n + 1
         console.log('n: ', n)
+        return n
       })
 
-      socket.on('error', function (error) {
+      nodeSrv.on('error', function (error) {
         console.log('what is this error', error.toString())
       })
     })
@@ -50,28 +80,10 @@ router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
     })
   }
 
-  // active_nodes = n
+  console.log('active_node: ', test_n)
 
   res.json({ nodes: all_nodes, active: active_nodes, users })
 })
-
-const checkServer = (a_node) => {
-  let { server_ip, http_port } = a_node
-
-  // return new Promise(function (resolve, reject) {
-  //   var socket = net.connect({ host: server_ip, port: http_port }, () => {
-  //     console.log(`Connected to server! ${server_ip}:${http_port}`)
-  //     // resolve(socket)
-  //     resolve(true)
-  //   })
-
-  //   socket.on('error', function (error) {
-  //     console.log('what is this error', error.toString())
-  //     // reject(error)
-  //     resolve(false)
-  //   })
-  // })
-}
 
 //  @route                  GET  /api/v2/blockchain/info/:id
 //  @desc                   Get system by Id

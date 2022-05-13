@@ -2,7 +2,10 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import * as blockActions from '../../actions/block.action'
 import * as systemActions from '../../actions/system.action'
+import * as systemNodeActions from '../../actions/system.node.action'
 import { withRouter } from 'react-router-dom'
+import net from 'net'
+import axios from 'axios'
 
 const Systembar = (props) => {
   useEffect(() => {
@@ -12,20 +15,39 @@ const Systembar = (props) => {
   const callActions = () => {
     dispatch(blockActions.getBlockCount())
     dispatch(systemActions.getSystems())
+    dispatch(systemNodeActions.getNodes())
   }
 
   const blockReducer = useSelector(({ blockReducer }) => blockReducer)
   const systemReducer = useSelector(({ systemReducer }) => systemReducer)
+  const systemNodeReducer = useSelector(
+    ({ systemNodeReducer }) => systemNodeReducer,
+  )
   const dispatch = useDispatch()
   const { count } = blockReducer
   const { sysResult } = systemReducer
+  const { result, isFetching } = systemNodeReducer
+
+  const CreateRows = () => {
+    let n = 3
+
+    try {
+      return (
+        <div>
+          <ul>{n}</ul>
+        </div>
+      )
+    } catch (error) {
+      alert(error)
+    }
+  }
 
   return (
     <section className="content">
       <div className="container-fluid">
         {/* Small boxes (Stat box) */}
         <div className="row">
-          <div className="col-lg-3 col-6">
+          <div className="col-lg-4 col-6">
             {/* small box */}
             <div className="small-box bg-info">
               <div className="inner">
@@ -41,7 +63,7 @@ const Systembar = (props) => {
             </div>
           </div>
           {/* ./col */}
-          <div className="col-lg-3 col-6">
+          <div className="col-lg-4 col-6">
             {/* small box */}
             <div className="small-box bg-success">
               <div className="inner">
@@ -57,23 +79,8 @@ const Systembar = (props) => {
             </div>
           </div>
           {/* ./col */}
-          <div className="col-lg-3 col-6">
-            {/* small box */}
-            <div className="small-box bg-warning">
-              <div className="inner">
-                <h3>{sysResult ? sysResult.active : null}</h3>
-                <p>จำนวนโหนดที่ใช้งาน</p>
-              </div>
-              <div className="icon">
-                <i className="ion ion-person-add" />
-              </div>
-              <div className="small-box-footer">
-                รายละเอียด <i className="fas fa-arrow-circle-right" />
-              </div>
-            </div>
-          </div>
-          {/* ./col */}
-          <div className="col-lg-3 col-6">
+
+          <div className="col-lg-4 col-6">
             {/* small box */}
             <div className="small-box bg-danger">
               <div className="inner">
