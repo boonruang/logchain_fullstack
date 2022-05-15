@@ -28,20 +28,6 @@ const Systembar = (props) => {
   const { sysResult } = systemReducer
   const { result, isFetching } = systemNodeReducer
 
-  const CreateRows = () => {
-    let n = 3
-
-    try {
-      return (
-        <div>
-          <ul>{n}</ul>
-        </div>
-      )
-    } catch (error) {
-      alert(error)
-    }
-  }
-
   return (
     <section className="content">
       <div className="container-fluid">
@@ -82,10 +68,10 @@ const Systembar = (props) => {
 
           <div className="col-lg-4 col-6">
             {/* small box */}
-            <div className="small-box bg-danger">
+            <div className="small-box bg-warning">
               <div className="inner">
                 <h3>{sysResult ? sysResult.users : null}</h3>
-                <p>ผู้ใช้งาน</p>
+                <p>จำนวนผู้ใช้</p>
               </div>
               <div className="icon">
                 <i className="ion ion-pie-graph" />

@@ -70,6 +70,8 @@ export const UPLOAD_PHOTO_FAIL_MESSAGE =
   'An error has occurred. The photo was unable to upload.'
 
 export const apiUrl = 'http://localhost:3001/api/v2'
+export const apiUrl2 = 'http://localhost:3002/api/v2'
+export const apiUrl3 = 'http://localhost:3003/api/v2'
 export const imageUrl = 'http://localhost:3001'
 
 export const YES = 'YES'

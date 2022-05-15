@@ -47,7 +47,10 @@ router.get('/node', JwtMiddleware.checkToken, async (req, res) => {
 router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
   let all_nodes = await Node.count()
   let active_nodes = 0
-  let users = await Blockchain.count({ distinct: 'user' })
+  let users = await Blockchain.count({
+    distinct: 'true',
+    col: 'blockchains.user',
+  })
 
   const activeNode = await Node.findAll()
 

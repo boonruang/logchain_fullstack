@@ -19,22 +19,22 @@ const Blockdata = (props) => {
   const mouseClick = () => {}
 
   return (
-    <div class="content-wrapper">
+    <div className="content-wrapper">
       <div className="content-header">{/* /.container-fluid */}</div>
-      <section class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6">
+      <section className="content-header">
+        <div className="container-fluid">
+          <div className="row mb-2">
+            <div className="col-sm-6">
               <div className="card card-widget widget-user-2 shadow-sm">
-                <div className="widget-user-header bg-info">
-                  <div className="widget-user-image">
+                <div className=" bg-info">
+                  {/* <div className="widget-user-image">
                     <img
-                      className="img-circle elevation-2"
-                      src="/dist/img/user7-128x128.jpg"
-                      alt="User Avatar"
+                    className="img-circle elevation-2"
+                    src="/dist/img/user7-128x128.jpg"
+                    alt="User Avatar"
                     />
-                  </div>
-                  <h3 className="widget-user-username">BLOCK</h3>
+                  </div> */}
+                  <h3 className="widget-user-username">ข้อมูล Blockchain</h3>
                   {/* <h5 className="widget-user-desc">
                       Blockchain {result ? result.timestamp : null}
                     </h5> */}
@@ -69,7 +69,7 @@ const Blockdata = (props) => {
                       <li className="nav-item">
                         <div className="card card-success">
                           <div className="card-header">
-                            <h3 className="card-title">User data</h3>
+                            <h3 className="widget-user-username">ข้อมูล Log</h3>
                           </div>
                           <div className="card-body">
                             <div className="nav-link">

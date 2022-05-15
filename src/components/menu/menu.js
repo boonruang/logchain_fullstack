@@ -103,7 +103,7 @@ const Menu = (props) => {
                       </Link>
                     </div>
                   </li>
-                  <li className="nav-item">
+                  {/* <li className="nav-item">
                     <div
                       className={
                         pathname == '/report' ? 'nav-link active' : 'nav-link'
@@ -114,7 +114,7 @@ const Menu = (props) => {
                         <p>Report</p>
                       </Link>
                     </div>
-                  </li>
+                  </li> */}
                   <li className="nav-item">
                     <div
                       className={
