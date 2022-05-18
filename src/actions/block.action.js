@@ -20,19 +20,6 @@ const setStateBlockToFailed = () => ({
   type: HTTP_BLOCK_FAILED,
 })
 
-const setStateBlockCountToSuccess = (payload) => ({
-  type: HTTP_BLOCKCOUNT_SUCCESS,
-  payload,
-})
-
-export const getBlockCount = () => {
-  return (dispatch) => {
-    httpClient.get(`${server.BC_URL}/count`).then((result) => {
-      dispatch(setStateBlockCountToSuccess(result.data))
-    })
-  }
-}
-
 export const getBlocks = () => {
   return (dispatch) => {
     dispatch(setStateBlockToFetching())

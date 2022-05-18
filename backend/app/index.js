@@ -4,7 +4,6 @@ const cors = require('cors')
 const Blockchain = require('../blockchain')
 const bc = new Blockchain()
 const BlockSystem = require('./blocksystem')
-
 const SERVER_IP = process.env.SERVER_IP || '192.168.0.150'
 const HTTP_PORT = process.env.HTTP_PORT || 3001
 const P2P_PORT = process.env.P2P_PORT || 5001

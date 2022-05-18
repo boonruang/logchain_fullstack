@@ -47,6 +47,7 @@ router.get('/node', JwtMiddleware.checkToken, async (req, res) => {
 router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
   let all_nodes = await Node.count()
   let active_nodes = 0
+  let blockCount = await Blockchain.count()
   let users = await Blockchain.count({
     distinct: 'true',
     col: 'blockchains.user',
@@ -56,9 +57,9 @@ router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
 
   // console.log('promiseSocketStream: ', promiseSocket.stream)
 
-  var n = 0
   if (activeNode) {
-    var test_n = activeNode.map((node) => {
+    var n = 0
+    activeNode.map((node) => {
       var { server_ip, http_port, p2p_port } = node
 
       console.log(
@@ -67,9 +68,8 @@ router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
 
       var nodeSrv = net.connect({ host: server_ip, port: http_port }, () => {
         console.log(`Connected to server! ${server_ip}:${http_port}`)
-        n = n + 1
+        n++
         console.log('n: ', n)
-        return n
       })
 
       nodeSrv.on('error', function (error) {
@@ -83,9 +83,16 @@ router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
     })
   }
 
-  console.log('active_node: ', test_n)
-
-  res.json({ nodes: all_nodes, active: active_nodes, users })
+  setTimeout(() => {
+    active_nodes = n
+    console.log('active_nodes', n)
+    res.json({
+      blockCount,
+      nodes: all_nodes,
+      active: active_nodes,
+      users,
+    })
+  }, 100)
 })
 
 //  @route                  GET  /api/v2/blockchain/info/:id

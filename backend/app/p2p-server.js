@@ -29,6 +29,9 @@ class P2pServer {
   connectSocket(socket) {
     this.sockets.push(socket)
     console.log('Socket connected')
+    console.log('This.blockchain: ', this.blockchain)
+    // console.log('Socket: ', socket)
+    // console.log('This.socket: ', this.sockets)
     this.messageHandler(socket)
     this.sendChain(socket)
   }
@@ -36,12 +39,13 @@ class P2pServer {
   messageHandler(socket) {
     socket.on('message', (message) => {
       const data = JSON.parse(message)
-      console.log('Data', data)
+      console.log('Data:', data)
       this.blockchain.replaceChain(data)
     })
   }
 
   sendChain(socket) {
+    // console.log('In sendChain: ', JSON.stringify(this.blockchain.chain))
     socket.send(JSON.stringify(this.blockchain.chain))
   }
 

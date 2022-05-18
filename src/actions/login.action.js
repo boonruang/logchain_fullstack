@@ -66,7 +66,7 @@ export const login = ({ username, password, history }) => {
         // setLoginStateToSuccess('ok'),
         setLoginStateToSuccess({ status: 'ok', username }),
       )
-      history.push('/blockview')
+      history.push('/logchain')
       // alert(JSON.stringify(result.data));
     } else {
       localStorage.setItem(LOGIN_STATUS, 'nok')

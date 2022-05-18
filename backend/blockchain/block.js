@@ -26,7 +26,16 @@ class Block {
   }
 
   static genesis() {
-    return new this('first-time', '--------------', 'F1r5t-h45h', [])
+    return new this(
+      'first-time',
+      '--------------',
+      'F1r5t-h45h',
+      'system',
+      '----',
+      '----',
+      '----',
+      '----',
+    )
   }
 
   static mineBlock(lastBlock, data) {

@@ -5,7 +5,6 @@ import Moment from 'react-moment'
 import './logchain.css'
 import moment from 'moment'
 import * as blockActions from '../../actions/block.action'
-import * as systemActions from '../../actions/system.action'
 import { withRouter } from 'react-router-dom'
 import SystemBar from '../systembar'
 
@@ -20,22 +19,18 @@ const Logchain = (props) => {
 
   const callActions = () => {
     dispatch(blockActions.getBlocks())
-    dispatch(blockActions.getBlockCount())
-    dispatch(systemActions.getSystems())
   }
 
   const callJQuery = () => {
     const script = document.createElement('script')
-    script.src = `js/content.js`
+    script.src = `js/content_logchain.js`
     script.async = true
     document.body.appendChild(script)
   }
 
   const blockReducer = useSelector(({ blockReducer }) => blockReducer)
-  const systemReducer = useSelector(({ systemReducer }) => systemReducer)
   const dispatch = useDispatch()
-  const { result, isFetching, count } = blockReducer
-  const { sysResult } = systemReducer
+  const { result, isFetching } = blockReducer
 
   // const mouseClick = () => {}
 

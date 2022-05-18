@@ -21,14 +21,6 @@ router.get('/blocks', JwtMiddleware.checkToken, async (req, res) => {
   res.json(result)
 })
 
-//  @route                  GET  /api/v2/blockchain/count
-//  @desc                   Get blockchain recond count number
-//  @access                 Private
-router.get('/count', JwtMiddleware.checkToken, async (req, res) => {
-  let result = await blockchain.count()
-  res.json(result)
-})
-
 //  @route                  GET  /api/v2/blockchain/blocks/:id
 //  @desc                   Get Block by Id
 //  @access                 Private
@@ -45,6 +37,9 @@ router.get('/blocks/:id', JwtMiddleware.checkToken, async (req, res) => {
 //  @desc                   Add Block to blockchain
 //  @access                 Private
 router.post('/mine', JwtMiddleware.checkToken, async (req, res) => {
+  // Compare rest (2 node) blockchain
+  // read correct to into current node
+
   const block = bc.addBlock(req.body)
 
   // create table first
