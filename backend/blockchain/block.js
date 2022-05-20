@@ -1,4 +1,5 @@
 const SHA256 = require('crypto-js/sha256')
+const blockChainTable = require('../models/blockchain')
 
 class Block {
   constructor(timestamp, lasthash, hash, user, action, api, login, logout) {
@@ -36,6 +37,21 @@ class Block {
       '----',
       '----',
     )
+  }
+
+  static async getData() {
+    try {
+      const blockChainData = await blockChainTable.findAll()
+      if (blockChainData) {
+        console.log('blockChainData: ', blockChainData)
+        return blockChainData
+      } else {
+        console.log('Genesis block: ', () => genesis())
+        return this.genesis()
+      }
+    } catch (error) {}
+    console.log('getData class error: ', error)
+    return
   }
 
   static mineBlock(lastBlock, data) {

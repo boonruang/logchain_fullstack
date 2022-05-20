@@ -12,7 +12,9 @@ const NODE_NAME = nodename.trim()
 
 const app = express()
 
-const p2pServer = new P2pServer(bc)
+// const p2pServer = new P2pServer(bc)
+
+global.p2pServer = new P2pServer(bc)
 
 app.use(cors())
 app.use(express.json())

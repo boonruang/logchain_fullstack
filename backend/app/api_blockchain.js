@@ -1,14 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const P2pServer = require('./p2p-server')
+// const P2pServer = require('./p2p-server')
 const Sequelize = require('sequelize')
 const Blockchain = require('../blockchain')
 const blockchain = require('../models/blockchain')
 const constants = require('../constant')
 const JwtMiddleware = require('../config/Jwt-Middleware')
+// const P2pSync = require('./p2p-sync')
 
 const bc = new Blockchain()
-const p2pServer = new P2pServer(bc)
+// const p2pServer = new P2pServer(bc)
+// const p2pSync = new P2pSync(bc)
 
 //  @route                  GET  /api/v2/blockchain/blocks
 //  @desc                   Get blockchain all blocks
@@ -40,6 +42,11 @@ router.post('/mine', JwtMiddleware.checkToken, async (req, res) => {
   // Compare rest (2 node) blockchain
   // read correct to into current node
 
+  // const blockchainFound = await blockchain.findAll()
+
+  // const p2pServer = new P2pServer(blockchainFound)
+  // console.log('blockchainFound: ', blockchainFound)
+
   const block = bc.addBlock(req.body)
 
   // create table first
@@ -63,6 +70,45 @@ router.post('/mine', JwtMiddleware.checkToken, async (req, res) => {
     res.json({ result: constants.kResultOk, message: result })
   } catch (error) {
     res.json({ result: constants.kResultNok, message: error })
+  }
+})
+
+//  @route                  POST  /api/v2/blockchain/sync
+//  @desc                   P2p Syncing blockchain
+//  @access                 Private
+router.get('/sync', JwtMiddleware.checkToken, async (req, res) => {
+  try {
+    // const blockchainFound = await blockchain.findAll()
+
+    const blockchainFound = {
+      chain: [
+        {
+          user: 'สมศรี แสนจันทร์',
+          action: 'กรอกแบบฟอร์ม รง.8',
+          api: '/api/form8',
+          login: '2022-5-19 10:05:29.751',
+          logout: '2022-5-19 10:25:29.751',
+        },
+        {
+          user: 'สมศักดิ์ แสนจันทร์ศรี',
+          action: 'กรอกแบบฟอร์ม รง.9',
+          api: '/api/form8',
+          login: '2022-5-19 12:05:29.751',
+          logout: '2022-5-19 12:25:29.751',
+        },
+      ],
+    }
+
+    const p2pServer = new P2pServer(blockchainFound)
+
+    if (blockchainFound) {
+      // res.status(200).json(blockchainFound)
+      p2pServer.syncNode(blockchainFound)
+    } else {
+      console.log('blockchain not syncing')
+    }
+  } catch (error) {
+    res.status(500).json(error)
   }
 })
 

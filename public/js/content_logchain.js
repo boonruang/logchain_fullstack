@@ -3,7 +3,7 @@ $(function () {
     responsive: true,
     autoWidth: false,
     lengthChange: false,
-    order: [[1, 'desc']],
+    order: [[0, 'desc']],
     language: {
       search: 'ค้นหา ',
     },

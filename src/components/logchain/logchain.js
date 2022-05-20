@@ -41,9 +41,7 @@ const Logchain = (props) => {
         result != null &&
         result.map((item) => (
           <tr key={item.timestamp}>
-            <td style={{ textAlign: 'center' }}>
-              <Moment format="DD/MM/YYYY HH:mm:ss">{item.login}</Moment>
-            </td>
+            <td>{item.timestamp}</td>
             <td>{item.user}</td>
             <td>{item.action}</td>
             <td>{item.api}</td>

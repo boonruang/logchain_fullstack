@@ -1,14 +1,26 @@
 const Websocket = require('ws')
 const P2P_PORT = process.env.P2P_PORT || 5001
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : []
+const Node = require('../models/node')
+const Blockchain = require('../models/blockchain')
 
-class P2pServer {
+class P2pSync {
   constructor(blockchain) {
     this.blockchain = blockchain
     this.sockets = []
   }
 
-  listen() {
+  constructor() {
+    this.chain = [Block.genesis()]
+  }
+
+  addBlock(data) {
+    const block = Block.mineBlock(this.chain[this.chain.length - 1], data)
+    this.chain.push(block)
+    return block
+  }
+
+  syncing() {
     const server = new Websocket.Server({ port: P2P_PORT })
     server.on('connection', (socket) => this.connectSocket(socket))
 
@@ -50,20 +62,8 @@ class P2pServer {
   }
 
   syncChains() {
-    console.log('peers: ', peers)
-    console.log('this.blockchain.chain: ', this.blockchain.chain)
     this.sockets.forEach((socket) => this.sendChain(socket))
-  }
-
-  syncNode(bcData) {
-    // console.log('bc Data: ', bcData)
-    // console.log('peers: ', peers)
-    // console.log('this.blockchain.chain: ', this.blockchain.chain)
-    // console.log('this.sockets: ', this.sockets)
-    // this.sockets.forEach((socket) => {
-    //   socket.send(JSON.stringify(bcData))
-    // })
   }
 }
 
-module.exports = P2pServer
+module.exports = P2pSync

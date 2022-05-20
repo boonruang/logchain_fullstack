@@ -2,7 +2,8 @@ const Block = require('./block')
 
 class Blockchain {
   constructor() {
-    this.chain = [Block.genesis()]
+    // this.chain = [Block.genesis()]
+    this.chain = [Block.getData()]
   }
 
   addBlock(data) {
