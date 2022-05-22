@@ -12,7 +12,7 @@ class P2pServer {
     const server = new Websocket.Server({ port: P2P_PORT })
     server.on('connection', (socket) => this.connectSocket(socket))
 
-    console.log('peers: ', peers)
+    console.log('peers in listen: ', peers)
 
     this.connectToPeers()
 
@@ -21,6 +21,7 @@ class P2pServer {
 
   connectToPeers() {
     peers.forEach((peer) => {
+      console.log('peers in connToPeers: ', peer)
       const socket = new Websocket(peer)
       socket.on('open', () => this.connectSocket(socket))
     })
@@ -29,7 +30,7 @@ class P2pServer {
   connectSocket(socket) {
     this.sockets.push(socket)
     console.log('Socket connected')
-    console.log('This.blockchain: ', this.blockchain)
+    console.log('This.blockchain in conSocket: ', this.blockchain)
     // console.log('Socket: ', socket)
     // console.log('This.socket: ', this.sockets)
     this.messageHandler(socket)
@@ -39,19 +40,19 @@ class P2pServer {
   messageHandler(socket) {
     socket.on('message', (message) => {
       const data = JSON.parse(message)
-      console.log('Data:', data)
+      console.log('Data msg in msgHandler:', data)
       this.blockchain.replaceChain(data)
     })
   }
 
   sendChain(socket) {
-    // console.log('In sendChain: ', JSON.stringify(this.blockchain.chain))
+    console.log('In sendChain: ', JSON.stringify(this.blockchain.chain))
     socket.send(JSON.stringify(this.blockchain.chain))
   }
 
   syncChains() {
     console.log('peers: ', peers)
-    console.log('this.blockchain.chain: ', this.blockchain.chain)
+    console.log('this.blockchain.chain in syncChain: ', this.blockchain.chain)
     this.sockets.forEach((socket) => this.sendChain(socket))
   }
 

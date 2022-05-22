@@ -5,7 +5,7 @@ const blockchain = sequelize.define(
   'blockchains',
   {
     timestamp: {
-      type: Sequelize.STRING,
+      type: 'TIMESTAMP',
       primaryKey: true,
       allowNull: false,
     },
