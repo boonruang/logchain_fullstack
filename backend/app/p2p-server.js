@@ -14,16 +14,6 @@ class P2pServer {
 
     console.log('peers in listen: ', peers)
 
-    // console.log('hi readfile')
-    // const dataFile = fs.readFileSync(`file_${NODE_NAME}.txt`, {
-    //   encoding: 'utf8',
-    //   flag: 'r',
-    // })
-    // console.log('read data: ', JSON.parse(dataFile))
-
-    // this.blockchain.chain = dataFile
-    // this.syncChains()
-
     this.connectToPeers()
 
     console.log(`Listening for peer-to-peer on port ${P2P_PORT}`)
