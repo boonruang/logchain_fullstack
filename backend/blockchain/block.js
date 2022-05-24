@@ -39,7 +39,7 @@ class Block {
     )
   }
 
-  static async getData() {
+  static getData() {
     const blockchainFound = {
       chain: [
         {
@@ -52,33 +52,11 @@ class Block {
           login: '2022-4-10 8: 27: 29.751 +00: 00',
           logout: '2022-4-10 10: 27: 29.751 +00: 00',
         },
-        {
-          timestamp: 16503931034840,
-          hash:
-            '8f61b2ed5e8bba5938f69af2f4a730f514855ac22c20992ca103eeedcd27fbb7',
-          lasthash: 'F1r5t-h45h',
-          user: 'admin',
-          action: 'กรอกแบบฟอร์ม รง.8',
-          api: '/api/form8',
-          login: '2022-4-16 8: 27: 29.751 +00: 00',
-          logout: '2022-4-16 10: 27: 29.751 +00: 00',
-        },
-        {
-          timestamp: 16503931475890,
-          hash:
-            'f7e120a9b87a23567d5df7433a911b677d92c539a903f04b6dfda24ce5791c4b',
-          lasthash:
-            '8f61b2ed5e8bba5938f69af2f4a730f514855ac22c20992ca103eeedcd27fbb7',
-          user: 'บุญเรือง สีดาพันธ์',
-          action: 'กรอกแบบฟอร์ม รง.9',
-          api: '/api/form9',
-          login: '2022-4-18 8: 27: 29.751 +00: 00',
-          logout: '2022-4-18 10: 30: 29.751 +00: 00',
-        },
       ],
     }
+
     try {
-      const blockChainData = await blockChainTable.findAll()
+      // const blockChainData = await blockChainTable.findAll()
       if (blockchainFound) {
         console.log(
           'blockChainData in block: ',

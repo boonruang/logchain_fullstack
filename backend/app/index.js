@@ -13,20 +13,7 @@ app.use(cors())
 app.use(express.json())
 
 global.bc = new Blockchain()
-// const p2pServer = new P2pServer(bc)
 global.p2pServer = new P2pServer(bc)
-
-// setTimeout(() => {
-//   p2pServer.syncChains()
-//   console.log('bc : ', bc)
-// }, 200)
-
-// if (bc) {
-//   p2pServer = new P2pServer(bc)
-//   p2pServer.syncChains()
-//   p2pServer.listen()
-//   console.log('bc : ', bc)
-// }
 
 app.use('/api/v2/system', require('./api_system'))
 app.use('/api/v2/blockchain', require('./api_blockchain'))
@@ -40,4 +27,5 @@ blocksystem = new BlockSystem(NODE_NAME, 1, SERVER_IP, HTTP_PORT, P2P_PORT)
 blocksystem.monitoring()
 
 console.log('BlockSystem : ', blocksystem)
+p2pServer.syncChains()
 p2pServer.listen()

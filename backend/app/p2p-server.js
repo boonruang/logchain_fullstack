@@ -14,6 +14,16 @@ class P2pServer {
 
     console.log('peers in listen: ', peers)
 
+    // console.log('hi readfile')
+    // const dataFile = fs.readFileSync(`file_${NODE_NAME}.txt`, {
+    //   encoding: 'utf8',
+    //   flag: 'r',
+    // })
+    // console.log('read data: ', JSON.parse(dataFile))
+
+    // this.blockchain.chain = dataFile
+    // this.syncChains()
+
     this.connectToPeers()
 
     console.log(`Listening for peer-to-peer on port ${P2P_PORT}`)
@@ -54,16 +64,6 @@ class P2pServer {
     console.log('peers: ', peers)
     console.log('this.blockchain.chain in syncChain: ', this.blockchain.chain)
     this.sockets.forEach((socket) => this.sendChain(socket))
-  }
-
-  syncNode(bcData) {
-    // console.log('bc Data: ', bcData)
-    // console.log('peers: ', peers)
-    // console.log('this.blockchain.chain: ', this.blockchain.chain)
-    // console.log('this.sockets: ', this.sockets)
-    // this.sockets.forEach((socket) => {
-    //   socket.send(JSON.stringify(bcData))
-    // })
   }
 }
 

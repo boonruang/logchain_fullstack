@@ -13,12 +13,26 @@ const JwtMiddleware = require('../config/Jwt-Middleware')
 //  @access                 Private
 router.get('/blocks', JwtMiddleware.checkToken, async (req, res) => {
   res.json(bc.chain)
-
   // console.log('req header: ', req.headers)
-  // let result = await blockchain.findAll({
-  //   order: Sequelize.literal('timestamp DESC'),
-  // })
-  // res.json(result)
+  //   try {
+  //     let result = await blockchain.findAll({
+  //       order: Sequelize.literal('timestamp DESC'),
+  //     })
+  //     if (result) {
+  //       res.status(500).json({
+  //         result,
+  //       })
+  //     } else {
+  //       res.status(500).json({
+  //         result: 'Error',
+  //       })
+  //     }
+  //   } catch (error) {
+  //     console.log('read blocks error', error)
+  //     res.status(500).json({
+  //       error,
+  //     })
+  //   }
 })
 
 //  @route                  GET  /api/v2/blockchain/blocks/:id
@@ -37,47 +51,25 @@ router.get('/blocks/:id', JwtMiddleware.checkToken, async (req, res) => {
 //  @desc                   Add Block to blockchain
 //  @access                 Private
 router.post('/mine', JwtMiddleware.checkToken, async (req, res) => {
-  // const block = bc.addBlock(req.body.data);
-  // console.log(`New block added: ${block.toString()}`);
-  // p2pServer.syncChains();
-  // res.redirect('/blocks');
-
-  // Compare rest (2 node) blockchain
-  // read correct to into current node
-
-  // const blockchainFound = await blockchain.findAll()
-
-  // const p2pServer = new P2pServer(blockchainFound)
-  // console.log('blockchainFound: ', blockchainFound)
-
-  const block = bc.addBlock(req.body)
-
-  // create table first
-  // blockchain.sync()
-
-  // const lastRecord = await blockchain.findOne({
-  //   limit: 1,
-  //   order: [['timestamp', 'DESC']],
-  // })
-
-  // if (lastRecord) {
-  //   block.lasthash = lastRecord.hash
-  // }
-
-  console.log(`New block added: ${block.toString()}`)
-
-  p2pServer.syncChains()
-  res.status(200).json({
-    status: 'New block added',
-    block,
-  })
-
-  // try {
-  //   let result = await blockchain.create(block)
-  //   res.json({ result: constants.kResultOk, message: result })
-  // } catch (error) {
-  //   res.json({ result: constants.kResultNok, message: error })
-  // }
+  try {
+    const block = await bc.addBlock(req.body)
+    if (block) {
+      console.log(`New block added: ${block.toString()}`)
+      p2pServer.syncChains()
+      res.status(200).json({
+        status: 'New block added',
+        block,
+      })
+    } else {
+      res.status(500).json({
+        status: 'Add block failed',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      status: 'Add block failed',
+    })
+  }
 })
 
 //  @route                  POST  /api/v2/blockchain/sync

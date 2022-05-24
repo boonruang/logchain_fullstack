@@ -1,4 +1,5 @@
 const Block = require('./block')
+const blockchain = require('../models/blockchain')
 
 class Blockchain {
   constructor() {
@@ -10,6 +11,7 @@ class Blockchain {
   addBlock(data) {
     const block = Block.mineBlock(this.chain[this.chain.length - 1], data)
     this.chain.push(block)
+    this.writeDB(this.chain)
     return block
   }
 
@@ -66,6 +68,25 @@ class Blockchain {
 
     console.log('Replacing blockchain with the new chain')
     this.chain = newChain
+    this.writeDB(this.chain)
+  }
+
+  async writeDB(chain) {
+    console.log('chain data in writeDB', chain)
+    try {
+      chain.map((item) => {
+        blockchain
+          .create(item)
+          .then((result) => {
+            console.log('write data to DB successful: ', result)
+          })
+          .catch((error) => {
+            console.log('write data to DB failed: ', error)
+          })
+      })
+    } catch (error) {
+      console.log('write data to DB error: ', error)
+    }
   }
 }
 
