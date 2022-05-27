@@ -48,6 +48,7 @@ router.post('/mine', JwtMiddleware.checkToken, async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: 'Add block failed',
+      Error: error,
     })
   }
 })

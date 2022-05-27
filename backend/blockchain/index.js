@@ -7,9 +7,33 @@ class Blockchain {
   constructor() {
     // this.chain = [Block.genesis()]
     // console.log('getData in Blockchain: ', Block.getData())
-    NODE_NAME == 'NODE1'
-      ? (this.chain = Block.getData())
-      : (this.chain = [Block.genesis()])
+    // NODE_NAME == 'NODE1'
+    //   ? (this.chain = Block.getData())
+    //   : (this.chain = [Block.genesis()])
+
+    this.chain = this.init()
+  }
+
+  async init() {
+    this.chain = await this.readData()
+    return this
+  }
+
+  async readData() {
+    try {
+      const blockChainData = await blockchain.findAll()
+
+      if (blockChainData) {
+        console.log('blockChainData in readData: ', blockChainData)
+        return blockChainData
+      } else {
+        console.log('Genesis block: ', Block.genesis())
+        return Block.genesis()
+      }
+    } catch (error) {
+      console.log('getData class error: ', error)
+      return error
+    }
   }
 
   addBlock(data) {
@@ -21,8 +45,8 @@ class Blockchain {
 
   isValidChain(chain) {
     if (JSON.stringify(chain[0]) !== JSON.stringify(Block.genesis())) {
-      // console.log('chain[0]: ', chain[0])
-      // console.log('Block Genesis ', JSON.stringify(Block.genesis()))
+      console.log('chain[0] isValid: ', chain[0])
+      console.log('Block Genesis ', JSON.stringify(Block.genesis()))
       return false
     }
     for (let i = 1; i < chain.length; i++) {

@@ -54,7 +54,7 @@ class P2pServer {
   messageHandlerFake(socket) {
     socket.on('message', (message) => {
       const data = Block.getFakeData()
-      console.log('Data msg in msgHandler:', data)
+      console.log('Data msg in messageHandlerFak:', data)
       this.blockchain.chain = data
       this.sendChain(socket)
     })
