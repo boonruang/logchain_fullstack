@@ -27,5 +27,5 @@ blocksystem = new BlockSystem(NODE_NAME, 1, SERVER_IP, HTTP_PORT, P2P_PORT)
 blocksystem.monitoring()
 
 console.log('BlockSystem : ', blocksystem)
-p2pServer.syncChains()
+// p2pServer.syncChains()
 p2pServer.listen()

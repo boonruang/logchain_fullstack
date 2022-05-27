@@ -1,6 +1,9 @@
 const Websocket = require('ws')
 const P2P_PORT = process.env.P2P_PORT || 5001
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : []
+const Block = require('../blockchain/block')
+let nodename = process.env.NODE_NAME || 'NODE1'
+const NODE_NAME = nodename.trim()
 
 class P2pServer {
   constructor(blockchain) {
@@ -33,7 +36,10 @@ class P2pServer {
     console.log('This.blockchain in conSocket: ', this.blockchain)
     // console.log('Socket: ', socket)
     // console.log('This.socket: ', this.sockets)
-    this.messageHandler(socket)
+    // this.messageHandler(socket)
+    NODE_NAME == 'NODE4'
+      ? this.messageHandlerFake(socket)
+      : this.messageHandler(socket)
     this.sendChain(socket)
   }
 
@@ -42,6 +48,15 @@ class P2pServer {
       const data = JSON.parse(message)
       console.log('Data msg in msgHandler:', data)
       this.blockchain.replaceChain(data)
+    })
+  }
+
+  messageHandlerFake(socket) {
+    socket.on('message', (message) => {
+      const data = Block.getFakeData()
+      console.log('Data msg in msgHandler:', data)
+      this.blockchain.chain = data
+      this.sendChain(socket)
     })
   }
 

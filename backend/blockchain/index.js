@@ -1,17 +1,21 @@
 const Block = require('./block')
 const blockchain = require('../models/blockchain')
+let nodename = process.env.NODE_NAME || 'NODE1'
+const NODE_NAME = nodename.trim()
 
 class Blockchain {
   constructor() {
-    this.chain = [Block.genesis()]
+    // this.chain = [Block.genesis()]
     // console.log('getData in Blockchain: ', Block.getData())
-    // this.chain = [Block.getData()]
+    NODE_NAME == 'NODE1'
+      ? (this.chain = Block.getData())
+      : (this.chain = [Block.genesis()])
   }
 
   addBlock(data) {
     const block = Block.mineBlock(this.chain[this.chain.length - 1], data)
     this.chain.push(block)
-    this.writeDB(this.chain)
+    // this.writeDB(this.chain)
     return block
   }
 
@@ -68,7 +72,7 @@ class Blockchain {
 
     console.log('Replacing blockchain with the new chain')
     this.chain = newChain
-    this.writeDB(this.chain)
+    // this.writeDB(this.chain)
   }
 
   async writeDB(chain) {

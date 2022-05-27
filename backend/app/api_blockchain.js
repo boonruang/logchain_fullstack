@@ -13,26 +13,6 @@ const JwtMiddleware = require('../config/Jwt-Middleware')
 //  @access                 Private
 router.get('/blocks', JwtMiddleware.checkToken, async (req, res) => {
   res.json(bc.chain)
-  // console.log('req header: ', req.headers)
-  //   try {
-  //     let result = await blockchain.findAll({
-  //       order: Sequelize.literal('timestamp DESC'),
-  //     })
-  //     if (result) {
-  //       res.status(500).json({
-  //         result,
-  //       })
-  //     } else {
-  //       res.status(500).json({
-  //         result: 'Error',
-  //       })
-  //     }
-  //   } catch (error) {
-  //     console.log('read blocks error', error)
-  //     res.status(500).json({
-  //       error,
-  //     })
-  //   }
 })
 
 //  @route                  GET  /api/v2/blockchain/blocks/:id
