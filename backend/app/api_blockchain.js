@@ -53,6 +53,14 @@ router.post('/mine', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
+//  @route                  POST  /api/v2/blockchain/forcesync
+//  @desc                   P2p forcesyncing blockchain
+//  @access                 Private
+router.get('/forcesync', JwtMiddleware.checkToken, async (req, res) => {
+  p2pServer.syncChains()
+  res.json(bc.chain)
+})
+
 //  @route                  POST  /api/v2/blockchain/sync
 //  @desc                   P2p Syncing blockchain
 //  @access                 Private

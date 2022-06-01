@@ -5,7 +5,7 @@ import * as blockDataActions from '../../actions/block.data.action'
 
 const Blockdata = (props) => {
   useEffect(() => {
-    let id = props.match.params.blockid
+    let id = parseInt(props.match.params.blockid)
     dispatch(blockDataActions.getBlockById(id))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 

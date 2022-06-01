@@ -12,6 +12,9 @@ class Blockchain {
     //   : (this.chain = [Block.genesis()])
 
     this.chain = this.init()
+    setTimeout(() => {
+      console.log('this.chain in constructor: ', this.chain)
+    }, 500)
   }
 
   async init() {
@@ -25,7 +28,13 @@ class Blockchain {
 
       if (blockChainData) {
         console.log('blockChainData in readData: ', blockChainData)
-        return blockChainData
+        // return blockChainData
+        if (this.isValidChain(blockChainData)) {
+          return blockChainData
+        } else {
+          console.log('block incorrect!!!!!')
+          return 'block incorrect!!!!!'
+        }
       } else {
         console.log('Genesis block: ', Block.genesis())
         return Block.genesis()
@@ -39,7 +48,7 @@ class Blockchain {
   addBlock(data) {
     const block = Block.mineBlock(this.chain[this.chain.length - 1], data)
     this.chain.push(block)
-    // this.writeDB(this.chain)
+    this.writeDB(this.chain)
     return block
   }
 
@@ -96,7 +105,7 @@ class Blockchain {
 
     console.log('Replacing blockchain with the new chain')
     this.chain = newChain
-    // this.writeDB(this.chain)
+    if (this.chain) this.writeDB(this.chain)
   }
 
   async writeDB(chain) {
