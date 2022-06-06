@@ -34,12 +34,17 @@ export const setLoginStateToLogout = () => ({
 export const reLogin = () => {
   return (dispatch) => {
     const loginStatus = localStorage.getItem(LOGIN_STATUS)
+    console.log('LoginStatus: ', loginStatus)
     const userToken = localStorage.getItem(TOKEN)
-    const userToken_decoded = jwtDecode(userToken)
-    // console.log('User Token Decoded: ', userToken_decoded)
-    const { username } = userToken_decoded
+    console.log('userToken: ', userToken)
+    if (userToken) {
+      const userToken_decoded = jwtDecode(userToken)
+      console.log('User Token Decoded: ', userToken_decoded)
+      var { username } = userToken_decoded
+    }
     if (loginStatus == 'ok') {
       // dispatch(setLoginStateToSuccess({}))
+      // dispatch(setLoginStateToSuccess({ status: 'ok', username }))
       dispatch(setLoginStateToSuccess({ status: 'ok', username }))
     }
   }
@@ -54,6 +59,8 @@ export const isLoggedIn = () => {
 export const login = ({ username, password, history }) => {
   return async (dispatch) => {
     dispatch(setLoginStateToFetching())
+    console.log('User: ', username)
+    // console.log('History: ', history)
     const result = await httpClient.post(server.LOGIN_URL, {
       username,
       password,

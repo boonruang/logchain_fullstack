@@ -3,6 +3,10 @@ import { Link, withRouter } from 'react-router-dom'
 import * as loginActions from '../../actions/login.action'
 import { useDispatch, useSelector } from 'react-redux'
 
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+const MySwal = withReactContent(Swal)
+
 const Menu = (props) => {
   const { pathname } = props.location
 
@@ -56,14 +60,14 @@ const Menu = (props) => {
          with font-awesome or any other icon font library */}
               <li className="nav-item menu-open">
                 <a href="#" className="nav-link">
-                  <i className="nav-icon fas fa-tachometer-alt" />
+                  <i className="nav-icon fas fa-th" />
                   <p>
-                    Dashboard
+                    แสดงผลห่วงโซ่บล็อก
                     <i className="right fas fa-angle-left" />
                   </p>
                 </a>
                 <ul className="nav nav-treeview">
-                  <li className="nav-item ">
+                  {/* <li className="nav-item ">
                     <div
                       className={
                         pathname == '/dashboard'
@@ -76,7 +80,7 @@ const Menu = (props) => {
                         <p>แดสบอร์ด</p>
                       </Link>
                     </div>
-                  </li>
+                  </li> */}
                   <li className="nav-item">
                     <div
                       className={
@@ -99,7 +103,44 @@ const Menu = (props) => {
                     >
                       <Link to="/blockview">
                         <i className="far fa-circle nav-icon" />
-                        <p>Blockview</p>
+                        <p>แสดงห่วงโซ่บล็อก</p>
+                      </Link>
+                    </div>
+                  </li>
+
+                  {/* <li className="nav-item">
+                    <div
+                      className={
+                        pathname == '/report' ? 'nav-link active' : 'nav-link'
+                      }
+                    >
+                      <Link to="/report">
+                        <i className="far fa-circle nav-icon" />
+                        <p>Report</p>
+                      </Link>
+                    </div>
+                  </li> */}
+                </ul>
+              </li>
+
+              <li className="nav-item menu-open">
+                <a href="#" className="nav-link">
+                  <i className="nav-icon fas fa-users" />
+                  <p>
+                    จัดการระบบ
+                    <i className="right fas fa-angle-left" />
+                  </p>
+                </a>
+                <ul className="nav nav-treeview">
+                  <li className="nav-item">
+                    <div
+                      className={
+                        pathname == '/user' ? 'nav-link active' : 'nav-link'
+                      }
+                    >
+                      <Link to="/user">
+                        <i className="far fa-circle nav-icon" />
+                        <p>ผู้ใช้งาน</p>
                       </Link>
                     </div>
                   </li>
@@ -115,7 +156,7 @@ const Menu = (props) => {
                       </Link>
                     </div>
                   </li> */}
-                  <li className="nav-item">
+                  {/* <li className="nav-item">
                     <div
                       className={
                         pathname == '/login' ? 'nav-link active' : 'nav-link'
@@ -128,7 +169,36 @@ const Menu = (props) => {
                         }}
                       >
                         <i className="far fa-circle nav-icon" />
-                        <p>Logout</p>
+                        <p>ออกจากระบบ</p>
+                      </Link>
+                    </div>
+                  </li> */}
+                  <li className="nav-item">
+                    <div
+                      className={
+                        pathname == '/login' ? 'nav-link active' : 'nav-link'
+                      }
+                    >
+                      <Link
+                        onClick={() => {
+                          // dispatch(loginActions.logout({ ...props }))
+                          MySwal.fire({
+                            title: 'กรุณายืนยันการออกจากระบบ',
+                            text: 'กรุณาตอบยืนยันเพื่อเป็นการออกจากระบบ',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'ยืนยัน',
+                            cancelButtonText: 'ยกเลิก',
+                          }).then((result) => {
+                            if (result.value) {
+                              // this.props.deleteProduct(item.id)
+                              dispatch(loginActions.logout({ ...props }))
+                            }
+                          })
+                        }}
+                      >
+                        <i className="far fa-circle nav-icon" />
+                        <p>ออกจากระบบ</p>
                       </Link>
                     </div>
                   </li>

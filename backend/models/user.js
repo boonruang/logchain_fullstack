@@ -5,12 +5,25 @@ const user = sequelize.define(
   'users',
   {
     // attributes
+    id: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
+    },
     username: {
       type: Sequelize.STRING,
       allowNull: false,
-      primaryKey: true,
     },
     password: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    firstname: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    lastname: {
       type: Sequelize.STRING,
       allowNull: false,
     },

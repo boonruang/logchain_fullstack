@@ -5,6 +5,7 @@ import blockReducer from './block.reducer'
 import blockDataReducer from './block.data.reducer'
 import systemReducer from './system.reducer'
 import systemNodeReducer from './system.node.reducer'
+import userReducer from './user.reducer'
 
 export default combineReducers({
   registerReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   blockDataReducer,
   systemReducer,
   systemNodeReducer,
+  userReducer,
 })

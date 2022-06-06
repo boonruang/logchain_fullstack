@@ -29,7 +29,7 @@ const Header = (props) => {
         </ul>
         {/* Right navbar links */}
         <ul className="navbar-nav ml-auto">
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <a className="nav-link" data-toggle="dropdown" href="#">
               <i className="far ion-log-out" />
             </a>
@@ -42,7 +42,7 @@ const Header = (props) => {
                 <i className="far ion-android-hand mr-2" /> Logout
               </a>
             </div>
-          </li>
+          </li> */}
           <li className="nav-item">
             <a
               className="nav-link"

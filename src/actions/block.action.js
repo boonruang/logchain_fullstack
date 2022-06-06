@@ -2,7 +2,6 @@ import {
   HTTP_BLOCK_FAILED,
   HTTP_BLOCK_FETCHING,
   HTTP_BLOCK_SUCCESS,
-  HTTP_BLOCKCOUNT_SUCCESS,
   server,
 } from '../constants'
 import { httpClient } from '../utils/HttpClient'

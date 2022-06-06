@@ -29,7 +29,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "sweetalert2": "^10.12.5",
-    "sweetalert2-react-content": "^3.2.2",
+    "sweetalert2-react-content": "^3.3.3",
     "url-join": "^4.0.1",
     "web-vitals": "^0.2.4"
   },

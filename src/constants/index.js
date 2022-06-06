@@ -1,6 +1,11 @@
 // Login Page
 export const APP_INIT = 'APP_INIT'
 
+// User Page
+export const HTTP_USER_FETCHING = 'HTTP_USER_FETCHING'
+export const HTTP_USER_SUCCESS = 'HTTP_USER_SUCCESS'
+export const HTTP_USER_FAILED = 'HTTP_USER_FAILED'
+
 // Login Page
 export const HTTP_LOGIN_FETCHING = 'HTTP_LOGIN_FETCHING'
 export const HTTP_LOGIN_SUCCESS = 'HTTP_LOGIN_SUCCESS'
@@ -71,7 +76,7 @@ export const UPLOAD_PHOTO_FAIL_MESSAGE =
 export const apiUrl = 'http://localhost:3001/api/v2'
 export const apiUrl2 = 'http://localhost:3002/api/v2'
 export const apiUrl3 = 'http://localhost:3003/api/v2'
-export const imageUrl = 'http://localhost:3001'
+export const imageUrl = 'http://localhost:3000'
 
 export const YES = 'YES'
 export const NO = 'NO'
@@ -83,6 +88,7 @@ export const TOKEN = 'LogChainToken'
 export const server = {
   LOGIN_URL: `user/login`,
   REGISTER_URL: `user/register`,
+  USER_URL: `user/list`,
   VERIFY_URL: `user/verify`,
   BLOCK_URL: `blockchain/blocks`,
   AUTH_URL: `authen`,

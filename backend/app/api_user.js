@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs')
 const constants = require('../constant')
 const JWT = require('jsonwebtoken')
 const JwtConfig = require('../config/Jwt-Config')
+const JwtMiddleware = require('../config/Jwt-Middleware')
 
 //  @route                  POST  /api/v2/user/login
 //  @desc                   User login
@@ -58,6 +59,45 @@ router.post('/register', async (req, res) => {
   } catch (error) {
     res.json({ result: constants.kResultNok, message: error })
   }
+})
+
+//  @route                  GET  /api/v2/user/list
+//  @desc                   list all users
+//  @access                 Private
+router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
+  const userFound = await user.findAll({
+    attributes: { exclude: ['password'] },
+    order: [['id', 'ASC']],
+  })
+  if (userFound) {
+    res.status(200).json({
+      status: 'ok',
+      result: userFound,
+    })
+  } else {
+    res.status(500).json({
+      status: 'nok',
+    })
+  }
+})
+
+//  @route                  GET  /api/v2/user/info
+//  @desc                   Get mock info
+//  @access                 Private
+
+router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
+  let active_user = await user.count()
+  let users = await user.count({
+    distinct: 'true',
+    col: 'users.username',
+  })
+
+  setTimeout(() => {
+    res.json({
+      active_user,
+      users,
+    })
+  }, 100)
 })
 
 module.exports = router

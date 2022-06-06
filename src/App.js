@@ -5,6 +5,7 @@ import Footer from './components/footer'
 import Login from './components/login'
 import Logchain from './components/logchain'
 import Register from './components/register/register'
+import UserCreate from './components/userCreate'
 import Dashboard from './components/dashboard'
 import {
   BrowserRouter as Router,
@@ -16,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Report from './components/report'
 import Blockdata from './components/blockdata'
 import Blockview from './components/blockview'
+import User from './components/user'
 import * as loginActions from './actions/login.action'
 
 const SecureRoute = ({ component: Component, ...rest }) => (
@@ -63,7 +65,8 @@ export default function App() {
           <Route path="/register" component={Register} />
           <SecureRoute path="/logchain" component={Logchain} />
           <SecureRoute path="/blockview" component={Blockview} />
-          <SecureRoute path="/report" component={Report} />
+          <SecureRoute path="/user" component={User} />
+          <SecureRoute path="/user-create" component={UserCreate} />
           <SecureRoute path="/dashboard" component={Dashboard} />
           <SecureRoute path="/blockdata/:blockid" component={Blockdata} />
           <Route
