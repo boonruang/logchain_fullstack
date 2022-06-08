@@ -27,9 +27,15 @@ const user = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
-    level: {
-      type: Sequelize.STRING,
-      defaultValue: 'normal',
+    roleId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: {
+          tableName: 'roles',
+        },
+        key: 'id',
+      },
     },
   },
   {

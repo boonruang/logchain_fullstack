@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const user = require('../models/user')
+const role = require('../models/role')
 const bcrypt = require('bcryptjs')
 const constants = require('../constant')
 const JWT = require('jsonwebtoken')
@@ -65,18 +66,39 @@ router.post('/register', async (req, res) => {
 //  @desc                   list all users
 //  @access                 Private
 router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
-  const userFound = await user.findAll({
-    attributes: { exclude: ['password'] },
-    order: [['id', 'ASC']],
-  })
-  if (userFound) {
-    res.status(200).json({
-      status: 'ok',
-      result: userFound,
+  // const userFound = await user.findAll({
+  //   attributes: { exclude: ['password'] },
+  //   order: [['id', 'ASC']]
+  // })
+
+  try {
+    const userFound = await user.findAll({
+      attributes: { exclude: ['password'] },
+      // order: [['id', 'ASC']],
+      // where: {
+      //   roleId: 1,
+      // },
+      include: [
+        {
+          model: role,
+          // attributes: ['id', 'name'],
+          attributes: ['id', 'name'],
+        },
+      ],
     })
-  } else {
+    if (userFound) {
+      res.status(200).json({
+        status: 'ok',
+        result: userFound,
+      })
+    } else {
+      res.status(500).json({
+        status: 'nok',
+      })
+    }
+  } catch (error) {
     res.status(500).json({
-      status: 'nok',
+      Error: error.toString(),
     })
   }
 })
@@ -98,6 +120,67 @@ router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
       users,
     })
   }, 100)
+})
+
+//  @route                  GET  /api/v2/user/:id
+//  @desc                   Get mock info
+//  @access                 Private
+router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
+  let id = req.params.id
+
+  try {
+    const userFound = await user.findOne({ where: { id } })
+
+    if (userFound) {
+      res.status(200).json(userFound)
+    } else {
+      res.status(500).json({
+        result: 'not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      error,
+    })
+  }
+})
+
+//  @route                  DELETE  /api/v2/user/:id
+//  @desc                   Delete user by id
+//  @access                 Private
+router.delete('/:id', JwtMiddleware.checkToken, async (req, res) => {
+  try {
+    const userFound = await user.findOne({ where: { id: req.params.id } })
+    if (userFound) {
+      // User found
+      const userDeleted = await user.destroy({
+        where: {
+          id: req.params.id,
+        },
+      })
+
+      if (userDeleted) {
+        // user deleted
+        res.status(200).json({
+          message: 'User deleted',
+        })
+      } else {
+        // user delete failed
+        res.status(500).json({
+          message: 'User delete failed',
+        })
+      }
+    } else {
+      // user not found
+      res.status(500).json({
+        message: 'User not found',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: error,
+    })
+  }
 })
 
 module.exports = router

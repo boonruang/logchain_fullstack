@@ -89,7 +89,7 @@ const Menu = (props) => {
                     >
                       <Link to="/logchain">
                         <i className="far fa-circle nav-icon" />
-                        <p>การเข้าใช้งาน</p>
+                        <p>บันทึกการใช้งาน</p>
                       </Link>
                     </div>
                   </li>
@@ -103,7 +103,7 @@ const Menu = (props) => {
                     >
                       <Link to="/blockview">
                         <i className="far fa-circle nav-icon" />
-                        <p>แสดงห่วงโซ่บล็อก</p>
+                        <p>ห่วงโซ่บล็อก</p>
                       </Link>
                     </div>
                   </li>
@@ -180,6 +180,7 @@ const Menu = (props) => {
                       }
                     >
                       <Link
+                        to={pathname}
                         onClick={() => {
                           // dispatch(loginActions.logout({ ...props }))
                           MySwal.fire({

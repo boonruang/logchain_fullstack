@@ -28,7 +28,7 @@ export const getUsers = () => {
 
 const doGetUsers = (dispatch) => {
   httpClient
-    .get(server.USER_URL)
+    .get(`${server.USER_URL}/list`)
     .then((result) => {
       dispatch(setStateUserToSuccess(result.data.result))
     })
@@ -36,4 +36,12 @@ const doGetUsers = (dispatch) => {
       alert(JSON.stringify(error))
       dispatch(setStateUserToFailed())
     })
+}
+
+export const deleteUserById = (id) => {
+  return async (dispatch) => {
+    dispatch(setStateUserToFetching())
+    await httpClient.delete(`${server.USER_URL}/${id}`)
+    await doGetUsers(dispatch)
+  }
 }

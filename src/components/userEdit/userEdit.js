@@ -1,48 +1,28 @@
-import React, { useState } from 'react'
-import './userCreate.css'
+import React, { useState, useEffect } from 'react'
+import './userEdit.css'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { httpClient } from '../../utils/HttpClient'
 import { server } from '../../constants'
 import { withRouter } from 'react-router-dom'
-import * as registerActions from '../../actions/register.action'
-import { useDispatch } from 'react-redux'
+import * as userEditActions from '../../actions/user.edit.action'
+import { useDispatch, useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import * as Yup from 'yup'
 
 const MySwal = withReactContent(Swal)
 
-const UserCreate = (props) => {
+const UserEdit = (props) => {
+  useEffect(() => {
+    let id = parseInt(props.match.params.id)
+    dispatch(userEditActions.getUserById(id))
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const userEditReducer = useSelector(({ userEditReducer }) => userEditReducer)
   const dispatch = useDispatch()
 
-  const [account, setAccount] = useState({
-    firstname: '',
-    lastname: '',
-    username: '',
-    password: '',
-    password2: '',
-  })
+  const { result, isFetching } = userEditReducer
 
-  const userCreateSchema = Yup.object().shape({
-    firstname: Yup.string().required('Firstname is required'),
-    lastname: Yup.string().required('Lastname is required'),
-    username: Yup.string().required('Username is required'),
-    password: Yup.string()
-      .required('Password is required')
-      .min(4, 'Password is too short - should be 4 chars minimum'),
-    roleId: Yup.string().required('Role is required'),
-  })
-
-  const showForm = ({
-    errors,
-    touched,
-    values,
-    handleChange,
-    handleSubmit,
-    isSubmitting,
-    isValid,
-    dirty,
-  }) => {
+  const showForm = ({ values, handleChange, handleSubmit, isSubmitting }) => {
     return (
       <Form className="form-horizontal" onSubmit={handleSubmit}>
         <div className="form-group">
@@ -50,15 +30,7 @@ const UserCreate = (props) => {
             ชื่อ
           </label>
           <div className="col-sm-10">
-            <Field
-              type="text"
-              name="firstname"
-              id="firstname"
-              className={
-                errors.firstname && touched.firstname ? 'input-error' : null
-              }
-            />
-            {/* <input
+            <input
               name="firstname"
               onChange={handleChange}
               value={values.firstname}
@@ -66,9 +38,8 @@ const UserCreate = (props) => {
               className="form-control"
               type="text"
               id="firstname"
-            /> */}
+            />
           </div>
-          <ErrorMessage name="firstname" component="span" className="error" />
         </div>
         <div className="form-group">
           <label className="col-sm-2 control-label" htmlFor="lastname">
@@ -111,7 +82,7 @@ const UserCreate = (props) => {
               <input
                 name="password"
                 onChange={handleChange}
-                value={values.password}
+                value="12345678"
                 className="form-control"
                 type="password"
                 id="password"
@@ -128,7 +99,7 @@ const UserCreate = (props) => {
               <input
                 name="password2"
                 onChange={handleChange}
-                value={values.password2}
+                value="12345678"
                 className="form-control"
                 type="password"
                 id="password2"
@@ -149,21 +120,13 @@ const UserCreate = (props) => {
                 className="custom-select"
                 id="roleId"
               >
-                <option value="" label="โปรดระบุ"></option>
+                <option value="" label="เลือกระดับสิทธิ์">
+                  เลือกระดับสิทธิ์
+                </option>
                 <option value="1">Admin</option>
                 <option value="2">User</option>
                 <option value="3">API</option>
               </select>
-              {/* <input
-                name={account.level}
-                onChange={(e) =>
-                  setAccount({ ...account, level: e.target.value })
-                }
-                // value={values.level}
-                className="form-control"
-                type="text"
-                id="level"
-              /> */}
             </div>
           </div>
         </div>
@@ -171,11 +134,10 @@ const UserCreate = (props) => {
         <div className="box-footer" style={{ marginTop: 50 }}>
           <button
             type="submit"
-            // disabled={isSubmitting}
+            disabled={isSubmitting}
             className="btn btn-primary pull-right"
-            disabled={!(dirty && isValid)}
           >
-            เพิ่ม
+            ปรับข้อมูล
           </button>
           <a
             onClick={() => {
@@ -199,23 +161,13 @@ const UserCreate = (props) => {
         <div className="box box-primary" style={{ marginTop: 70 }}>
           <div className="box-header with-border">
             <p className="box-title" style={{ fontSize: 30 }}>
-              เพิ่มผู้ใช้
+              แก้ไขผู้ใช้
             </p>
           </div>
           <div className="box-body" style={{ marginTop: 30 }}>
             <Formik
-              // validate={(values) => {
-              //   let errors = {}
-              //   if (!values.firstname) errors.firstname = 'Enter Firstname'
-              //   if (!values.lastname) errors.lastname = 'Enter Lastname'
-              //   if (!values.username) errors.username = 'Enter Username'
-              //   if (!values.password) errors.password = 'Enter Password'
-              //   if (!values.password2) errors.password2 = 'Enter Password'
-              //   if (!values.roleId) errors.roleId = 'Enter Role'
-              //   return errors
-              // }}
-              validationSchema={userCreateSchema}
-              initialValues={account}
+              enableReinitialize
+              initialValues={result ? result : {}}
               onSubmit={async (values, { setSubmitting }) => {
                 let formData = new FormData()
                 formData.append('username', values.username)
@@ -225,18 +177,14 @@ const UserCreate = (props) => {
                 formData.append('roleId', values.roleId)
 
                 if (values.password === values.password2) {
-                  dispatch(registerActions.register(props.history, values))
+                  dispatch(userEditActions.updateUser(props.history, formData))
                 } else {
                   MySwal.fire({
                     title: 'ข้อมูลไม่ถูกต้อง',
-                    text: 'กรุณายืนยันรหัสผ่านอีกครั้ง',
+                    text: 'กรุณายืนยันรหัสผ่านให้ถูกต้อง',
                     icon: 'warning',
-                    // showCancelButton: true,
-                    // confirmButtonText: 'ตกลง',
                   })
                 }
-
-                // await httpClient.post(`${server.USER_URL}/register`, formData)
                 // props.history.goBack()
                 setSubmitting(false)
                 // setTimeout(() => {
@@ -254,4 +202,4 @@ const UserCreate = (props) => {
   )
 }
 
-export default withRouter(UserCreate)
+export default withRouter(UserEdit)

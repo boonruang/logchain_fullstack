@@ -12,6 +12,11 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+const role = require('../models/role')
+const user = require('../models/user')
+
+user.belongsTo(role)
+
 global.bc = new Blockchain()
 global.p2pServer = new P2pServer(bc)
 
@@ -19,6 +24,7 @@ app.use('/api/v2/system', require('./api_system'))
 app.use('/api/v2/blockchain', require('./api_blockchain'))
 app.use('/api/v2/user', require('./api_user'))
 app.use('/api/v2/auth', require('./api_auth'))
+app.use('/api/v2/role', require('./api_role'))
 
 app.listen(HTTP_PORT, () => console.log(`Listening on port ${HTTP_PORT}`))
 

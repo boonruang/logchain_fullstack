@@ -6,6 +6,7 @@ import Login from './components/login'
 import Logchain from './components/logchain'
 import Register from './components/register/register'
 import UserCreate from './components/userCreate'
+import UserEdit from './components/userEdit'
 import Dashboard from './components/dashboard'
 import {
   BrowserRouter as Router,
@@ -69,6 +70,7 @@ export default function App() {
           <SecureRoute path="/user-create" component={UserCreate} />
           <SecureRoute path="/dashboard" component={Dashboard} />
           <SecureRoute path="/blockdata/:blockid" component={Blockdata} />
+          <SecureRoute path="/user-edit/:id" component={UserEdit} />
           <Route
             exact={true}
             path="/"

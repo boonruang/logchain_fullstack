@@ -6,6 +6,11 @@ export const HTTP_USER_FETCHING = 'HTTP_USER_FETCHING'
 export const HTTP_USER_SUCCESS = 'HTTP_USER_SUCCESS'
 export const HTTP_USER_FAILED = 'HTTP_USER_FAILED'
 
+// User Edit Page
+export const HTTP_USEREDIT_FETCHING = 'HTTP_USEREDIT_FETCHING'
+export const HTTP_USEREDIT_SUCCESS = 'HTTP_USEREDIT_SUCCESS'
+export const HTTP_USEREDIT_FAILED = 'HTTP_USEREDIT_FAILED'
+
 // Login Page
 export const HTTP_LOGIN_FETCHING = 'HTTP_LOGIN_FETCHING'
 export const HTTP_LOGIN_SUCCESS = 'HTTP_LOGIN_SUCCESS'
@@ -88,7 +93,7 @@ export const TOKEN = 'LogChainToken'
 export const server = {
   LOGIN_URL: `user/login`,
   REGISTER_URL: `user/register`,
-  USER_URL: `user/list`,
+  USER_URL: `user`,
   VERIFY_URL: `user/verify`,
   BLOCK_URL: `blockchain/blocks`,
   AUTH_URL: `authen`,

@@ -50,7 +50,7 @@ const User = (props) => {
             <td style={{ textAlign: 'center' }}>
               {item.firstname} {item.lastname}
             </td>
-            <td style={{ textAlign: 'center' }}>{item.level}</td>
+            <td style={{ textAlign: 'center' }}>{item.role.name}</td>
             <td style={{ textAlign: 'center' }}>
               <Moment format="DD/MM/YYYY HH:mm:ss">{item.createdAt}</Moment>
             </td>
@@ -59,7 +59,7 @@ const User = (props) => {
             </td>
             <td style={{ textAlign: 'center' }}>
               <button
-                onClick={() => this.props.history.push(`/user-edit/${item.id}`)}
+                onClick={() => props.history.push(`/user-edit/${item.id}`)}
                 type="button"
                 className="btn btn-info"
               >
@@ -77,7 +77,7 @@ const User = (props) => {
                     cancelButtonText: 'ยกเลิก',
                   }).then((result) => {
                     if (result.value) {
-                      this.props.deleteProduct(item.id)
+                      dispatch(userActions.deleteUserById(item.id))
                     }
                   })
                 }}

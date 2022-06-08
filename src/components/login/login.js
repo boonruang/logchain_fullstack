@@ -91,19 +91,6 @@ const Login = (props) => {
                   </button>
                   {/* /.col */}
                 </div>
-                {/* Register */}
-                {/* /.col */}
-                <div className="col-xs-12">
-                  <button
-                    onClick={() => props.history.push('/register')}
-                    type="submit"
-                    style={{ marginTop: 8 }}
-                    className="btn btn-block btn-default"
-                  >
-                    ลงทะเบียน
-                  </button>
-                  {/* /.col */}
-                </div>
               </form>
             </div>
           </div>
