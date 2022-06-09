@@ -15,6 +15,19 @@ const Menu = (props) => {
 
   const { result } = loginReducer
 
+  const AdminView = () => {
+    return (
+      <li className="nav-item">
+        <div className={pathname == '/user' ? 'nav-link active' : 'nav-link'}>
+          <Link to="/user">
+            <i className="far fa-circle nav-icon" />
+            <p>ผู้ใช้งาน</p>
+          </Link>
+        </div>
+      </li>
+    )
+  }
+
   return (
     <div>
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
@@ -23,7 +36,7 @@ const Menu = (props) => {
           <Link to="/">
             <img
               src="images/pen.png"
-              alt="AdminLTE Logo"
+              alt="Logchain icon"
               className="brand-image img-circle elevation-3"
               style={{ opacity: '.8' }}
             />
@@ -36,7 +49,8 @@ const Menu = (props) => {
           <div className="user-panel mt-3 pb-3 mb-3 d-flex">
             <div className="image">
               <img
-                src="images/admin.png"
+                // src="images/admin.png"
+                src={'images/' + result.roleId + '.png'}
                 className="img-circle elevation-2"
                 alt="User Image"
               />
@@ -132,18 +146,8 @@ const Menu = (props) => {
                   </p>
                 </a>
                 <ul className="nav nav-treeview">
-                  <li className="nav-item">
-                    <div
-                      className={
-                        pathname == '/user' ? 'nav-link active' : 'nav-link'
-                      }
-                    >
-                      <Link to="/user">
-                        <i className="far fa-circle nav-icon" />
-                        <p>ผู้ใช้งาน</p>
-                      </Link>
-                    </div>
-                  </li>
+                  {result.roleId === 1 ? AdminView() : null}
+
                   {/* <li className="nav-item">
                     <div
                       className={
@@ -184,8 +188,8 @@ const Menu = (props) => {
                         onClick={() => {
                           // dispatch(loginActions.logout({ ...props }))
                           MySwal.fire({
-                            title: 'กรุณายืนยันการออกจากระบบ',
-                            text: 'กรุณาตอบยืนยันเพื่อเป็นการออกจากระบบ',
+                            title: 'ยืนยันการออกจากระบบ',
+                            text: 'กรุณายืนยันเพื่อเป็นการออกจากระบบ',
                             icon: 'warning',
                             showCancelButton: true,
                             confirmButtonText: 'ยืนยัน',

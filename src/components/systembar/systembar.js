@@ -18,7 +18,7 @@ const Systembar = (props) => {
 
   return (
     <section className="content">
-      <div className="container-fluid">
+      <div className="container-fluid" style={{ padding: 0 }}>
         {/* Small boxes (Stat box) */}
         <div className="row">
           <div className="col-lg-3 col-6">

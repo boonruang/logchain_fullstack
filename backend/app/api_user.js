@@ -27,6 +27,7 @@ router.post('/login', async (req, res) => {
         {
           id: userFound.id,
           username: userFound.username,
+          roleId: userFound.roleId,
         },
         JwtConfig.secret,
         {
@@ -70,8 +71,19 @@ router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   try {
     const form = new formidable.IncomingForm()
     form.parse(req, async (error, fields, files) => {
-      console.log('Formidable Post fields: ', fields)
-      let result = await user.create(fields)
+      // console.log('Formidable Post fields: ', fields)
+      let firstname = fields.firstname
+      let lastname = fields.lastname
+      let username = fields.username
+      let password = bcrypt.hashSync(fields.password, 8)
+      let roleId = fields.roleId
+      let result = await user.create({
+        firstname,
+        lastname,
+        username,
+        password,
+        roleId,
+      })
 
       if (result) {
         res.json({
@@ -105,8 +117,23 @@ router.put('/', JwtMiddleware.checkToken, async (req, res) => {
 
   try {
     const form = new formidable.IncomingForm()
+    let firstname = fields.firstname
+    let lastname = fields.lastname
+    let username = fields.username
+    let password = bcrypt.hashSync(fields.password, 8)
+    let roleId = fields.roleId
+
     form.parse(req, async (error, fields, files) => {
-      let result = await user.update(fields, { where: { id: fields.id } })
+      let result = await user.update(
+        {
+          firstname,
+          lastname,
+          username,
+          password,
+          roleId,
+        },
+        { where: { id: fields.id } },
+      )
       console.log('Formidable update fields: ', fields)
       if (result) {
         res.json({

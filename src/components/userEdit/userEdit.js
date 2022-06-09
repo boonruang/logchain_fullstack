@@ -192,7 +192,7 @@ const UserEdit = (props) => {
       <section className="content" style={{ maxWidth: '80%' }}>
         <div
           className="box box-primary"
-          style={{ marginLeft: 10, marginTop: 50 }}
+          style={{ marginLeft: 3, marginTop: 50 }}
         >
           <div className="card">
             <div

@@ -35,17 +35,16 @@ export const reLogin = () => {
   return (dispatch) => {
     const loginStatus = localStorage.getItem(LOGIN_STATUS)
     console.log('LoginStatus: ', loginStatus)
-    const userToken = localStorage.getItem(TOKEN)
+    let userToken = localStorage.getItem(TOKEN)
     console.log('userToken: ', userToken)
     if (userToken) {
       const userToken_decoded = jwtDecode(userToken)
       console.log('User Token Decoded: ', userToken_decoded)
-      var { username } = userToken_decoded
+      var { username, roleId } = userToken_decoded
     }
     if (loginStatus == 'ok') {
       // dispatch(setLoginStateToSuccess({}))
-      // dispatch(setLoginStateToSuccess({ status: 'ok', username }))
-      dispatch(setLoginStateToSuccess({ status: 'ok', username }))
+      dispatch(setLoginStateToSuccess({ status: 'ok', username, roleId }))
     }
   }
 }
@@ -68,10 +67,16 @@ export const login = ({ username, password, history }) => {
     if (result.data.result == 'ok') {
       localStorage.setItem(LOGIN_STATUS, 'ok')
       localStorage.setItem(TOKEN, result.data.token)
+      let userToken = result.data.token
+      if (userToken) {
+        let userToken_decoded = jwtDecode(userToken)
+        console.log('User Token Decoded: ', userToken_decoded)
+        var { roleId } = userToken_decoded
+      }
       dispatch(
         // setLoginStateToSuccess({ status: 'ok', token: result.data.token }),
         // setLoginStateToSuccess('ok'),
-        setLoginStateToSuccess({ status: 'ok', username }),
+        setLoginStateToSuccess({ status: 'ok', username, roleId }),
       )
       history.push('/logchain')
       // alert(JSON.stringify(result.data));
