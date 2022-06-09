@@ -7,6 +7,7 @@ const constants = require('../constant')
 const JWT = require('jsonwebtoken')
 const JwtConfig = require('../config/Jwt-Config')
 const JwtMiddleware = require('../config/Jwt-Middleware')
+const formidable = require('formidable')
 
 //  @route                  POST  /api/v2/user/login
 //  @desc                   User login
@@ -52,13 +53,78 @@ router.post('/login', async (req, res) => {
 //  @route                  POST  /api/v2/user/register
 //  @desc                   User register
 //  @access                 Public
-router.post('/register', async (req, res) => {
+// router.post('/register', async (req, res) => {
+//   try {
+//     req.body.password = bcrypt.hashSync(req.body.password, 8)
+//     let result = await user.create(req.body)
+//     res.json({ result: constants.kResultOk, message: result })
+//   } catch (error) {
+//     res.json({ result: constants.kResultNok, message: error })
+//   }
+// })
+
+//  @route                  POST  /api/v2/user/
+//  @desc                   Add user use formidable on reactjs userCreate
+//  @access                 Private
+router.post('/', JwtMiddleware.checkToken, async (req, res) => {
   try {
-    req.body.password = bcrypt.hashSync(req.body.password, 8)
-    let result = await user.create(req.body)
-    res.json({ result: constants.kResultOk, message: result })
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (error, fields, files) => {
+      console.log('Formidable Post fields: ', fields)
+      let result = await user.create(fields)
+
+      if (result) {
+        res.json({
+          result: constants.kResultOk,
+          message: JSON.stringify(result),
+        })
+      } else {
+        res.json({
+          result: constants.kResultNok,
+          Error: error,
+        })
+      }
+    })
   } catch (error) {
-    res.json({ result: constants.kResultNok, message: error })
+    res.json({
+      result: constants.kResultNok,
+      message: JSON.stringify(error),
+    })
+  }
+})
+
+//  @route                  POST  /api/v2/user/
+//  @desc                   Add user use formidable on reactjs userCreate
+//  @access                 Private
+router.put('/', JwtMiddleware.checkToken, async (req, res) => {
+  const form = new formidable.IncomingForm()
+  form.parse(req, async (error, fields, files) => {
+    console.log('Formidable Update fields: ', fields)
+    console.log('Formidable Update Error: ', error)
+  })
+
+  try {
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (error, fields, files) => {
+      let result = await user.update(fields, { where: { id: fields.id } })
+      console.log('Formidable update fields: ', fields)
+      if (result) {
+        res.json({
+          result: constants.kResultOk,
+          message: JSON.stringify(result),
+        })
+      } else {
+        res.json({
+          result: constants.kResultNok,
+          Error: error,
+        })
+      }
+    })
+  } catch (error) {
+    res.json({
+      result: constants.kResultNok,
+      message: JSON.stringify(error),
+    })
   }
 })
 
@@ -129,7 +195,10 @@ router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
   let id = req.params.id
 
   try {
-    const userFound = await user.findOne({ where: { id } })
+    const userFound = await user.findOne({
+      attributes: { exclude: ['password'] },
+      where: { id },
+    })
 
     if (userFound) {
       res.status(200).json(userFound)

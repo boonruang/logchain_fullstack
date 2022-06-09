@@ -10,6 +10,8 @@ let nodename = process.env.NODE_NAME || 'NODE1'
 const NODE_NAME = nodename.trim()
 const app = express()
 app.use(cors())
+
+app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 const role = require('../models/role')

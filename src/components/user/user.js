@@ -133,7 +133,10 @@ const User = (props) => {
         <div className="row">
           <div className="col-12">
             <div className="card">
-              <div className="col-xs-6 text-right">
+              <div
+                className="col-xs-6 text-right"
+                style={{ marginTop: 7, marginRight: 7 }}
+              >
                 <Link
                   to="/user-create"
                   style={{ float: 'right', margin: 0, width: 100 }}

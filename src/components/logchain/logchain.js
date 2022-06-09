@@ -68,7 +68,7 @@ const Logchain = (props) => {
                 type="button"
                 className="btn btn-info"
               >
-                รายละเอียด
+                ข้อมูลบล็อก
               </button>
             </td>
           </tr>

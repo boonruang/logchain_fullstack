@@ -45,3 +45,25 @@ export const deleteUserById = (id) => {
     await doGetUsers(dispatch)
   }
 }
+
+export const addUser = (history, formData) => {
+  return async (dispatch) => {
+    for (var pair of formData.entries()) {
+      console.log(
+        'Pair of formData in addUser in user.action: ',
+        pair[0] + ', ' + pair[1],
+      )
+    }
+
+    try {
+      // success
+      let result = await httpClient.post(server.USER_URL, formData)
+      await doGetUsers(dispatch)
+      console.log('Write formData successfully: ', result)
+      history.goBack()
+    } catch (error) {
+      // failed
+      console.log('Write formData Error: ', error.toString())
+    }
+  }
+}

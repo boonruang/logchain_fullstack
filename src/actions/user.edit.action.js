@@ -37,9 +37,16 @@ export const getUserById = (id) => {
 
 export const updateUser = (history, formData) => {
   return async (dispatch) => {
+    for (var pair of formData.entries()) {
+      console.log(
+        'Pair of formData in updateUser in user.edit.action: ',
+        pair[0] + ', ' + pair[1],
+      )
+    }
     dispatch(setStateUserEditToFetching())
     try {
-      let result = await httpClient.put(server.USER_URL)
+      let result = await httpClient.put(server.USER_URL, formData)
+      console.log('Write formData successfully: ', result)
       if (result.data.result === OK) {
         dispatch(setStateUserEditToSuccess(result.data))
         history.goBack()

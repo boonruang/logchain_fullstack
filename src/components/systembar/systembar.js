@@ -31,9 +31,6 @@ const Systembar = (props) => {
               <div className="icon">
                 <i className="ion ion-android-cloud-circle" />
               </div>
-              <div className="small-box-footer">
-                รายละเอียด <i className="fas fa-arrow-circle-right" />
-              </div>
             </div>
           </div>
           {/* ./col */}
@@ -46,9 +43,6 @@ const Systembar = (props) => {
               </div>
               <div className="icon">
                 <i className="ion ion-stats-bars" />
-              </div>
-              <div className="small-box-footer">
-                รายละเอียด <i className="fas fa-arrow-circle-right" />
               </div>
             </div>
           </div>
@@ -63,9 +57,6 @@ const Systembar = (props) => {
               <div className="icon">
                 <i className="ion ion-person-add" />
               </div>
-              <div className="small-box-footer">
-                รายละเอียด <i className="fas fa-arrow-circle-right" />
-              </div>
             </div>
           </div>
           {/* ./col */}
@@ -79,9 +70,6 @@ const Systembar = (props) => {
               </div>
               <div className="icon">
                 <i className="ion ion-pie-graph" />
-              </div>
-              <div className="small-box-footer">
-                รายละเอียด <i className="fas fa-arrow-circle-right" />
               </div>
             </div>
           </div>

@@ -3,39 +3,40 @@ import {
   HTTP_REGISTER_FETCHING,
   HTTP_REGISTER_SUCCESS,
   OK,
-  server
-} from '../constants';
-import { httpClient } from './../utils/HttpClient';
+  server,
+} from '../constants'
+import { httpClient } from './../utils/HttpClient'
 
 export const setRegisterStateToFetching = () => ({
-  type: HTTP_REGISTER_FETCHING
-});
+  type: HTTP_REGISTER_FETCHING,
+})
 
 export const setRegisterStateToSuccess = (payload) => ({
   type: HTTP_REGISTER_SUCCESS,
-  payload
-});
+  payload,
+})
 
 export const setRegisterStateToFailed = () => ({
-  type: HTTP_REGISTER_FAILED
-});
+  type: HTTP_REGISTER_FAILED,
+})
 
 export const register = (history, credentail) => {
   return async (dispatch) => {
-    dispatch(setRegisterStateToFetching());
+    dispatch(setRegisterStateToFetching())
+
     try {
-      let result = await httpClient.post(server.REGISTER_URL, credentail);
+      let result = await httpClient.post(server.REGISTER_URL, credentail)
       if (result.data.result == OK) {
         // success
-        dispatch(setRegisterStateToSuccess(result.data.result));
-        history.goBack();
+        dispatch(setRegisterStateToSuccess(result.data.result))
+        history.goBack()
       } else {
         // failed
-        dispatch(setRegisterStateToFailed());
+        dispatch(setRegisterStateToFailed())
       }
     } catch (error) {
       // failed
-      dispatch(setRegisterStateToFailed());
+      dispatch(setRegisterStateToFailed())
     }
-  };
-};
+  }
+}
