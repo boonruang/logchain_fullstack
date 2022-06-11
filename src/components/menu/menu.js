@@ -148,7 +148,7 @@ const Menu = (props) => {
                 <ul className="nav nav-treeview">
                   {result.roleId === 1 ? AdminView() : null}
 
-                  {/* <li className="nav-item">
+                  <li className="nav-item">
                     <div
                       className={
                         pathname == '/report' ? 'nav-link active' : 'nav-link'
@@ -156,10 +156,10 @@ const Menu = (props) => {
                     >
                       <Link to="/report">
                         <i className="far fa-circle nav-icon" />
-                        <p>Report</p>
+                        <p>รายงานระบบ</p>
                       </Link>
                     </div>
-                  </li> */}
+                  </li>
                   {/* <li className="nav-item">
                     <div
                       className={

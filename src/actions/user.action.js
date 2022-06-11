@@ -27,6 +27,7 @@ export const getUsers = () => {
 }
 
 const doGetUsers = (dispatch) => {
+  console.log('doGetUsers called')
   httpClient
     .get(`${server.USER_URL}/list`)
     .then((result) => {
@@ -41,6 +42,7 @@ const doGetUsers = (dispatch) => {
 export const deleteUserById = (id) => {
   return async (dispatch) => {
     dispatch(setStateUserToFetching())
+    console.log(`deleteUserById id:${id} called`)
     await httpClient.delete(`${server.USER_URL}/${id}`)
     await doGetUsers(dispatch)
   }
@@ -48,22 +50,14 @@ export const deleteUserById = (id) => {
 
 export const addUser = (history, formData) => {
   return async (dispatch) => {
-    for (var pair of formData.entries()) {
-      console.log(
-        'Pair of formData in addUser in user.action: ',
-        pair[0] + ', ' + pair[1],
-      )
-    }
-
     try {
       // success
       let result = await httpClient.post(server.USER_URL, formData)
-      await doGetUsers(dispatch)
-      console.log('Write formData successfully: ', result)
+      console.log('addUser formData successfully: ', result)
       history.goBack()
     } catch (error) {
       // failed
-      console.log('Write formData Error: ', error.toString())
+      console.log('addUser formData Error: ', error.toString())
     }
   }
 }

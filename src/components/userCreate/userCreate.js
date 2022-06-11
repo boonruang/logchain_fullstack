@@ -163,7 +163,7 @@ const UserCreate = (props) => {
             type="submit"
             // disabled={isSubmitting}
             className="btn btn-primary pull-right"
-            // disabled={!(dirty && isValid)}
+            disabled={!(dirty && isValid)}
             style={{ marginRight: 20 }}
           >
             เพิ่มข้อมูล
@@ -194,7 +194,7 @@ const UserCreate = (props) => {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <div>Log</div>
+                  <div>System</div>
                 </li>
                 <li className="breadcrumb-item active">เพิ่มผู้ใช้</li>
               </ol>

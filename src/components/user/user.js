@@ -18,7 +18,7 @@ const User = (props) => {
 
     setTimeout(() => {
       callJQuery()
-    }, 100)
+    }, 500)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const callActions = () => {
@@ -76,6 +76,7 @@ const User = (props) => {
                     confirmButtonText: 'ยืนยัน',
                     cancelButtonText: 'ยกเลิก',
                   }).then((result) => {
+                    // alert(item.id)
                     if (result.value) {
                       dispatch(userActions.deleteUserById(item.id))
                     }
@@ -113,7 +114,7 @@ const User = (props) => {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <div>Log</div>
+                  <div>System</div>
                 </li>
                 <li className="breadcrumb-item active">จัดการผู้ใช้งาน</li>
               </ol>
@@ -135,7 +136,7 @@ const User = (props) => {
             <div className="card">
               <div
                 className="col-xs-6 text-right"
-                style={{ marginTop: 7, marginRight: 7 }}
+                style={{ marginTop: 7, marginBottom: 7 }}
               >
                 <Link
                   to="/user-create"

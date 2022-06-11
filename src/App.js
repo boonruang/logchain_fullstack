@@ -69,6 +69,7 @@ export default function App() {
           <SecureRoute path="/user" component={User} />
           <SecureRoute path="/user-create" component={UserCreate} />
           <SecureRoute path="/dashboard" component={Dashboard} />
+          <SecureRoute path="/report" component={Report} />
           <SecureRoute path="/blockdata/:blockid" component={Blockdata} />
           <SecureRoute path="/user-edit/:id" component={UserEdit} />
           <Route

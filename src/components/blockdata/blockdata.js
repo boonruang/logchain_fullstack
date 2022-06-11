@@ -31,7 +31,7 @@ const Blockdata = (props) => {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <div>Log</div>
+                  <div>Blockchain</div>
                 </li>
                 <li className="breadcrumb-item active">ห่วงโซ่บล็อก</li>
               </ol>

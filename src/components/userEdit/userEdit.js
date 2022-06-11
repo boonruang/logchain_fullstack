@@ -23,11 +23,6 @@ const UserEdit = (props) => {
 
   const { result, isFetching } = userEditReducer
 
-  const [password, setPassword] = useState({
-    password: '12345678',
-    password2: '12345678',
-  })
-
   const showForm = ({
     errors,
     values,
@@ -36,6 +31,7 @@ const UserEdit = (props) => {
     isSubmitting,
     isValid,
     dirty,
+    handleBlur,
   }) => {
     return (
       <form className="form-horizontal" onSubmit={handleSubmit}>
@@ -51,6 +47,7 @@ const UserEdit = (props) => {
               className="form-control"
               type="text"
               id="firstname"
+              onBlur={handleBlur}
             />
             {errors.firstname ? <div>{errors.firstname}</div> : null}
           </div>
@@ -67,6 +64,7 @@ const UserEdit = (props) => {
               className="form-control"
               type="text"
               id="lastname"
+              onBlur={handleBlur}
             />
             {errors.lastname ? <div>{errors.lastname}</div> : null}
           </div>
@@ -95,7 +93,8 @@ const UserEdit = (props) => {
             <input
               name="password"
               onChange={handleChange}
-              value={values.password ? values.password : '12345678'}
+              // value={values.password}
+              value={values.password}
               className="form-control"
               type="password"
               id="password"
@@ -111,7 +110,7 @@ const UserEdit = (props) => {
             <input
               name="password2"
               onChange={handleChange}
-              value={values.password2 ? values.password2 : '12345678'}
+              value={values.password2}
               className="form-control"
               type="password"
               id="password2"
@@ -145,7 +144,7 @@ const UserEdit = (props) => {
             // disabled={isSubmitting}
             className="btn btn-primary pull-right"
             style={{ marginRight: 20 }}
-            disabled={!(isValid && dirty)}
+            disabled={!dirty}
           >
             ปรับข้อมูล
           </button>
@@ -175,7 +174,7 @@ const UserEdit = (props) => {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <div>Log</div>
+                  <div>System</div>
                 </li>
                 <li className="breadcrumb-item active">แก้ไขผู้ใช้</li>
               </ol>
@@ -221,15 +220,17 @@ const UserEdit = (props) => {
                   } else if (values.username.length <= 4) {
                     errors.username = 'ต้องมากกว่า 4'
                   }
-                  if (!values.password) {
-                    errors.password = 'โปรดระบุ'
-                  } else if (values.password.length < 8) {
-                    errors.password = 'จำนวนอักขระอย่างน้อย 8'
+
+                  if (values.password != '' && values.password.length < 8) {
+                    errors.password = 'จำนวนตัวอักษรต้องมากกว่า 8'
                   }
-                  if (!values.password2) {
-                    errors.password2 = 'โปรดระบุ'
-                  } else if (values.password2.length < 8) {
-                    errors.password2 = 'จำนวนอักขระอย่างน้อย 8'
+
+                  if (values.password2 != '' && values.password2.length < 8) {
+                    errors.password2 = 'จำนวนตัวอักษรต้องมากกว่า 8'
+                  }
+
+                  if (values.password != values.password2) {
+                    errors.password2 = 'รหัสผ่านไม่ตรงกัน'
                   }
                   if (!values.roleId) errors.roleId = 'โปรดระบุ'
                   return errors
@@ -240,44 +241,12 @@ const UserEdit = (props) => {
                   let formData = new FormData()
                   formData.append('id', values.id)
                   formData.append('username', values.username)
+                  formData.append('password', values.password)
                   formData.append('firstname', values.firstname)
                   formData.append('lastname', values.lastname)
                   formData.append('roleId', values.roleId)
 
-                  if (
-                    values.password != '12345678' &&
-                    values.password2 != '12345678' &&
-                    values.password === values.password2
-                  ) {
-                    //มีการใส่ระหัสผ่านใหม่ถูกต้อง ตรงกันทั้ง 2 ช่อง
-                    formData.append('password', values.password)
-                    dispatch(
-                      userEditActions.updateUser(props.history, formData),
-                    )
-                    setSubmitting(false)
-                  } else if (
-                    values.password != '12345678' &&
-                    values.password2 != '12345678' &&
-                    values.password != values.password2
-                  ) {
-                    //มีการใส่ระหัสผ่านใหม่ไม่ถูกต้อง ไม่ตรงกัน
-                    MySwal.fire({
-                      title: 'ข้อมูลไม่ถูกต้อง',
-                      text: 'กรุณายืนยันรหัสผ่านให้ถูกต้อง',
-                      icon: 'warning',
-                    })
-                    console.log(
-                      'password: ',
-                      values.password + ',' + values.password2,
-                    )
-                  } else {
-                    // กรณีไม่มีการแก้ไขข้อมูลใดๆเลย เข้าเงื่อนไขนี้
-                    // ต้องการให้เช็คหากมีการแก้ไขข้อมูลอื่นๆ ถึงจะต้องอัพเดท
-                    dispatch(
-                      userEditActions.updateUser(props.history, formData),
-                    )
-                    setSubmitting(false)
-                  }
+                  dispatch(userEditActions.updateUser(props.history, formData))
 
                   // หากไม่มีการแก้ไขข้อมูลอะไรเลย ไม่ต้องทำอะไร ไม่ต้องอัพเดท
                   // ยังไม่มีวิธีเช็คฟิลด์อื่นเลย
@@ -288,22 +257,14 @@ const UserEdit = (props) => {
                   //     userEditActions.updateUser(props.history, formData),
                   //   )
                   //   setSubmitting(false)
-                  // } else {
-                  //   MySwal.fire({
-                  //     title: 'ข้อมูลไม่ถูกต้อง',
-                  //     text: 'กรุณายืนยันรหัสผ่านให้ถูกต้อง',
-                  //     icon: 'warning',
-                  //   })
-                  // }
 
                   // props.history.goBack()
 
                   // Display the key/value pairs
-                  for (var pair of formData.entries()) {
-                    console.log('formData pair: ', pair[0] + ', ' + pair[1])
-                  }
+                  // for (var pair of formData.entries()) {
+                  //   console.log('formData pair: ', pair[0] + ', ' + pair[1])
+                  // }
 
-                  // setSubmitting(false)
                   // alert(JSON.stringify(values, null, 3))
                   // setTimeout(() => {
                   //   console.log('FormData(): ', formData)

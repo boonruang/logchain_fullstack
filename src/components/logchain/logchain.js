@@ -97,7 +97,7 @@ const Logchain = (props) => {
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
-                  <div>Log</div>
+                  <div>Blockchain</div>
                 </li>
                 <li className="breadcrumb-item active">ประวัติการเข้าใช้งาน</li>
               </ol>
