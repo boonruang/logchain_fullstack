@@ -16,6 +16,7 @@ import {
 } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Report from './components/report'
+import Report2 from './components/report2'
 import Blockdata from './components/blockdata'
 import Blockview from './components/blockview'
 import User from './components/user'
@@ -70,6 +71,7 @@ export default function App() {
           <SecureRoute path="/user-create" component={UserCreate} />
           <SecureRoute path="/dashboard" component={Dashboard} />
           <SecureRoute path="/report" component={Report} />
+          <SecureRoute path="/report2" component={Report2} />
           <SecureRoute path="/blockdata/:blockid" component={Blockdata} />
           <SecureRoute path="/user-edit/:id" component={UserEdit} />
           <Route

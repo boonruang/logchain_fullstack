@@ -163,6 +163,18 @@ const Menu = (props) => {
                   {/* <li className="nav-item">
                     <div
                       className={
+                        pathname == '/report2' ? 'nav-link active' : 'nav-link'
+                      }
+                    >
+                      <Link to="/report2">
+                        <i className="far fa-circle nav-icon" />
+                        <p>รายงานระบบ2</p>
+                      </Link>
+                    </div>
+                  </li> */}
+                  {/* <li className="nav-item">
+                    <div
+                      className={
                         pathname == '/login' ? 'nav-link active' : 'nav-link'
                       }
                     >

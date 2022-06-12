@@ -5,6 +5,7 @@ const Blockchain = require('../blockchain')
 const blockchain = require('../models/blockchain')
 const constants = require('../constant')
 const JwtMiddleware = require('../config/Jwt-Middleware')
+const Op = Sequelize.Op
 
 // const bc = new Blockchain()
 
@@ -97,6 +98,58 @@ router.get('/sync', JwtMiddleware.checkToken, async (req, res) => {
     }
   } catch (error) {
     res.status(500).json(error)
+  }
+})
+
+//  @route                  GET  /api/v2/blockchain/form8
+//  @desc                   list form8
+//  @access                 Private
+router.get('/form/:form/:year', async (req, res) => {
+  let form = req.params.form
+  let year = req.params.year
+
+  console.log(`form: ${form} year: ${year}`)
+  try {
+    const blockchainList = await blockchain.findAll(
+      {
+        attributes: [
+          'user',
+          [Sequelize.fn('COUNT', Sequelize.col('user')), 'total_user'],
+        ],
+        group: ['user'],
+        where: {
+          api: {
+            [Op.like]: `%${form}`,
+          },
+          login: {
+            [Op.like]: `%${year}%`,
+          },
+        },
+      },
+      // {
+      //   where: {
+      //     action: {
+      //       [Op.like]: '8',
+      //     },
+      //   },
+      // },
+    )
+
+    if (blockchainList) {
+      // res.status(200).json(userFound)
+      res.status(200).json({
+        blockchainList,
+      })
+    } else {
+      res.status(500).json({
+        result: 'blockchain not available',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      result: constants.kResultNok,
+      Error: error.toString(),
+    })
   }
 })
 
