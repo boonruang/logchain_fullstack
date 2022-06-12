@@ -25,16 +25,6 @@ const UserCreate = (props) => {
     password2: '',
   })
 
-  const userCreateSchema = Yup.object().shape({
-    firstname: Yup.string().required('Firstname is required'),
-    lastname: Yup.string().required('Lastname is required'),
-    username: Yup.string().required('Username is required'),
-    password: Yup.string()
-      .required('Password is required')
-      .min(4, 'Password is too short - should be 4 chars minimum'),
-    roleId: Yup.string().required('Role is required'),
-  })
-
   const showForm = ({
     errors,
     touched,

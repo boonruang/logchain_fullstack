@@ -1,11 +1,24 @@
 export const chartData = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  labels: [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ],
   datasets: [
     {
-      label: 'Revenue 2020',
-      fill: true,
+      label: 'รง.8 2564',
+      fill: false,
       lineTension: 0.1,
-      backgroundColor: '#f00',
+      backgroundColor: 'rgba(75,192,192,1)',
       borderColor: '#777',
       borderCapStyle: 'butt',
       borderDash: [],
@@ -20,13 +33,13 @@ export const chartData = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      data: [0, 1000000, 2002000, 3000000, 2000000, 3000000, 4000000, 4500000],
+      data: [50, 100, 220, 300, 200, 300, 350, 320, 450, 460, 480, 530],
     },
     {
-      label: 'Revenue 2021',
-      fill: true,
+      label: 'รง.8 2565',
+      fill: false,
       lineTension: 0.1,
-      backgroundColor: ['#f00', '#ff0', '#fa0', '#f0f', '#a00', '#f40', '#faf'],
+      backgroundColor: 'rgba(120,200,250,1)',
       borderColor: 'rgba(75,192,192,1)',
       borderCapStyle: 'butt',
       borderDash: [],
@@ -41,16 +54,7 @@ export const chartData = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      data: [
-        199990,
-        1000000,
-        5002000,
-        3000000,
-        2000000,
-        3000000,
-        4000000,
-        4500000,
-      ],
+      data: [50, 100, 300, 350, 200, 300, 400, 420, 430, 480, 500, 620],
     },
   ],
 }
@@ -66,6 +70,49 @@ export const chartOption = {
             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
           },
         },
+      },
+    ],
+  },
+}
+
+export const donutData = {
+  labels: ['Chrome', 'IE', 'FireFox', 'Safari', 'Opera', 'Navigator'],
+  datasets: [
+    {
+      data: [700, 500, 400, 600, 300, 100],
+      backgroundColor: [
+        '#f56954',
+        '#00a65a',
+        '#f39c12',
+        '#00c0ef',
+        '#3c8dbc',
+        '#d2d6de',
+      ],
+    },
+  ],
+}
+export const donutOption = {
+  maintainAspectRatio: false,
+  responsive: true,
+}
+
+export const pieOption = {
+  maintainAspectRatio: false,
+  responsive: true,
+}
+
+export const stackedBarChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    xAxes: [
+      {
+        stacked: true,
+      },
+    ],
+    yAxes: [
+      {
+        stacked: true,
       },
     ],
   },
