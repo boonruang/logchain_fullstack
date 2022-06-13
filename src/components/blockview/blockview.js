@@ -23,7 +23,7 @@ const Blockview = (props) => {
 
   const callJQuery = () => {
     const script = document.createElement('script')
-    script.src = `js/content.js`
+    script.src = `/js/content.js`
     script.async = true
     document.body.appendChild(script)
   }

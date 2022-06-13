@@ -23,7 +23,7 @@ const Logchain = (props) => {
 
   const callJQuery = () => {
     const script = document.createElement('script')
-    script.src = `js/content_logchain.js`
+    script.src = `/js/content_logchain.js`
     script.async = true
     document.body.appendChild(script)
   }
@@ -41,7 +41,9 @@ const Logchain = (props) => {
         result != null &&
         result.map((item) => (
           <tr key={item.timestamp}>
-            <td>{item.timestamp}</td>
+            <td style={{ textAlign: 'center' }}>
+              <Moment format="DD/MM/YYYY">{item.timestamp}</Moment>
+            </td>
             <td>{item.user}</td>
             <td>{item.action}</td>
             <td>{item.api}</td>

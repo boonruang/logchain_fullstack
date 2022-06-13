@@ -27,7 +27,7 @@ const User = (props) => {
 
   const callJQuery = () => {
     const script = document.createElement('script')
-    script.src = `js/content_user.js`
+    script.src = `/js/content_user.js`
     script.async = true
     document.body.appendChild(script)
   }

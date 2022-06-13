@@ -1,6 +1,6 @@
 $(function () {
   $('#blockview_table').DataTable({
-    responsive: true,
+    responsive: false,
     autoWidth: false,
     lengthChange: false,
     order: [[0, 'desc']],

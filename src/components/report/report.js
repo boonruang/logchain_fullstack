@@ -120,6 +120,11 @@ const Report = () => {
                       options={{
                         maintainAspectRatio: false,
                         responsive: true,
+                        title: {
+                          display: true,
+                          text: 'จำนวนการเข้าใช้ API',
+                          fontSize: 20,
+                        },
                         legend: {
                           display: true,
                           position: 'top',
@@ -247,6 +252,11 @@ const Report = () => {
                       options={{
                         maintainAspectRatio: false,
                         responsive: true,
+                        title: {
+                          display: true,
+                          text: 'จำนวนการเข้าใช้ API',
+                          fontSize: 20,
+                        },
                         legend: {
                           display: true,
                           position: 'top',

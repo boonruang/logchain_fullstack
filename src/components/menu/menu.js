@@ -18,7 +18,11 @@ const Menu = (props) => {
   const AdminView = () => {
     return (
       <li className="nav-item">
-        <div className={pathname == '/user' ? 'nav-link active' : 'nav-link'}>
+        <div
+          className={
+            pathname == '/user' ? 'nav-link bg-info active' : 'nav-link'
+          }
+        >
           <Link to="/user">
             <i className="far fa-circle nav-icon" />
             <p>ผู้ใช้งาน</p>
@@ -85,7 +89,7 @@ const Menu = (props) => {
                     <div
                       className={
                         pathname == '/dashboard'
-                          ? 'nav-link active'
+                          ? 'nav-link bg-info active'
                           : 'nav-link'
                       }
                     >
@@ -98,7 +102,9 @@ const Menu = (props) => {
                   <li className="nav-item">
                     <div
                       className={
-                        pathname == '/logchain' ? 'nav-link active' : 'nav-link'
+                        pathname == '/logchain'
+                          ? 'nav-link bg-info active'
+                          : 'nav-link'
                       }
                     >
                       <Link to="/logchain">
@@ -111,7 +117,7 @@ const Menu = (props) => {
                     <div
                       className={
                         pathname == '/blockview'
-                          ? 'nav-link active'
+                          ? 'nav-link bg-info active'
                           : 'nav-link'
                       }
                     >
@@ -125,7 +131,7 @@ const Menu = (props) => {
                   {/* <li className="nav-item">
                     <div
                       className={
-                        pathname == '/report' ? 'nav-link active' : 'nav-link'
+                        pathname == '/report' ? 'nav-link bg-info active' : 'nav-link'
                       }
                     >
                       <Link to="/report">
@@ -151,31 +157,35 @@ const Menu = (props) => {
                   <li className="nav-item">
                     <div
                       className={
-                        pathname == '/report' ? 'nav-link active' : 'nav-link'
+                        pathname == '/report'
+                          ? 'nav-link bg-info active'
+                          : 'nav-link'
                       }
                     >
                       <Link to="/report">
                         <i className="far fa-circle nav-icon" />
-                        <p>รายงานระบบ</p>
+                        <p>เกี่ยวกับบล็อก</p>
+                      </Link>
+                    </div>
+                  </li>
+                  <li className="nav-item">
+                    <div
+                      className={
+                        pathname == '/report2'
+                          ? 'nav-link bg-info active'
+                          : 'nav-link'
+                      }
+                    >
+                      <Link to="/report2">
+                        <i className="far fa-circle nav-icon" />
+                        <p>ทรัพยากรระบบ</p>
                       </Link>
                     </div>
                   </li>
                   {/* <li className="nav-item">
                     <div
                       className={
-                        pathname == '/report2' ? 'nav-link active' : 'nav-link'
-                      }
-                    >
-                      <Link to="/report2">
-                        <i className="far fa-circle nav-icon" />
-                        <p>รายงานระบบ2</p>
-                      </Link>
-                    </div>
-                  </li> */}
-                  {/* <li className="nav-item">
-                    <div
-                      className={
-                        pathname == '/login' ? 'nav-link active' : 'nav-link'
+                        pathname == '/login' ? 'nav-link bg-info active' : 'nav-link'
                       }
                     >
                       <Link
@@ -192,7 +202,9 @@ const Menu = (props) => {
                   <li className="nav-item">
                     <div
                       className={
-                        pathname == '/login' ? 'nav-link active' : 'nav-link'
+                        pathname == '/login'
+                          ? 'nav-link bg-info active'
+                          : 'nav-link'
                       }
                     >
                       <Link

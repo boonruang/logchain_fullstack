@@ -6,6 +6,9 @@ const JwtMiddleware = require('../config/Jwt-Middleware')
 const Node = require('../models/node')
 const Blockchain = require('../models/blockchain')
 const net = require('net')
+const os = require('os')
+const osu = require('node-os-utils')
+const disk = require('diskusage')
 
 router.get('/test', async (req, res) => {
   const activeNode = await Node.findAll()
@@ -48,6 +51,7 @@ router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
   let all_nodes = await Node.count()
   let active_nodes = 0
   let blockCount = await Blockchain.count()
+
   let users = await Blockchain.count({
     distinct: 'true',
     col: 'blockchains.user',
@@ -200,6 +204,31 @@ router.get('/sysinfo', JwtMiddleware.checkToken, async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error,
+    })
+  }
+})
+
+//  @route                  GET  /api/v2/system/os
+//  @desc                   Get os info
+//  @access                 public
+router.get('/os', async (req, res) => {
+  var cpu = osu.cpu
+  var mem = osu.mem
+
+  var cpuInfo = cpu.average()
+  var memInfo = await mem.info()
+
+  let path = os.platform() === 'win32' ? 'c:' : '/'
+
+  let diskInfo = disk.checkSync(path)
+
+  if (memInfo) {
+    res.status(200).json({
+      cpuInfo,
+      memInfo,
+      diskFree: diskInfo.available / 1000000000,
+      diskTotal: diskInfo.total / 1000000000,
+      diskUsed: diskInfo.total / 1000000000 - diskInfo.available / 1000000000,
     })
   }
 })
