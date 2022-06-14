@@ -46,11 +46,14 @@ const User = (props) => {
         result.map((item) => (
           <tr key={item.id}>
             <td style={{ textAlign: 'center' }}>{item.id}</td>
-            <td>{item.username}</td>
+            <td style={{ textAlign: 'center' }}>{item.username}</td>
             <td style={{ textAlign: 'center' }}>
               {item.firstname} {item.lastname}
             </td>
             <td style={{ textAlign: 'center' }}>{item.role.name}</td>
+            <td style={{ textAlign: 'center' }}>
+              {item.status ? 'Active' : 'Inactive'}
+            </td>
             <td style={{ textAlign: 'center' }}>
               <Moment format="DD/MM/YYYY HH:mm:ss">{item.createdAt}</Moment>
             </td>
@@ -155,13 +158,14 @@ const User = (props) => {
                 <thead>
                   <tr>
                     <th style={{ width: '3%', textAlign: 'center' }}>ลำดับ</th>
-                    <th style={{ width: '10%', textAlign: 'center' }}>
+                    <th style={{ width: '7%', textAlign: 'center' }}>
                       ล็อกอิน
                     </th>
-                    <th style={{ width: '17%', textAlign: 'center' }}>ชื่อ</th>
+                    <th style={{ width: '15%', textAlign: 'center' }}>ชื่อ</th>
                     <th style={{ width: '10%', textAlign: 'center' }}>
                       ระดับสิทธิ์
                     </th>
+                    <th style={{ width: '5%', textAlign: 'center' }}>สถานะ</th>
                     <th style={{ width: '10%', textAlign: 'center' }}>สร้าง</th>
                     <th style={{ width: '10%', textAlign: 'center' }}>แก้ไข</th>
                     <th style={{ width: '14%', textAlign: 'center' }}>

@@ -79,7 +79,7 @@ const Menu = (props) => {
               <li className="nav-item menu-open">
                 <a href="#" className="nav-link">
                   <i className="nav-icon fas fa-th" />
-                  <p>
+                  <p style={{ marginLeft: 5 }}>
                     แสดงผลห่วงโซ่บล็อก
                     <i className="right fas fa-angle-left" />
                   </p>
@@ -146,7 +146,7 @@ const Menu = (props) => {
               <li className="nav-item menu-open">
                 <a href="#" className="nav-link">
                   <i className="nav-icon fas fa-users" />
-                  <p>
+                  <p style={{ marginLeft: 5 }}>
                     จัดการระบบ
                     <i className="right fas fa-angle-left" />
                   </p>

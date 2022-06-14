@@ -66,7 +66,7 @@ const Report = () => {
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h1>วิเคราะห์ข้อมูลและรายงาน</h1>
+              <h1>ข้อมูลและรายงาน</h1>
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
@@ -74,9 +74,7 @@ const Report = () => {
                   <div>System</div>
                 </li>
 
-                <li className="breadcrumb-item active">
-                  วิเคราะห์ข้อมูลและรายงาน
-                </li>
+                <li className="breadcrumb-item active">ข้อมูลและรายงาน</li>
               </ol>
             </div>
           </div>
@@ -120,11 +118,11 @@ const Report = () => {
                       options={{
                         maintainAspectRatio: false,
                         responsive: true,
-                        title: {
-                          display: true,
-                          text: 'จำนวนการเข้าใช้ API',
-                          fontSize: 20,
-                        },
+                        // title: {
+                        //   display: true,
+                        //   text: 'จำนวนการเข้าใช้ API',
+                        //   fontSize: 20,
+                        // },
                         legend: {
                           display: true,
                           position: 'top',
@@ -253,7 +251,7 @@ const Report = () => {
                         maintainAspectRatio: false,
                         responsive: true,
                         title: {
-                          display: true,
+                          display: false,
                           text: 'จำนวนการเข้าใช้ API',
                           fontSize: 20,
                         },

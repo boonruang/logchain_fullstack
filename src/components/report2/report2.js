@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import { withRouter } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import * as systemActions from '../../actions/system.action'
 import axios from 'axios'
 
 const Report2 = () => {
   useEffect(() => {
-    getSystemInfo()
-    callJQuery()
+    getSystemOS()
+    callActions()
+    setTimeout(() => {
+      callJQuery()
+    }, 100)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const callActions = () => {
+    dispatch(systemActions.getSystems())
+  }
+
+  const systemReducer = useSelector(({ systemReducer }) => systemReducer)
+  const dispatch = useDispatch()
+  const { sysResult } = systemReducer
 
   const callJQuery = () => {
     const script = document.createElement('script')
@@ -21,7 +33,7 @@ const Report2 = () => {
   const [disktotalShow, setdisktotalShow] = useState()
   const [diskusedShow, setdiskusedShow] = useState()
 
-  const getSystemInfo = (e) => {
+  const getSystemOS = () => {
     axios.get(`http://localhost:3001/api/v2/system/os`).then((res) => {
       let cpuData = res.data.cpuInfo
       let memData = res.data.memInfo
@@ -66,110 +78,7 @@ const Report2 = () => {
           <div className="row">
             <div className="col-md-6">
               {/* LINE CHART */}
-              <div className="card card-info">
-                <div className="card-header">
-                  <h3 className="card-title">หน่วยประมวลผล (CPU)</h3>
-                  <div className="card-tools">
-                    <button
-                      type="button"
-                      className="btn btn-tool"
-                      data-card-widget="collapse"
-                    >
-                      <i className="fas fa-minus" />
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-tool"
-                      data-card-widget="remove"
-                    >
-                      <i className="fas fa-times" />
-                    </button>
-                  </div>
-                </div>
-                {/* /.card-header */}
-                <div className="card-body">
-                  <div className="row">
-                    <div className="col-6 col-md-3 text-center">
-                      <input
-                        type="text"
-                        className="knob"
-                        defaultValue={
-                          cpuShow
-                            ? Math.round(cpuShow.totalIdle / 100000000)
-                            : null
-                        }
-                        data-min={-150}
-                        data-max={150}
-                        data-width={120}
-                        data-height={120}
-                        data-fgcolor="#3c8dbc"
-                      />
-                      <div className="knob-label">CPU Idle (%)</div>
-                    </div>
-                    {/* ./col */}
-                    <div className="col-6 col-md-3 text-center">
-                      <input
-                        type="text"
-                        className="knob"
-                        defaultValue={
-                          cpuShow
-                            ? Math.round(cpuShow.totalTick / 100000000)
-                            : null
-                        }
-                        data-min={-150}
-                        data-max={150}
-                        data-width={120}
-                        data-height={120}
-                        data-fgcolor="#f56954"
-                      />
-                      <div className="knob-label">Total Tick (%)</div>
-                    </div>
-                    {/* ./col */}
-                    <div className="col-6 col-md-3 text-center">
-                      <input
-                        type="text"
-                        className="knob"
-                        defaultValue={
-                          cpuShow
-                            ? Math.round(cpuShow.avgIdle / 10000000)
-                            : null
-                        }
-                        data-min={-150}
-                        data-max={150}
-                        data-width={120}
-                        data-height={120}
-                        data-fgcolor="#00a65a"
-                      />
-                      <div className="knob-label">CPU Average Idle (%)</div>
-                    </div>
-                    {/* ./col */}
-                    <div className="col-6 col-md-3 text-center">
-                      <input
-                        type="text"
-                        className="knob"
-                        defaultValue={
-                          cpuShow
-                            ? Math.round(cpuShow.avgTotal / 10000000)
-                            : null
-                        }
-                        data-min={-150}
-                        data-max={150}
-                        data-width={120}
-                        data-height={120}
-                        data-fgcolor="#00c0ef"
-                      />
-                      <div className="knob-label">CPU Average Total (%)</div>
-                    </div>
-                    {/* ./col */}
-                  </div>
-                  {/* /.row */}
 
-                  {/* /.row */}
-                </div>
-                {/* /.card-body */}
-              </div>
-              {/* /.card */}
-              {/* LINE CHART */}
               <div className="card card-info">
                 <div className="card-header">
                   <h3 className="card-title">พื้นที่จัดเก็บ (Disk)</h3>
@@ -207,9 +116,29 @@ const Report2 = () => {
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#3c8dbc"
+                        data-readonly="true"
                       />
                       <div className="knob-label">พื้นที่ว่าง (GB)</div>
                     </div>
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          diskusedShow ? Math.round(diskusedShow) : null
+                        }
+                        data-min={0}
+                        data-max={
+                          disktotalShow ? Math.round(disktotalShow) : null
+                        }
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00c0ef"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">พื้นที่ใช้ (GB)</div>
+                    </div>
+                    {/* ./col */}
                     {/* ./col */}
                     <div className="col-6 col-md-3 text-center">
                       <input
@@ -225,28 +154,10 @@ const Report2 = () => {
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#00a65a"
+                        data-readonly="true"
                       />
                       <div className="knob-label">พื้นที่รวม (GB)</div>
                     </div>
-                    {/* ./col */}
-                    <div className="col-6 col-md-3 text-center">
-                      <input
-                        type="text"
-                        className="knob"
-                        defaultValue={
-                          diskusedShow ? Math.round(diskusedShow) : null
-                        }
-                        data-min={0}
-                        data-max={
-                          disktotalShow ? Math.round(disktotalShow) : null
-                        }
-                        data-width={120}
-                        data-height={120}
-                        data-fgcolor="#00c0ef"
-                      />
-                      <div className="knob-label">พื้นที่ใช้ (GB)</div>
-                    </div>
-
                     {/* ./col */}
                   </div>
                   {/* /.row */}
@@ -257,10 +168,99 @@ const Report2 = () => {
                 {/* /.card-body */}
               </div>
               {/* /.card */}
+              {/* LINE CHART */}
+              <div className="card card-info">
+                <div className="card-header">
+                  <h3 className="card-title">หน่วยประมวลผล (CPU)</h3>
+                  <div className="card-tools">
+                    <button
+                      type="button"
+                      className="btn btn-tool"
+                      data-card-widget="collapse"
+                    >
+                      <i className="fas fa-minus" />
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-tool"
+                      data-card-widget="remove"
+                    >
+                      <i className="fas fa-times" />
+                    </button>
+                  </div>
+                </div>
+                {/* /.card-header */}
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          cpuShow
+                            ? Math.round(cpuShow.totalIdle / 100000000)
+                            : null
+                        }
+                        data-min={-150}
+                        data-max={150}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#3c8dbc"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">CPU Idle (%)</div>
+                    </div>
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          cpuShow
+                            ? Math.round(cpuShow.avgIdle / 10000000)
+                            : null
+                        }
+                        data-min={-150}
+                        data-max={150}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00a65a"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">CPU Average Idle (%)</div>
+                    </div>
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          cpuShow
+                            ? Math.round(cpuShow.avgTotal / 10000000)
+                            : null
+                        }
+                        data-min={-150}
+                        data-max={150}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00c0ef"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">CPU Average Total (%)</div>
+                    </div>
+                    {/* ./col */}
+                  </div>
+                  {/* /.row */}
+
+                  {/* /.row */}
+                </div>
+                {/* /.card-body */}
+              </div>
+              {/* /.card */}
             </div>
             {/* /.col (LEFT) */}
             <div className="col-md-6">
-              {/* PIE CHART */}
+              {/* MEMORY */}
               <div className="card card-success">
                 <div className="card-header">
                   <h3 className="card-title">หน่วยความจำ (Memory)</h3>
@@ -296,6 +296,7 @@ const Report2 = () => {
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#3c8dbc"
+                        data-readonly="true"
                       />
                       <div className="knob-label">หน่วยความจำที่ใช้ (GB)</div>
                     </div>
@@ -312,6 +313,7 @@ const Report2 = () => {
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#00a65a"
+                        data-readonly="true"
                       />
                       <div className="knob-label">หน่วยความจำที่ว่าง (GB)</div>
                     </div>
@@ -328,6 +330,7 @@ const Report2 = () => {
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#00c0ef"
+                        data-readonly="true"
                       />
                       <div className="knob-label">หน่วยความจำใช้ (%)</div>
                     </div>
@@ -345,8 +348,102 @@ const Report2 = () => {
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#39CCCC"
+                        data-readonly="true"
                       />
                       <div className="knob-label">หน่วยความจำว่าง (%)</div>
+                    </div>
+                    {/* ./col */}
+                  </div>
+                  {/* /.row */}
+
+                  {/* /.row */}
+                </div>
+                {/* /.card-body */}
+              </div>
+
+              {/* NODE */}
+              <div className="card card-success">
+                <div className="card-header">
+                  <h3 className="card-title">โครงข่าย (Node)</h3>
+                  <div className="card-tools">
+                    <button
+                      type="button"
+                      className="btn btn-tool"
+                      data-card-widget="collapse"
+                    >
+                      <i className="fas fa-minus" />
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-tool"
+                      data-card-widget="remove"
+                    >
+                      <i className="fas fa-times" />
+                    </button>
+                  </div>
+                </div>
+                {/* /.card-header */}
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={sysResult ? sysResult.blockCount : null}
+                        data-min={0}
+                        data-max={1000}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#f56954"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">จำนวนห่วงโซ่บล็อก</div>
+                    </div>
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={sysResult ? sysResult.nodes : null}
+                        data-min={0}
+                        data-max={3}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00c0ef"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">จำนวนโครงข่ายโหนด</div>
+                    </div>
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={sysResult ? sysResult.active : null}
+                        data-min={0}
+                        data-max={3}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00a65a"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">โหนดที่ทำงานอยู่</div>
+                    </div>
+                    {/* ./col */}
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={sysResult ? sysResult.users : null}
+                        data-min={0}
+                        data-max={1000}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#932ab6"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">จำนวนผู้ใช้ API</div>
                     </div>
                     {/* ./col */}
                   </div>
@@ -369,4 +466,4 @@ const Report2 = () => {
   )
 }
 
-export default withRouter(Report2)
+export default Report2

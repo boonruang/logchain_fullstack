@@ -89,6 +89,7 @@ router.post('/login', async (req, res) => {
           id: userFound.id,
           username: userFound.username,
           roleId: userFound.roleId,
+          status: userFound.status,
         },
         JwtConfig.secret,
         {
@@ -112,19 +113,6 @@ router.post('/login', async (req, res) => {
   }
 })
 
-//  @route                  POST  /api/v2/user/register
-//  @desc                   User register
-//  @access                 Public
-// router.post('/register', async (req, res) => {
-//   try {
-//     req.body.password = bcrypt.hashSync(req.body.password, 8)
-//     let result = await user.create(req.body)
-//     res.json({ result: constants.kResultOk, message: result })
-//   } catch (error) {
-//     res.json({ result: constants.kResultNok, message: error })
-//   }
-// })
-
 //  @route                  POST  /api/v2/user/
 //  @desc                   Add user use formidable on reactjs userCreate
 //  @access                 Private
@@ -137,6 +125,7 @@ router.post('/', JwtMiddleware.checkToken, async (req, res) => {
       let lastname = fields.lastname
       let username = fields.username
       let password = bcrypt.hashSync(fields.password, 8)
+      let status = fields.status
       let roleId = fields.roleId
       let userFound = await user.findOne({
         where: { username: fields.username },
@@ -154,6 +143,7 @@ router.post('/', JwtMiddleware.checkToken, async (req, res) => {
           lastname,
           username,
           password,
+          status,
           roleId,
         })
 
@@ -192,6 +182,7 @@ router.put('/', JwtMiddleware.checkToken, async (req, res) => {
         console.log('Password not empty need to be crypted')
         var password = bcrypt.hashSync(fields.password, 8)
       }
+      let status = fields.status
       var roleId = fields.roleId
 
       console.log('Formidable Update fields: ', fields)
@@ -202,6 +193,7 @@ router.put('/', JwtMiddleware.checkToken, async (req, res) => {
           lastname,
           username,
           password,
+          status,
           roleId,
         },
         { where: { id: fields.id } },
@@ -249,6 +241,7 @@ router.get('/:id', JwtMiddleware.checkToken, async (req, res) => {
         password2: '',
         firstname: userFound.firstname,
         lastname: userFound.lastname,
+        status: userFound.status,
         roleId: userFound.roleId,
       })
     } else {

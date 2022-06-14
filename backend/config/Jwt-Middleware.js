@@ -10,6 +10,11 @@ const checkToken = async (req, res, next) => {
       return res.status(501).json({
         error,
       })
+    } else if (data.status != true) {
+      // console.log('JWT Error: ', error)
+      return res.status(501).json({
+        jwtError: 'user inactive',
+      })
     } else {
       res.user = data
       next()

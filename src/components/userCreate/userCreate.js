@@ -118,6 +118,24 @@ const UserCreate = (props) => {
           </div>
         </div>
         <div className="form-group">
+          <label className="col-sm-2 control-label" htmlFor="status">
+            สถานะ
+          </label>
+          <div className="col-sm-10">
+            <select
+              name="status"
+              onChange={handleChange}
+              value={values.status}
+              className="custom-select"
+              id="status"
+            >
+              <option value="false">Inactive</option>
+              <option value="true">Active</option>
+            </select>
+            {errors.status ? <div>{errors.status}</div> : null}
+          </div>
+        </div>
+        <div className="form-group">
           <label className="col-sm-2 control-label" htmlFor="roleId">
             ระดับสิทธิ์
           </label>
@@ -134,16 +152,6 @@ const UserCreate = (props) => {
               <option value="2">User</option>
               <option value="3">API</option>
             </select>
-            {/* <input
-                name={account.level}
-                onChange={(e) =>
-                  setAccount({ ...account, level: e.target.value })
-                }
-                // value={values.level}
-                className="form-control"
-                type="text"
-                id="level"
-              /> */}
             {errors.roleId ? <div>{errors.roleId}</div> : null}
           </div>
         </div>
@@ -238,6 +246,7 @@ const UserCreate = (props) => {
                   } else if (values.password2.length < 8) {
                     errors.password2 = 'จำนวนอักขระอย่างน้อย 8'
                   }
+                  if (!values.status) errors.status = 'โปรดระบุ'
                   if (!values.roleId) errors.roleId = 'โปรดระบุ'
                   return errors
                 }}
@@ -249,6 +258,7 @@ const UserCreate = (props) => {
                   formData.append('password', values.password)
                   formData.append('firstname', values.firstname)
                   formData.append('lastname', values.lastname)
+                  formData.append('status', values.status)
                   formData.append('roleId', values.roleId)
 
                   // var object = {}

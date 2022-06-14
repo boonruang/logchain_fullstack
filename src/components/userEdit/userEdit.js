@@ -119,6 +119,24 @@ const UserEdit = (props) => {
           </div>
         </div>
         <div className="form-group">
+          <label className="col-sm-2 control-label" htmlFor="status">
+            สถานะ
+          </label>
+          <div className="col-sm-10">
+            <select
+              name="status"
+              onChange={handleChange}
+              value={values.status}
+              className="custom-select"
+              id="status"
+            >
+              <option value="false">Inactive</option>
+              <option value="true">Active</option>
+            </select>
+            {errors.status ? <div>{errors.status}</div> : null}
+          </div>
+        </div>
+        <div className="form-group">
           <label className="col-sm-2 control-label" htmlFor="roleId">
             ระดับสิทธิ์
           </label>
@@ -232,6 +250,7 @@ const UserEdit = (props) => {
                   if (values.password != values.password2) {
                     errors.password2 = 'รหัสผ่านไม่ตรงกัน'
                   }
+                  if (!values.status) errors.status = 'โปรดระบุ'
                   if (!values.roleId) errors.roleId = 'โปรดระบุ'
                   return errors
                 }}
@@ -244,6 +263,7 @@ const UserEdit = (props) => {
                   formData.append('password', values.password)
                   formData.append('firstname', values.firstname)
                   formData.append('lastname', values.lastname)
+                  formData.append('status', values.status)
                   formData.append('roleId', values.roleId)
 
                   dispatch(userEditActions.updateUser(props.history, formData))

@@ -59,7 +59,7 @@ const Blockdata = (props) => {
                 <ul className="nav flex-column">
                   <li className="nav-item">
                     <div className="nav-link">
-                      เวลา (timestamp)
+                      เวลา (Timestamp)
                       <span className="float-right badge bg-primary">
                         {result ? result.timestamp : null}
                       </span>
@@ -94,7 +94,7 @@ const Blockdata = (props) => {
                           </span>
                         </div>
                         <div className="nav-link">
-                          การดำเนิน
+                          การดำเนินการ
                           <span className="float-right badge bg-info">
                             {result ? result.action : null}
                           </span>
@@ -106,13 +106,13 @@ const Blockdata = (props) => {
                           </span>
                         </div>
                         <div className="nav-link">
-                          เวลาเข้า
+                          วันที่เข้า
                           <span className="float-right badge bg-info">
                             {result ? result.login : null}
                           </span>
                         </div>
                         <div className="nav-link">
-                          เวลาออก
+                          เวลาเข้า
                           <span className="float-right badge bg-info">
                             {result ? result.logout : null}
                           </span>

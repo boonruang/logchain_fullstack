@@ -48,19 +48,10 @@ const Logchain = (props) => {
             <td>{item.action}</td>
             <td>{item.api}</td>
             <td style={{ textAlign: 'center' }}>
-              {moment
-                .utc(
-                  moment(item.logout, 'YYYY-MM-DD HH:mm:ss').diff(
-                    moment(item.login, 'YYYY-MM-DD HH:mm:ss'),
-                  ),
-                )
-                .format('HH:mm')}
+              <Moment format="DD/MM/YYYY">{item.login}</Moment>
             </td>
             <td style={{ textAlign: 'center' }}>
-              <Moment format="DD/MM/YYYY HH:mm:ss">{item.login}</Moment>
-            </td>
-            <td style={{ textAlign: 'center' }}>
-              <Moment format="DD/MM/YYYY HH:mm:ss">{item.logout}</Moment>
+              <Moment format="HH:mm:ss">{item.logout}</Moment>
             </td>
             <td style={{ textAlign: 'center' }}>
               <button
@@ -137,13 +128,10 @@ const Logchain = (props) => {
                     </th>
                     <th style={{ width: '10%', textAlign: 'center' }}>API</th>
                     <th style={{ width: '10%', textAlign: 'center' }}>
-                      การใช้งาน (ชม.)
+                      วันที่เข้า
                     </th>
                     <th style={{ width: '10%', textAlign: 'center' }}>
                       เวลาเข้า
-                    </th>
-                    <th style={{ width: '10%', textAlign: 'center' }}>
-                      เวลาออก
                     </th>
                     <th style={{ width: '14%', textAlign: 'center' }}>
                       บล็อกเชน

@@ -27,6 +27,11 @@ const user = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
+    status: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: 0,
+    },
     roleId: {
       type: Sequelize.INTEGER,
       allowNull: false,
