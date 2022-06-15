@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import * as systemActions from '../../actions/system.action'
+import * as userActions from '../../actions/user.action'
 import { withRouter } from 'react-router-dom'
 
 const Userbar = (props) => {
@@ -9,12 +9,15 @@ const Userbar = (props) => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const callActions = () => {
-    dispatch(systemActions.getSystems())
+    dispatch(userActions.getUserInfo())
   }
 
-  const systemReducer = useSelector(({ systemReducer }) => systemReducer)
+  const loginReducer = useSelector(({ loginReducer }) => loginReducer)
+  const userReducer = useSelector(({ userReducer }) => userReducer)
+
   const dispatch = useDispatch()
-  const { sysResult } = systemReducer
+  const { userResult } = userReducer
+  const { result } = loginReducer
 
   return (
     <section className="content">
@@ -25,8 +28,8 @@ const Userbar = (props) => {
             {/* small box */}
             <div className="small-box bg-info">
               <div className="inner">
-                <h3>{sysResult ? sysResult.blockCount : null}</h3>
-                <p>จำนวนบล็อก</p>
+                <h4>{result ? result.username : null}</h4>
+                <p>ผู้ใช้ปัจจุบัน</p>
               </div>
               <div className="icon">
                 <i className="ion ion-android-cloud-circle" />
@@ -39,8 +42,8 @@ const Userbar = (props) => {
             {/* small box */}
             <div className="small-box bg-success">
               <div className="inner">
-                <h3>{sysResult ? sysResult.nodes : null}</h3>
-                <p>จำนวนโหนด</p>
+                <h4>{userResult ? userResult.all_user : null}</h4>
+                <p>ผู้ใช้ทั้งหมด</p>
               </div>
               <div className="icon">
                 <i className="ion ion-stats-bars" />
@@ -50,10 +53,10 @@ const Userbar = (props) => {
           {/* ./col */}
           <div className="col-lg-3 col-6">
             {/* small box */}
-            <div className="small-box bg-danger">
+            <div className="small-box bg-warning">
               <div className="inner">
-                <h3>{sysResult ? sysResult.active : null}</h3>
-                <p>จำนวนโหนดที่ใช้งาน</p>
+                <h4>{userResult ? userResult.active_user : null}</h4>
+                <p>พร้อมใช้ (Active)</p>
               </div>
               <div className="icon">
                 <i className="ion ion-person-add" />
@@ -64,10 +67,10 @@ const Userbar = (props) => {
 
           <div className="col-lg-3 col-6">
             {/* small box */}
-            <div className="small-box bg-warning">
+            <div className="small-box bg-danger">
               <div className="inner">
-                <h3>{sysResult ? sysResult.users : null}</h3>
-                <p>จำนวนผู้ใช้</p>
+                <h4>{userResult ? userResult.inactive_user : null}</h4>
+                <p>ไม่พร้อมใช้ (Inactive)</p>
               </div>
               <div className="icon">
                 <i className="ion ion-pie-graph" />

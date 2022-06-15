@@ -3,7 +3,6 @@ const router = express.Router()
 const Sequelize = require('sequelize')
 const Blockchain = require('../blockchain')
 const blockchain = require('../models/blockchain')
-const user = require('../models/user')
 const constants = require('../constant')
 const JwtMiddleware = require('../config/Jwt-Middleware')
 const Op = Sequelize.Op
@@ -125,25 +124,14 @@ router.get('/form/:form/:year', async (req, res) => {
     const blockchainList = await blockchain.findAll({
       attributes: [
         'user',
-        'action',
-        // [Sequelize.fn('COUNT', Sequelize.col('user')), 'total_user'],
-        // [ Sequelize.fn('extract(year)', Sequelize.col('created_at')), 'data']
-        [
-          Sequelize.fn(
-            'strftime',
-            // '%Y%m',
-            '%m',
-            Sequelize.col('actiondate'),
-          ),
-          'data',
-        ],
+        [Sequelize.fn('COUNT', Sequelize.col('user')), 'total_user'],
       ],
       group: ['user'],
       where: {
         action: {
           [Op.like]: `%${queryForm}`,
         },
-        actiondate: {
+        login: {
           [Op.like]: `%${year}%`,
         },
       },
@@ -165,64 +153,4 @@ router.get('/form/:form/:year', async (req, res) => {
   }
 })
 
-router.get('/formtest', async (req, res) => {
-  // let form = req.params.form
-  // let year = req.params.year
-
-  // switch (form) {
-  //   case 'form8':
-  //     var queryForm = '8'
-  //     break
-  //   case 'form9':
-  //     var queryForm = '9'
-  //     break
-  //   default:
-  //     console.log(`Sorry, we are out of ${form}.`)
-  // }
-
-  // console.log(`form: ${queryForm} year: ${year}`)
-
-  try {
-    const blockchainList = await user.findAll({
-      attributes: [
-        'username',
-        'status',
-        [
-          Sequelize.fn(
-            'strftime',
-            Sequelize.literal("'%Y%m'"),
-            Sequelize.col('createdAt'),
-          ),
-          'data',
-        ],
-        // [Sequelize.fn('COUNT', Sequelize.col('user')), 'total_user'],
-        // [ Sequelize.fn('extract(year)', Sequelize.col('created_at')), 'data']
-        // [Sequelize.fn('YEAR', Sequelize.col('login')), 'data'],
-      ],
-      // group: ['user'],
-      // where: {
-      //   action: {
-      //     [Op.like]: `%${queryForm}`,
-      //   },
-      //   login: {
-      //     [Op.like]: `%${year}%`,
-      //   },
-      // },
-    })
-    if (blockchainList) {
-      res.status(200).json({
-        blockchainList,
-      })
-    } else {
-      res.status(500).json({
-        result: 'blockchain not available',
-      })
-    }
-  } catch (error) {
-    res.status(500).json({
-      result: constants.kResultNok,
-      Error: error.toString(),
-    })
-  }
-})
 module.exports = router

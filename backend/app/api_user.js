@@ -52,20 +52,19 @@ router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
 })
 
 //  @route                  GET  /api/v2/user/info
-//  @desc                   Get mock info
+//  @desc                   Get user info
 //  @access                 Private
 
 router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
-  let active_user = await user.count()
-  let users = await user.count({
-    distinct: 'true',
-    col: 'users.username',
-  })
+  let all_user = await user.count()
+  let active_user = await user.count({ where: { status: true } })
+  let inactive_user = await user.count({ where: { status: false } })
 
   setTimeout(() => {
     res.json({
+      all_user,
       active_user,
-      users,
+      inactive_user,
     })
   }, 100)
 })

@@ -46,83 +46,99 @@ const Blockdata = (props) => {
 
       <SystemBar />
       <section className="content-header " style={{ maxWidth: '70%' }}>
-        <div className="col-sm-12" style={{ fontSize: 18 }}>
+        <div className="col-sm-12">
           <div
             className="card card-widget widget-user-2 shadow-sm"
             style={{ margin: 30 }}
           >
-            <div className=" bg-info">
+            <div className="bg-info">
               <h3 className="widget-user-username">ส่วนหัวห่วงโซ่บล็อก</h3>
             </div>
-            <>
-              <div className="card-footer p-0">
-                <ul className="nav flex-column">
-                  <li className="nav-item">
-                    <div className="nav-link">
-                      เวลา (Timestamp)
-                      <span className="float-right badge bg-primary">
-                        {result ? result.timestamp : null}
-                      </span>
-                    </div>
-                  </li>
-                  <li className="nav-item">
-                    <div className="nav-link">
-                      ค่า Hash
-                      <span className="float-right badge bg-primary">
-                        {result ? result.hash : null}
-                      </span>
-                    </div>
-                  </li>
-                  <li className="nav-item">
-                    <div className="nav-link">
-                      ค่า LastHash
-                      <span className="float-right badge bg-primary">
-                        {result ? result.lasthash : null}
-                      </span>
-                    </div>
-                  </li>
-                  <li className="nav-item">
-                    <div className="card card-success">
-                      <div className="card-header">
-                        <h3 className="widget-user-username">ส่วนข้อมูล</h3>
-                      </div>
-                      <div className="card-body">
-                        <div className="nav-link">
-                          ผู้ใช้
-                          <span className="float-right badge bg-info">
-                            {result ? result.user : null}
-                          </span>
-                        </div>
-                        <div className="nav-link">
-                          การดำเนินการ
-                          <span className="float-right badge bg-info">
-                            {result ? result.action : null}
-                          </span>
-                        </div>
-                        <div className="nav-link">
-                          API
-                          <span className="float-right badge bg-info">
-                            {result ? result.api : null}
-                          </span>
-                        </div>
-                        <div className="nav-link">
-                          วันที่เข้า
-                          <span className="float-right badge bg-info">
-                            {result ? result.login : null}
-                          </span>
-                        </div>
-                        <div className="nav-link">
-                          เวลาเข้า
-                          <span className="float-right badge bg-info">
-                            {result ? result.logout : null}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </>
+            <div className="card-footer p-0">
+              <ul className="nav flex-column">
+                <li className="nav-item">
+                  <div className="nav-link">
+                    เวลา (Timestamp)
+                    <span className="float-right">
+                      {result ? result.timestamp : null}
+                    </span>
+                  </div>
+                </li>
+                <li className="nav-item">
+                  <div className="nav-link">
+                    ค่า Hash
+                    <span className="float-right">
+                      {result ? result.hash : null}
+                    </span>
+                  </div>
+                </li>
+                <li className="nav-item">
+                  <div className="nav-link">
+                    ค่า LastHash
+                    <span className="float-right">
+                      {result ? result.lasthash : null}
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="card widget-user-2" style={{ margin: 30 }}>
+            <div className="bg-success">
+              <h3 className="widget-user-username">ส่วนข้อมูล</h3>
+            </div>
+            <div className="card-footer p-0">
+              <ul className="nav flex-column">
+                <li className="nav-item">
+                  <div className="nav-link">
+                    ผู้ใช้
+                    <span className="float-right">
+                      {result ? result.user : null}
+                    </span>
+                  </div>
+                </li>
+                <li className="nav-item">
+                  <div className="nav-link">
+                    ประเภทดำเนินการ
+                    <span className="float-right">
+                      {result ? result.action : null}
+                    </span>
+                  </div>
+                </li>
+                <li className="nav-item">
+                  <div className="nav-link">
+                    การดำเนินการ
+                    <span className="float-right">
+                      {result ? result.actionvalue : null}
+                    </span>
+                  </div>
+                </li>
+                {/* <li className="nav-item">
+                  <div className="nav-link">
+                    API
+                    <span className="float-right">
+                      {result ? result.api : null}
+                    </span>
+                  </div>
+                </li> */}
+                <li className="nav-item">
+                  <div className="nav-link">
+                    วันที่
+                    <span className="float-right">
+                      {result ? result.actiondate : null}
+                    </span>
+                  </div>
+                </li>
+                <li className="nav-item">
+                  <div className="nav-link">
+                    เวลา
+                    <span className="float-right">
+                      {result ? result.actiontime : null}
+                    </span>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
           <div className="box-footer" style={{ marginTop: 50 }}>
             <button

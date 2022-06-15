@@ -51,7 +51,10 @@ const User = (props) => {
               {item.firstname} {item.lastname}
             </td>
             <td style={{ textAlign: 'center' }}>{item.role.name}</td>
-            <td style={{ textAlign: 'center' }}>
+            <td
+              style={{ textAlign: 'center' }}
+              className={item.status ? 'text-success' : 'text-danger'}
+            >
               {item.status ? 'Active' : 'Inactive'}
             </td>
             <td style={{ textAlign: 'center' }}>

@@ -25,7 +25,7 @@ const Systembar = (props) => {
             {/* small box */}
             <div className="small-box bg-info">
               <div className="inner">
-                <h3>{sysResult ? sysResult.blockCount : null}</h3>
+                <h4>{sysResult ? sysResult.blockCount : null}</h4>
                 <p>จำนวนบล็อก</p>
               </div>
               <div className="icon">
@@ -38,7 +38,7 @@ const Systembar = (props) => {
             {/* small box */}
             <div className="small-box bg-success">
               <div className="inner">
-                <h3>{sysResult ? sysResult.nodes : null}</h3>
+                <h4>{sysResult ? sysResult.nodes : null}</h4>
                 <p>จำนวนโหนด</p>
               </div>
               <div className="icon">
@@ -51,7 +51,7 @@ const Systembar = (props) => {
             {/* small box */}
             <div className="small-box bg-danger">
               <div className="inner">
-                <h3>{sysResult ? sysResult.active : null}</h3>
+                <h4>{sysResult ? sysResult.active : null}</h4>
                 <p>จำนวนโหนดที่ใช้งาน</p>
               </div>
               <div className="icon">
@@ -65,7 +65,7 @@ const Systembar = (props) => {
             {/* small box */}
             <div className="small-box bg-warning">
               <div className="inner">
-                <h3>{sysResult ? sysResult.users : null}</h3>
+                <h4>{sysResult ? sysResult.users : null}</h4>
                 <p>จำนวนผู้ใช้</p>
               </div>
               <div className="icon">

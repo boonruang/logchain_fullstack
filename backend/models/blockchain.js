@@ -25,15 +25,15 @@ const blockchain = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
-    api: {
+    actionvalue: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    login: {
+    actiondate: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    logout: {
+    actiontime: {
       type: Sequelize.STRING,
       allowNull: false,
     },

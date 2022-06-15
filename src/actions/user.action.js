@@ -2,6 +2,7 @@ import {
   HTTP_USER_FAILED,
   HTTP_USER_FETCHING,
   HTTP_USER_SUCCESS,
+  HTTP_USERINFO_SUCCESS,
   server,
 } from '../constants'
 import { httpClient } from '../utils/HttpClient'
@@ -17,6 +18,11 @@ const setStateUserToFetching = () => ({
 
 const setStateUserToFailed = () => ({
   type: HTTP_USER_FAILED,
+})
+
+const setStateUserInfoToSuccess = (payload) => ({
+  type: HTTP_USERINFO_SUCCESS,
+  payload,
 })
 
 export const getUsers = () => {
@@ -37,6 +43,19 @@ const doGetUsers = (dispatch) => {
       alert(JSON.stringify(error))
       dispatch(setStateUserToFailed())
     })
+}
+
+export const getUserInfo = () => {
+  return async (dispatch) => {
+    await httpClient
+      .get(`${server.USER_URL}/info`)
+      .then((result) => {
+        dispatch(setStateUserInfoToSuccess(result.data))
+      })
+      .catch((error) => {
+        alert(JSON.stringify(error))
+      })
+  }
 }
 
 export const deleteUserById = (id) => {

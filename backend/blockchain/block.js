@@ -2,15 +2,24 @@ const SHA256 = require('crypto-js/sha256')
 const blockChainTable = require('../models/blockchain')
 
 class Block {
-  constructor(timestamp, hash, lasthash, user, action, api, login, logout) {
+  constructor(
+    timestamp,
+    hash,
+    lasthash,
+    user,
+    action,
+    actionvalue,
+    actiondate,
+    actiontime,
+  ) {
     this.timestamp = timestamp
     this.hash = hash
     this.lasthash = lasthash
     this.user = user
     this.action = action
-    this.api = api
-    this.login = login
-    this.logout = logout
+    this.actionvalue = actionvalue
+    this.actiondate = actiondate
+    this.actiontime = actiontime
   }
 
   toString() {
@@ -20,22 +29,22 @@ class Block {
         Last Hash : ${this.lasthash.substring(0, 10)},
         User : ${this.user},
         Action : ${this.action},
-        API : ${this.api},
-        Login : ${this.login},
-        Logout : ${this.logout},
+        Action Value : ${this.actionvalue},
+        Action Date : ${this.actiondate},
+        Action Time : ${this.actiontime},
         `
   }
 
   static genesis() {
     return new this(
-      1653234475987,
+      1609466949000,
       'F1r5t-h45h',
       '--------------',
       'system',
       'first action',
-      'api',
-      '2022-4-10 8: 27: 29.751 +00: 00',
-      '2022-4-10 10: 27: 29.751 +00: 00',
+      'action one',
+      '2564-01-01',
+      '09:09:09.09',
     )
   }
 
@@ -144,7 +153,7 @@ class Block {
   }
 
   static mineBlock(lastBlock, data) {
-    const { user, action, api, login, logout } = data
+    const { user, action, actionvalue, actiondate, actiontime } = data
     const timestamp = Date.now()
     const lasthash = lastBlock.hash
     // this.hash = 'todo-hash',
@@ -153,22 +162,55 @@ class Block {
       lasthash,
       user,
       action,
-      api,
-      login,
-      logout,
+      actionvalue,
+      actiondate,
+      actiontime,
     )
-    return new this(timestamp, hash, lasthash, user, action, api, login, logout)
+    return new this(
+      timestamp,
+      hash,
+      lasthash,
+      user,
+      action,
+      actionvalue,
+      actiondate,
+      actiontime,
+    )
   }
 
-  static hash(timestamp, lasthash, user, action, api, login, logout) {
+  static hash(
+    timestamp,
+    lasthash,
+    user,
+    action,
+    actionvalue,
+    actiondate,
+    actiontime,
+  ) {
     return SHA256(
-      `${timestamp}${lasthash}${user}${action}${api}${login}${logout}`,
+      `${timestamp}${lasthash}${user}${action}${actionvalue}${actiondate}${actiontime}`,
     ).toString()
   }
 
   static blockHash(block) {
-    const { timestamp, lasthash, user, action, api, login, logout } = block
-    return Block.hash(timestamp, lasthash, user, action, api, login, logout)
+    const {
+      timestamp,
+      lasthash,
+      user,
+      action,
+      actionvalue,
+      actiondate,
+      actiontime,
+    } = block
+    return Block.hash(
+      timestamp,
+      lasthash,
+      user,
+      action,
+      actionvalue,
+      actiondate,
+      actiontime,
+    )
   }
 }
 

@@ -42,17 +42,16 @@ const Logchain = (props) => {
         result.map((item) => (
           <tr key={item.timestamp}>
             <td style={{ textAlign: 'center' }}>
-              <Moment format="DD/MM/YYYY">{item.timestamp}</Moment>
+              {/* <Moment format="DD/MM/YYYY">{item.timestamp}</Moment> */}
+              {item.timestamp}
             </td>
-            <td>{item.user}</td>
-            <td>{item.action}</td>
-            <td>{item.api}</td>
+            <td style={{ textAlign: 'center' }}>{item.user}</td>
+            <td style={{ textAlign: 'center' }}>{item.action}</td>
+            <td style={{ textAlign: 'center' }}>{item.actionvalue}</td>
             <td style={{ textAlign: 'center' }}>
-              <Moment format="DD/MM/YYYY">{item.login}</Moment>
+              <Moment format="DD/MM/YYYY">{item.actiondate}</Moment>
             </td>
-            <td style={{ textAlign: 'center' }}>
-              <Moment format="HH:mm:ss">{item.logout}</Moment>
-            </td>
+            <td style={{ textAlign: 'center' }}>{item.actiontime}</td>
             <td style={{ textAlign: 'center' }}>
               <button
                 onClick={() =>
@@ -118,21 +117,21 @@ const Logchain = (props) => {
                 <thead>
                   <tr>
                     <th style={{ width: '10%', textAlign: 'center' }}>
-                      วันที่
+                      เวลา (Timestamp)
                     </th>
                     <th style={{ width: '10%', textAlign: 'center' }}>
                       ผู้ใช้
                     </th>
                     <th style={{ width: '15%', textAlign: 'center' }}>
-                      Action
-                    </th>
-                    <th style={{ width: '10%', textAlign: 'center' }}>API</th>
-                    <th style={{ width: '10%', textAlign: 'center' }}>
-                      วันที่เข้า
+                      ประเภทดำเนินการ
                     </th>
                     <th style={{ width: '10%', textAlign: 'center' }}>
-                      เวลาเข้า
+                      การดำเนินการ
                     </th>
+                    <th style={{ width: '10%', textAlign: 'center' }}>
+                      วันที่
+                    </th>
+                    <th style={{ width: '10%', textAlign: 'center' }}>เวลา</th>
                     <th style={{ width: '14%', textAlign: 'center' }}>
                       บล็อกเชน
                     </th>

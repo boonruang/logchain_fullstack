@@ -1,63 +1,53 @@
 import React, { useEffect, useState } from 'react'
-import { Line, Bar, Pie, Doughnut, Radar, Bubble } from 'react-chartjs-2'
-import {
-  chartData,
-  chartOption,
-  donutData,
-  donutOption,
-  stackedBarChartData,
-  stackedBarChartOptions,
-  pieOption,
-} from '../../mockdata/chart_data'
-import { withRouter } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import * as systemActions from '../../actions/system.action'
 import axios from 'axios'
 
 const Report = () => {
-  const [graph, setGraph] = useState([])
-
-  const selectChart = (e) => {
-    axios
-      .get(`http://localhost:3001/api/v2/blockchain/form/8/2022`)
-      .then((res) => {
-        const userData = res.data.blockchainList
-        let user = []
-        let total_user = []
-        userData.forEach((item) => {
-          user.push(item.user)
-          total_user.push(item.total_user)
-        })
-        setGraph({
-          labels: user,
-          datasets: [
-            {
-              label: 'จำนวนการเข้าใช้งาน',
-              fill: false,
-              backgroundColor: [
-                'green',
-                'red',
-                'blue',
-                '#FFBF00',
-                '#DE3163',
-                'orange',
-                '#40E0D0',
-                '#6495ED',
-                '#CCCCFF',
-                '#FFBF00',
-                '#DE3163',
-                '#9FE2BF',
-                '#CD5C5C',
-              ],
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 0,
-              data: total_user,
-            },
-          ],
-        })
-      })
-  }
   useEffect(() => {
-    selectChart()
-  }, [])
+    getSystemOS()
+    callActions()
+    setTimeout(() => {
+      callJQuery()
+    }, 100)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const callActions = () => {
+    dispatch(systemActions.getSystems())
+  }
+
+  const systemReducer = useSelector(({ systemReducer }) => systemReducer)
+  const dispatch = useDispatch()
+  const { sysResult } = systemReducer
+
+  const callJQuery = () => {
+    const script = document.createElement('script')
+    script.src = `/js/report2_page.js`
+    script.async = true
+    document.body.appendChild(script)
+  }
+
+  const [cpuShow, setcpuShow] = useState()
+  const [memShow, setmemShow] = useState()
+  const [diskfreeShow, setdiskfreeShow] = useState()
+  const [disktotalShow, setdisktotalShow] = useState()
+  const [diskusedShow, setdiskusedShow] = useState()
+
+  const getSystemOS = () => {
+    axios.get(`http://localhost:3001/api/v2/system/os`).then((res) => {
+      let cpuData = res.data.cpuInfo
+      let memData = res.data.memInfo
+      let diskFree = res.data.diskFree
+      let diskTotal = res.data.diskTotal
+      let diskUsed = res.data.diskUsed
+
+      setcpuShow(cpuData)
+      setmemShow(memData)
+      setdiskfreeShow(diskFree)
+      setdisktotalShow(diskTotal)
+      setdiskusedShow(diskUsed)
+    })
+  }
 
   return (
     <div className="content-wrapper">
@@ -66,7 +56,7 @@ const Report = () => {
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
-              <h1>ข้อมูลและรายงาน</h1>
+              <h1>ทรัพยากรระบบ</h1>
             </div>
             <div className="col-sm-6">
               <ol className="breadcrumb float-sm-right">
@@ -74,7 +64,7 @@ const Report = () => {
                   <div>System</div>
                 </li>
 
-                <li className="breadcrumb-item active">ข้อมูลและรายงาน</li>
+                <li className="breadcrumb-item active">ทรัพยากรระบบ</li>
               </ol>
             </div>
           </div>
@@ -84,14 +74,14 @@ const Report = () => {
       {/* Main content */}
       <section className="content">
         <div className="container-fluid">
+          {/* /.row */}
           <div className="row">
             <div className="col-md-6">
               {/* LINE CHART */}
+
               <div className="card card-info">
                 <div className="card-header">
-                  <h3 className="card-title">
-                    การเข้าใช้ API แบบฟอร์ม รง.8 ปี 2564
-                  </h3>
+                  <h3 className="card-title">พื้นที่จัดเก็บ (Disk)</h3>
                   <div className="card-tools">
                     <button
                       type="button"
@@ -109,46 +99,79 @@ const Report = () => {
                     </button>
                   </div>
                 </div>
+                {/* /.card-header */}
                 <div className="card-body">
-                  <div className="chart">
-                    <Bar
-                      data={graph}
-                      width={100}
-                      height={250}
-                      options={{
-                        maintainAspectRatio: false,
-                        responsive: true,
-                        // title: {
-                        //   display: true,
-                        //   text: 'จำนวนการเข้าใช้ API',
-                        //   fontSize: 20,
-                        // },
-                        legend: {
-                          display: true,
-                          position: 'top',
-                        },
-                        scales: {
-                          yAxes: [
-                            {
-                              ticks: {
-                                precision: 0,
-                              },
-                            },
-                          ],
-                        },
-                      }}
-                    />
+                  <div className="row">
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          diskfreeShow ? Math.round(diskfreeShow) : null
+                        }
+                        data-min={0}
+                        data-max={
+                          disktotalShow ? Math.round(disktotalShow) : null
+                        }
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#3c8dbc"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">พื้นที่ว่าง (GB)</div>
+                    </div>
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          diskusedShow ? Math.round(diskusedShow) : null
+                        }
+                        data-min={0}
+                        data-max={
+                          disktotalShow ? Math.round(disktotalShow) : null
+                        }
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00c0ef"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">พื้นที่ใช้ (GB)</div>
+                    </div>
+                    {/* ./col */}
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          disktotalShow ? Math.round(disktotalShow) : null
+                        }
+                        data-min={0}
+                        data-max={
+                          disktotalShow ? Math.round(disktotalShow) : null
+                        }
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00a65a"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">พื้นที่รวม (GB)</div>
+                    </div>
+                    {/* ./col */}
                   </div>
+                  {/* /.row */}
+
+                  {/* /.row */}
                 </div>
+                {/* /.card-body */}
                 {/* /.card-body */}
               </div>
               {/* /.card */}
-              {/* DOUGHNUT CHART */}
+              {/* LINE CHART */}
               <div className="card card-info">
                 <div className="card-header">
-                  <h3 className="card-title">
-                    การเข้าใช้ API แบบฟอร์ม รง.8 ปี 2564
-                  </h3>
+                  <h3 className="card-title">หน่วยประมวลผล (CPU)</h3>
                   <div className="card-tools">
                     <button
                       type="button"
@@ -166,15 +189,70 @@ const Report = () => {
                     </button>
                   </div>
                 </div>
+                {/* /.card-header */}
                 <div className="card-body">
-                  <Doughnut
-                    data={graph}
-                    minHeight={250}
-                    height={250}
-                    maxHeight={250}
-                    maxWidth={100}
-                    options={donutOption}
-                  />
+                  <div className="row">
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          cpuShow
+                            ? Number(cpuShow.totalIdle / 1000000000).toFixed(2)
+                            : null
+                        }
+                        data-min={0}
+                        data-max={4}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#3c8dbc"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">Idle (GHz)</div>
+                    </div>
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          cpuShow
+                            ? Number(cpuShow.avgIdle / 100000000).toFixed(2)
+                            : null
+                        }
+                        data-min={0}
+                        data-max={4}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00a65a"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">Average Idle (GHz)</div>
+                    </div>
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          cpuShow
+                            ? Number(cpuShow.avgTotal / 100000000).toFixed(2)
+                            : null
+                        }
+                        data-min={0}
+                        data-max={5}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00c0ef"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">Average Total (GHz)</div>
+                    </div>
+                    {/* ./col */}
+                  </div>
+                  {/* /.row */}
+
+                  {/* /.row */}
                 </div>
                 {/* /.card-body */}
               </div>
@@ -182,12 +260,10 @@ const Report = () => {
             </div>
             {/* /.col (LEFT) */}
             <div className="col-md-6">
-              {/* PIE CHART */}
+              {/* MEMORY */}
               <div className="card card-success">
                 <div className="card-header">
-                  <h3 className="card-title">
-                    การเข้าใช้ API แบบฟอร์ม รง.8 ปี 2564
-                  </h3>
+                  <h3 className="card-title">หน่วยความจำ (Memory)</h3>
                   <div className="card-tools">
                     <button
                       type="button"
@@ -205,25 +281,90 @@ const Report = () => {
                     </button>
                   </div>
                 </div>
+                {/* /.card-header */}
                 <div className="card-body">
-                  <div className="chart">
-                    <Pie
-                      data={graph}
-                      width={100}
-                      height={250}
-                      options={pieOption}
-                    />
+                  <div className="row">
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          memShow ? Math.round(memShow.usedMemMb / 1000) : null
+                        }
+                        data-min={-150}
+                        data-max={150}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#3c8dbc"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">หน่วยความจำที่ใช้ (GB)</div>
+                    </div>
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          memShow ? Math.round(memShow.freeMemMb / 1000) : null
+                        }
+                        data-min={-150}
+                        data-max={150}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00a65a"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">หน่วยความจำที่ว่าง (GB)</div>
+                    </div>
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          memShow ? Math.round(memShow.usedMemPercentage) : null
+                        }
+                        data-min={-150}
+                        data-max={150}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00c0ef"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">หน่วยความจำใช้ (%)</div>
+                    </div>
+                    {/* ./col */}
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          memShow ? Math.round(memShow.freeMemPercentage) : null
+                        }
+                        data-min={-150}
+                        data-max={150}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#39CCCC"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">หน่วยความจำว่าง (%)</div>
+                    </div>
+                    {/* ./col */}
                   </div>
+                  {/* /.row */}
+
+                  {/* /.row */}
                 </div>
                 {/* /.card-body */}
               </div>
-              {/* /.card */}
-              {/* RADAR CHART */}
+
+              {/* NODE */}
               <div className="card card-success">
                 <div className="card-header">
-                  <h3 className="card-title">
-                    การเข้าใช้ API แบบฟอร์ม รง.8 ปี 2564
-                  </h3>
+                  <h3 className="card-title">โครงข่าย (Node)</h3>
                   <div className="card-tools">
                     <button
                       type="button"
@@ -241,36 +382,74 @@ const Report = () => {
                     </button>
                   </div>
                 </div>
+                {/* /.card-header */}
                 <div className="card-body">
-                  <div className="chart">
-                    <Radar
-                      data={graph}
-                      width={100}
-                      height={250}
-                      options={{
-                        maintainAspectRatio: false,
-                        responsive: true,
-                        title: {
-                          display: false,
-                          text: 'จำนวนการเข้าใช้ API',
-                          fontSize: 20,
-                        },
-                        legend: {
-                          display: true,
-                          position: 'top',
-                        },
-                        scales: {
-                          yAxes: [
-                            {
-                              ticks: {
-                                precision: 1,
-                              },
-                            },
-                          ],
-                        },
-                      }}
-                    />
+                  <div className="row">
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={sysResult ? sysResult.blockCount : null}
+                        data-min={0}
+                        data-max={1000}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#f56954"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">จำนวนห่วงโซ่บล็อก</div>
+                    </div>
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={sysResult ? sysResult.nodes : null}
+                        data-min={0}
+                        data-max={3}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00c0ef"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">จำนวนโครงข่ายโหนด</div>
+                    </div>
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={sysResult ? sysResult.active : null}
+                        data-min={0}
+                        data-max={3}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00a65a"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">โหนดที่ทำงานอยู่</div>
+                    </div>
+                    {/* ./col */}
+                    {/* ./col */}
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={sysResult ? sysResult.users : null}
+                        data-min={0}
+                        data-max={1000}
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#932ab6"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">จำนวนผู้ใช้ API</div>
+                    </div>
+                    {/* ./col */}
                   </div>
+                  {/* /.row */}
+
+                  {/* /.row */}
                 </div>
                 {/* /.card-body */}
               </div>
@@ -278,13 +457,13 @@ const Report = () => {
             </div>
             {/* /.col (RIGHT) */}
           </div>
-          {/* /.row */}
         </div>
         {/* /.container-fluid */}
       </section>
+
       {/* /.content */}
     </div>
   )
 }
 
-export default withRouter(Report)
+export default Report
