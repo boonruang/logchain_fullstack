@@ -110,16 +110,31 @@ class Blockchain {
 
   async writeDB(chain) {
     console.log('chain data in writeDB', chain)
+
+    const lastRecord = await blockchain.findOne({
+      limit: 1,
+      order: [['timestamp', 'DESC']],
+    })
+
+    if (lastRecord) {
+      var curBlock_lasthash = lastRecord.hash
+    }
+    console.log('Block_lasthast: ', block_lasthash)
+
     try {
       chain.map((item) => {
-        blockchain
-          .create(item)
-          .then((result) => {
-            console.log('write data to DB successful: ', result)
-          })
-          .catch((error) => {
-            console.log('write data to DB failed: ', error)
-          })
+        // console.log('Item: ', item)
+
+        if (curBlock_lasthash === item.lasthash) {
+          blockchain
+            .create(item)
+            .then((result) => {
+              console.log('write data to DB successful: ', result)
+            })
+            .catch((error) => {
+              console.log('write data to DB failed: ', error)
+            })
+        }
       })
     } catch (error) {
       console.log('write data to DB error: ', error)
