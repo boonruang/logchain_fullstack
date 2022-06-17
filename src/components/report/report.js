@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import * as systemActions from '../../actions/system.action'
 import axios from 'axios'
+import { round } from 'lodash'
 
 const Report = () => {
   useEffect(() => {
@@ -9,7 +10,7 @@ const Report = () => {
     callActions()
     setTimeout(() => {
       callJQuery()
-    }, 100)
+    }, 1000)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const callActions = () => {
@@ -29,23 +30,17 @@ const Report = () => {
 
   const [cpuShow, setcpuShow] = useState()
   const [memShow, setmemShow] = useState()
-  const [diskfreeShow, setdiskfreeShow] = useState()
-  const [disktotalShow, setdisktotalShow] = useState()
-  const [diskusedShow, setdiskusedShow] = useState()
+  const [diskShow, setDiskShow] = useState()
 
   const getSystemOS = () => {
     axios.get(`http://localhost:3001/api/v2/system/os`).then((res) => {
       let cpuData = res.data.cpuInfo
       let memData = res.data.memInfo
-      let diskFree = res.data.diskFree
-      let diskTotal = res.data.diskTotal
-      let diskUsed = res.data.diskUsed
+      let diskData = res.data.diskInfo
 
       setcpuShow(cpuData)
       setmemShow(memData)
-      setdiskfreeShow(diskFree)
-      setdisktotalShow(diskTotal)
-      setdiskusedShow(diskUsed)
+      setDiskShow(diskData)
     })
   }
 
@@ -107,29 +102,15 @@ const Report = () => {
                         type="text"
                         className="knob"
                         defaultValue={
-                          diskfreeShow ? Math.round(diskfreeShow) : null
+                          diskShow
+                            ? round(
+                                (diskShow.size - diskShow.free) / 1000000000,
+                              )
+                            : null
                         }
-                        data-min={0}
+                        data-min={1}
                         data-max={
-                          disktotalShow ? Math.round(disktotalShow) : null
-                        }
-                        data-width={120}
-                        data-height={120}
-                        data-fgcolor="#3c8dbc"
-                        data-readonly="true"
-                      />
-                      <div className="knob-label">พื้นที่ว่าง (GB)</div>
-                    </div>
-                    <div className="col-6 col-md-3 text-center">
-                      <input
-                        type="text"
-                        className="knob"
-                        defaultValue={
-                          diskusedShow ? Math.round(diskusedShow) : null
-                        }
-                        data-min={0}
-                        data-max={
-                          disktotalShow ? Math.round(disktotalShow) : null
+                          diskShow ? round(diskShow.size / 1000000000) : null
                         }
                         data-width={120}
                         data-height={120}
@@ -138,6 +119,24 @@ const Report = () => {
                       />
                       <div className="knob-label">พื้นที่ใช้ (GB)</div>
                     </div>
+                    <div className="col-6 col-md-3 text-center">
+                      <input
+                        type="text"
+                        className="knob"
+                        defaultValue={
+                          diskShow ? round(diskShow.free / 1000000000) : null
+                        }
+                        data-min={1}
+                        data-max={
+                          diskShow ? round(diskShow.size / 1000000000) : null
+                        }
+                        data-width={120}
+                        data-height={120}
+                        data-fgcolor="#00c0ef"
+                        data-readonly="true"
+                      />
+                      <div className="knob-label">พื้นที่ว่าง (GB)</div>
+                    </div>
                     {/* ./col */}
                     {/* ./col */}
                     <div className="col-6 col-md-3 text-center">
@@ -145,11 +144,11 @@ const Report = () => {
                         type="text"
                         className="knob"
                         defaultValue={
-                          disktotalShow ? Math.round(disktotalShow) : null
+                          diskShow ? round(diskShow.size / 1000000000) : null
                         }
-                        data-min={0}
+                        data-min={1}
                         data-max={
-                          disktotalShow ? Math.round(disktotalShow) : null
+                          diskShow ? round(diskShow.size / 1000000000) : null
                         }
                         data-width={120}
                         data-height={120}
@@ -202,7 +201,7 @@ const Report = () => {
                             : null
                         }
                         data-min={0}
-                        data-max={4}
+                        data-max={5}
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#3c8dbc"
@@ -221,7 +220,7 @@ const Report = () => {
                             : null
                         }
                         data-min={0}
-                        data-max={4}
+                        data-max={5}
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#00a65a"

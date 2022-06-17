@@ -8,7 +8,8 @@ const Blockchain = require('../models/blockchain')
 const net = require('net')
 const os = require('os')
 const osu = require('node-os-utils')
-const disk = require('diskusage')
+// const disk = require('diskusage')
+const checkDiskSpace = require('check-disk-space').default
 
 router.get('/test', async (req, res) => {
   const activeNode = await Node.findAll()
@@ -218,17 +219,20 @@ router.get('/os', async (req, res) => {
   var cpuInfo = cpu.average()
   var memInfo = await mem.info()
 
-  let path = os.platform() === 'win32' ? 'c:' : '/'
+  // let path = os.platform() === 'win32' ? 'c:' : '/'
 
-  let diskInfo = disk.checkSync(path)
+  // let diskInfo = disk.checkSync(path)
 
-  if (memInfo) {
+  let diskInfo = await checkDiskSpace('C:/')
+
+  if (memInfo && diskInfo) {
     res.status(200).json({
       cpuInfo,
       memInfo,
-      diskFree: diskInfo.available / 1000000000,
-      diskTotal: diskInfo.total / 1000000000,
-      diskUsed: diskInfo.total / 1000000000 - diskInfo.available / 1000000000,
+      diskInfo,
+      // diskFree: diskInfo.available / 1000000000,
+      // diskTotal: diskInfo.total / 1000000000,
+      // diskUsed: diskInfo.total / 1000000000 - diskInfo.available / 1000000000,
     })
   }
 })

@@ -119,7 +119,7 @@ class Blockchain {
     if (lastRecord) {
       var curBlock_lasthash = lastRecord.hash
     }
-    console.log('Block_lasthast: ', block_lasthash)
+    console.log('Block_lasthash: ', block_lasthash)
 
     try {
       chain.map((item) => {

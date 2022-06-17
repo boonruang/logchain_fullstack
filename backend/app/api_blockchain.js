@@ -126,13 +126,14 @@ router.get('/form/:form/:year', async (req, res) => {
       attributes: [
         'user',
         'action',
+        'actiondate',
         // [Sequelize.fn('COUNT', Sequelize.col('user')), 'total_user'],
         // [ Sequelize.fn('extract(year)', Sequelize.col('created_at')), 'data']
         [
           Sequelize.fn(
             'strftime',
             // '%Y%m',
-            '%m',
+            '%Y-%m',
             Sequelize.col('actiondate'),
           ),
           'data',
