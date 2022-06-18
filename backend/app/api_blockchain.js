@@ -4,7 +4,7 @@ const Sequelize = require('sequelize')
 const Blockchain = require('../blockchain')
 const blockchain = require('../models/blockchain')
 const user = require('../models/user')
-const constants = require('../constant')
+const constants = require('../config/constant')
 const JwtMiddleware = require('../config/Jwt-Middleware')
 const Op = Sequelize.Op
 

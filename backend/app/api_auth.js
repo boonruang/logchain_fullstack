@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const user = require('../models/user')
-const bcrypt = require('bcryptjs')
-const constants = require('../constant')
+// const user = require('../models/user')
+// const bcrypt = require('bcryptjs')
+// const constants = require('../config/constant')
 const JWT = require('jsonwebtoken')
 const JwtConfig = require('../config/Jwt-Config')
 

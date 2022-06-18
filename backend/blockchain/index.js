@@ -18,8 +18,18 @@ class Blockchain {
   }
 
   async init() {
-    this.chain = await this.readData()
-    return this
+    // blockchain.sync()
+    let blockCount = await blockchain.count()
+    if (blockCount < 1) {
+      this.chain = [Block.genesis()]
+    } else {
+      this.chain = await this.readData()
+    }
+    // setTimeout(() => {
+    //   this.writeDB()
+    // }, 1000)
+    this.writeDB()
+    return this.chain
   }
 
   async readData() {
@@ -110,6 +120,19 @@ class Blockchain {
 
   async writeDB(chain) {
     console.log('chain data in writeDB', chain)
+    const blockCount = await blockchain.count()
+    console.log('Block Count: ', blockCount)
+    console.log('Chain: ', chain)
+    // console.log('!!!this.chain!!!: ', this.chain)
+    // console.log('!!!this.chain array[0] !!!: ', this.chain[0])
+    // if (blockCount == 0) {
+    //   const blockCreated = await blockchain.create(this.chain)
+    //   if (blockCreated) {
+    //     console.log('blockCreated')
+    //   } else {
+    //     console.log('block create fail')
+    //   }
+    // }
 
     const lastRecord = await blockchain.findOne({
       limit: 1,
@@ -119,7 +142,7 @@ class Blockchain {
     if (lastRecord) {
       var curBlock_lasthash = lastRecord.hash
     }
-    console.log('Block_lasthash: ', block_lasthash)
+    console.log('Block_lasthash: ', curBlock_lasthash)
 
     try {
       chain.map((item) => {
@@ -137,7 +160,7 @@ class Blockchain {
         }
       })
     } catch (error) {
-      console.log('write data to DB error: ', error)
+      console.log('write data to DB error: ', error.toString)
     }
   }
 }
