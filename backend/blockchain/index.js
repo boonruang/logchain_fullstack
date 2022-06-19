@@ -1,15 +1,9 @@
 const Block = require('./block')
 const blockchain = require('../models/blockchain')
-let nodename = process.env.NODE_NAME || 'NODE1'
-const NODE_NAME = nodename.trim()
 
 class Blockchain {
   constructor() {
     // this.chain = [Block.genesis()]
-    // console.log('getData in Blockchain: ', Block.getData())
-    // NODE_NAME == 'NODE1'
-    //   ? (this.chain = Block.getData())
-    //   : (this.chain = [Block.genesis()])
 
     this.chain = this.init()
     setTimeout(() => {
@@ -28,7 +22,7 @@ class Blockchain {
     // setTimeout(() => {
     //   this.writeDB()
     // }, 1000)
-    this.writeDB()
+    this.writeDB(this.chain )
     return this.chain
   }
 
@@ -141,6 +135,20 @@ class Blockchain {
 
     if (lastRecord) {
       var curBlock_lasthash = lastRecord.hash
+    }  else {
+      let blockCreated =  await blockchain.create(Block.genesis())
+      if (blockCreated) {
+        chain.map((item) => {
+          blockchain
+            .create(item)
+            .then((result) => {
+              console.log('write data in blockCreated to DB successful: ', result)
+            })
+            .catch((error) => {
+              console.log('write data in blockCreated to DB failed: ', error)
+            })
+        })
+      }
     }
     console.log('Block_lasthash: ', curBlock_lasthash)
 

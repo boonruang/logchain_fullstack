@@ -21,7 +21,8 @@ router.get('/blocks', JwtMiddleware.checkToken, async (req, res) => {
 //  @desc                   Get Block by Id
 //  @access                 Private
 router.get('/blocks/:id', JwtMiddleware.checkToken, async (req, res) => {
-  let result = await blockchain.findOne({ where: { timestamp: req.params.id } })
+  // let result = await blockchain.findOne({ where: { timestamp: req.params.id } })
+  var result = bc.chain.find((item) => item.timestamp == req.params.id)
   if (result) {
     res.json(result)
   } else {

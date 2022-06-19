@@ -33,7 +33,7 @@ const Report = () => {
   const [diskShow, setDiskShow] = useState()
 
   const getSystemOS = () => {
-    axios.get(`http://localhost:3001/api/v2/system/os`).then((res) => {
+    axios.get(`http://61.19.101.249:3001/api/v2/system/os`).then((res) => {
       let cpuData = res.data.cpuInfo
       let memData = res.data.memInfo
       let diskData = res.data.diskInfo
@@ -201,7 +201,7 @@ const Report = () => {
                             : null
                         }
                         data-min={0}
-                        data-max={5}
+                        data-max={100}
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#3c8dbc"
@@ -220,7 +220,7 @@ const Report = () => {
                             : null
                         }
                         data-min={0}
-                        data-max={5}
+                        data-max={100}
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#00a65a"
@@ -239,7 +239,7 @@ const Report = () => {
                             : null
                         }
                         data-min={0}
-                        data-max={5}
+                        data-max={100}
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#00c0ef"
