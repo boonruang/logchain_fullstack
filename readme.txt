@@ -25,3 +25,21 @@ https://www.tutorialspoint.com/nodejs/nodejs_net_module.htm
 Create React Component folder
 $ npm install --save-dev create-react-component-folder
 $ npx crcf myComponent
+
+
+git team
+git config --global user.name "Boonruang Seedapunt"
+git config --global user.email "scubatoy@gmail.com"
+git config --global --list
+cat ~/.gitconfig
+git status
+
+git clone https://github.com/boonruang/logchain_fullstack
+git remote add origin https://github.com/boonruang/logchain_fullstack
+git push origin master
+
+git checkout -b index-html
+git push origin index-html
+
+git checkout master
+git pull origin master
