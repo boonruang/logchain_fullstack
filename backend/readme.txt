@@ -32,3 +32,6 @@ set NODE_NAME=NODE3 && set HTTP_PORT=3003 && set P2P_PORT=5003 && set PEERS=ws:/
 
 for fakeData testing
 set NODE_NAME=NODE4 && set HTTP_PORT=3004 && set P2P_PORT=5004 && set PEERS=ws://localhost:5001,ws://localhost:5002 && npm run dev
+
+node
+set NODE_NAME=NODE2 && set HTTP_PORT=3001 && set P2P_PORT=5001 && set PEERS=ws://localhost:5001,ws://localhost:5002 && npm run dev
