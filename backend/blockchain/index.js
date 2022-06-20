@@ -22,7 +22,7 @@ class Blockchain {
     // setTimeout(() => {
     //   this.writeDB()
     // }, 1000)
-    this.writeDB(this.chain )
+    this.writeDB(this.chain)
     return this.chain
   }
 
@@ -135,14 +135,17 @@ class Blockchain {
 
     if (lastRecord) {
       var curBlock_lasthash = lastRecord.hash
-    }  else {
-      let blockCreated =  await blockchain.create(Block.genesis())
+    } else {
+      let blockCreated = await blockchain.create(Block.genesis())
       if (blockCreated) {
         chain.map((item) => {
           blockchain
             .create(item)
             .then((result) => {
-              console.log('write data in blockCreated to DB successful: ', result)
+              console.log(
+                'write data in blockCreated to DB successful: ',
+                result,
+              )
             })
             .catch((error) => {
               console.log('write data in blockCreated to DB failed: ', error)

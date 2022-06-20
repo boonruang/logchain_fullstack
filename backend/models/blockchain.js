@@ -37,6 +37,14 @@ const blockchain = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
+    nonce: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
+    difficulty: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
   },
   {
     timestamps: false,

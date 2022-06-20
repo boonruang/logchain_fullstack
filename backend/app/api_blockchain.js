@@ -35,7 +35,7 @@ router.get('/blocks/:id', JwtMiddleware.checkToken, async (req, res) => {
 //  @access                 Private
 router.post('/mine', JwtMiddleware.checkToken, async (req, res) => {
   try {
-    const block = await bc.addBlock(req.body)
+    const block = bc.addBlock(req.body)
     if (block) {
       console.log(`New block added: ${block.toString()}`)
       p2pServer.syncChains()
@@ -51,7 +51,7 @@ router.post('/mine', JwtMiddleware.checkToken, async (req, res) => {
   } catch (error) {
     res.status(500).json({
       status: 'Add block failed',
-      Error: error,
+      Error: error.toString(),
     })
   }
 })

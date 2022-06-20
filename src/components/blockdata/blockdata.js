@@ -45,8 +45,8 @@ const Blockdata = (props) => {
       {/* /.content-header */}
 
       <SystemBar />
-      <section className="content-header " style={{ maxWidth: '70%' }}>
-        <div className="col-sm-12">
+      <section className="content-header ">
+        <div className="col-sm-12" style={{ maxWidth: '80%' }}>
           <div
             className="card card-widget widget-user-2 shadow-sm"
             style={{ margin: 30 }}
@@ -77,6 +77,22 @@ const Blockdata = (props) => {
                     ค่า LastHash
                     <span className="float-right">
                       {result ? result.lasthash : null}
+                    </span>
+                  </div>
+                </li>
+                <li className="nav-item">
+                  <div className="nav-link">
+                    ค่า Nonce
+                    <span className="float-right">
+                      {result ? result.nonce : null}
+                    </span>
+                  </div>
+                </li>
+                <li className="nav-item">
+                  <div className="nav-link">
+                    ค่า Difficulty
+                    <span className="float-right">
+                      {result ? result.difficulty : null}
                     </span>
                   </div>
                 </li>
