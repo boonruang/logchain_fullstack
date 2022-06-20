@@ -13,10 +13,7 @@ const formidable = require('formidable')
 //  @desc                   list all users
 //  @access                 Private
 router.get('/list', JwtMiddleware.checkToken, async (req, res) => {
-  // const userFound = await user.findAll({
-  //   attributes: { exclude: ['password'] },
-  //   order: [['id', 'ASC']]
-  // })
+
   console.log('get user list API called')
   try {
     const userFound = await user.findAll({
