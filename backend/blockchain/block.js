@@ -58,8 +58,9 @@ class Block {
 
   static mineBlock(lastBlock, data) {
     const { user, action, actionvalue, actiondate, actiontime } = data
-    let hash, timestamp
-    const lasthash = lastBlock.hash
+    let hash
+    let timestamp
+    let lasthash = lastBlock.hash
     let { difficulty } = lastBlock
     let nonce = 0
 
@@ -79,6 +80,10 @@ class Block {
         difficulty,
       )
     } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty))
+
+    console.log(
+      `>>> do this noce: ${nonce} Lasttimestamp: ${lastBlock.timestamp} timestamp: ${timestamp} difficulty: ${difficulty} hash: ${hash}`,
+    )
 
     return new this(
       timestamp,
@@ -141,6 +146,8 @@ class Block {
       lastBlock.timestamp + MINE_RATE > currentTime
         ? difficulty + 1
         : difficulty - 1
+
+    if (difficulty == 0) difficulty = 1
     return difficulty
   }
 }

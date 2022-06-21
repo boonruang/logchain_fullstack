@@ -42,4 +42,5 @@ git checkout -b index-html
 git push origin index-html
 
 git checkout master
-git pull origin master
+git pull origin main
+git push origin main

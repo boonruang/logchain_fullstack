@@ -51,7 +51,9 @@ router.get('/node', JwtMiddleware.checkToken, async (req, res) => {
 router.get('/info', JwtMiddleware.checkToken, async (req, res) => {
   let all_nodes = await Node.count()
   let active_nodes = 0
-  let blockCount = await Blockchain.count()
+  // let blockCount = await Blockchain.count()
+
+  let blockCount = bc.chain.length
 
   let users = await Blockchain.count({
     distinct: 'true',

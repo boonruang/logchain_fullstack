@@ -197,11 +197,11 @@ const Report = () => {
                         className="knob"
                         defaultValue={
                           cpuShow
-                            ? Number(cpuShow.totalIdle / 1000000000).toFixed(2)
+                            ? Number(cpuShow.totalIdle / 10000000000).toFixed(2)
                             : null
                         }
                         data-min={0}
-                        data-max={100}
+                        data-max={1}
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#3c8dbc"
@@ -216,11 +216,11 @@ const Report = () => {
                         className="knob"
                         defaultValue={
                           cpuShow
-                            ? Number(cpuShow.avgIdle / 100000000).toFixed(2)
+                            ? Number(cpuShow.avgIdle / 10000000000).toFixed(2)
                             : null
                         }
                         data-min={0}
-                        data-max={100}
+                        data-max={1}
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#00a65a"
@@ -235,11 +235,11 @@ const Report = () => {
                         className="knob"
                         defaultValue={
                           cpuShow
-                            ? Number(cpuShow.avgTotal / 100000000).toFixed(2)
+                            ? Number(cpuShow.avgTotal / 10000000000).toFixed(2)
                             : null
                         }
                         data-min={0}
-                        data-max={100}
+                        data-max={1}
                         data-width={120}
                         data-height={120}
                         data-fgcolor="#00c0ef"
