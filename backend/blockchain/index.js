@@ -14,7 +14,7 @@ class Blockchain {
   async init() {
     // blockchain.sync()
     let blockCount = await blockchain.count()
-    if (blockCount < 1) {
+    if (blockCount == 0) {
       this.chain = [Block.genesis()]
     } else {
       this.chain = await this.readData()
@@ -22,6 +22,7 @@ class Blockchain {
     // setTimeout(() => {
     //   this.writeDB()
     // }, 1000)
+    console.log('Write DB in Init()')
     this.writeDB(this.chain)
     return this.chain
   }
@@ -113,10 +114,10 @@ class Blockchain {
   }
 
   async writeDB(chain) {
-    console.log('chain data in writeDB', chain)
-    const blockCount = await blockchain.count()
-    console.log('Block Count: ', blockCount)
-    console.log('Chain: ', chain)
+    // console.log('chain data in writeDB', chain)
+    // const blockCount = await blockchain.count()
+    // console.log('Block Count: ', blockCount)
+    // console.log('Chain: ', chain)
     // console.log('!!!this.chain!!!: ', this.chain)
     // console.log('!!!this.chain array[0] !!!: ', this.chain[0])
     // if (blockCount == 0) {
@@ -160,6 +161,9 @@ class Blockchain {
         // console.log('Item: ', item)
 
         if (curBlock_lasthash === item.lasthash) {
+          console.log(
+            `curLasthash: ${curBlock_lasthash} itemLasthash: ${item.lasthash}`,
+          )
           blockchain
             .create(item)
             .then((result) => {

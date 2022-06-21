@@ -36,10 +36,7 @@ class P2pServer {
     console.log('This.blockchain in conSocket: ', this.blockchain)
     // console.log('Socket: ', socket)
     // console.log('This.socket: ', this.sockets)
-    // this.messageHandler(socket)
-    NODE_NAME == 'NODE4'
-      ? this.messageHandlerFake(socket)
-      : this.messageHandler(socket)
+    this.messageHandler(socket)
     this.sendChain(socket)
   }
 
@@ -48,15 +45,6 @@ class P2pServer {
       const data = JSON.parse(message)
       console.log('Data msg in msgHandler:', data)
       this.blockchain.replaceChain(data)
-    })
-  }
-
-  messageHandlerFake(socket) {
-    socket.on('message', (message) => {
-      const data = Block.getFakeData()
-      console.log('Data msg in messageHandlerFak:', data)
-      this.blockchain.chain = data
-      this.sendChain(socket)
     })
   }
 
