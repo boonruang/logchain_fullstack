@@ -159,11 +159,10 @@ class Blockchain {
     try {
       chain.map((item) => {
         // console.log('Item: ', item)
-
+        console.log(
+          `curLasthash: ${curBlock_lasthash} itemLasthash: ${item.lasthash}`,
+        )
         if (curBlock_lasthash === item.lasthash) {
-          console.log(
-            `curLasthash: ${curBlock_lasthash} itemLasthash: ${item.lasthash}`,
-          )
           blockchain
             .create(item)
             .then((result) => {
