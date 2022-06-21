@@ -14,6 +14,7 @@ const Op = Sequelize.Op
 //  @desc                   Get blockchain all blocks
 //  @access                 Private
 router.get('/blocks', JwtMiddleware.checkToken, async (req, res) => {
+  p2pServer.syncChains()
   res.json(bc.chain)
 })
 

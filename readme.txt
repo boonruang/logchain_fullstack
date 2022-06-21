@@ -44,3 +44,5 @@ git push origin index-html
 git checkout master
 git pull origin main
 git push origin main
+
+git reset --hard origin/main
