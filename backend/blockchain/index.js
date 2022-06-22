@@ -25,7 +25,7 @@ class Blockchain {
     //   this.writeDB()
     // }, 1000)
     console.log('Write DB in Init()')
-    this.writeDB(this.chain)
+    // this.writeDB(this.chain)
     return this.chain
   }
 
