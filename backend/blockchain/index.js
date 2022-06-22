@@ -140,28 +140,9 @@ class Blockchain {
     })
 
     if (lastRecord) {
+      // write chain data to DB by record
       var curBlock_lasthash = lastRecord.hash
-    } else {
-      // let blockCreated = await blockchain.create(Block.genesis())
-      // if (blockCreated) {
-      chain.map((item) => {
-        blockchain
-          .create(item)
-          .then((result) => {
-            console.log('write data in blockCreated to DB successful: ', result)
-          })
-          .catch((error) => {
-            console.log(
-              'write data in blockCreated to DB failed: ',
-              error.toString(),
-            )
-          })
-      })
-      // }
-    }
-    console.log('Block_lasthash: ', curBlock_lasthash)
-
-    try {
+      console.log('Block_lasthash: ', curBlock_lasthash)
       chain.map((item) => {
         // console.log('Item: ', item)
         console.log(
@@ -178,9 +159,46 @@ class Blockchain {
             })
         }
       })
-    } catch (error) {
-      console.log('write data to DB error: ', error.toString)
+    } else {
+      // write chain data to DB to all record from message boardcast
+      chain.map((item) => {
+        blockchain
+          .create(item)
+          .then((result) => {
+            console.log('write data in blockCreated to DB successful: ', result)
+          })
+          .catch((error) => {
+            console.log(
+              'write data in blockCreated to DB failed: ',
+              error.toString(),
+            )
+          })
+      })
+      // }
     }
+
+    // console.log('Block_lasthash: ', curBlock_lasthash)
+
+    // try {
+    //   chain.map((item) => {
+    //     // console.log('Item: ', item)
+    //     console.log(
+    //       `curLasthash: ${curBlock_lasthash} itemLasthash: ${item.lasthash}`,
+    //     )
+    //     if (curBlock_lasthash === item.lasthash) {
+    //       blockchain
+    //         .create(item)
+    //         .then((result) => {
+    //           console.log('write data per record to DB successful: ', result)
+    //         })
+    //         .catch((error) => {
+    //           console.log('write data per record to DB failed: ', error)
+    //         })
+    //     }
+    //   })
+    // } catch (error) {
+    //   console.log('write data to DB error: ', error.toString)
+    // }
   }
 }
 
