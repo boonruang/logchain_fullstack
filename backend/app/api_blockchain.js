@@ -14,7 +14,7 @@ const Op = Sequelize.Op
 //  @desc                   Get blockchain all blocks
 //  @access                 Private
 router.get('/blocks', JwtMiddleware.checkToken, async (req, res) => {
-  p2pServer.syncChains()
+  // p2pServer.syncChains()
   res.json(bc.chain)
 })
 
@@ -55,6 +55,15 @@ router.post('/mine', JwtMiddleware.checkToken, async (req, res) => {
       Error: error.toString(),
     })
   }
+})
+
+//  @route                  POST  /api/v2/blockchain/transact
+//  @desc                   do transact
+//  @access                 Private
+router.post('/transact', (req, res) => {
+  const { user, action, actionvalue, actiondate, actiontime } = req.body
+  const transaction = { user, action, actionvalue, actiondate, actiontime, bc }
+  p2pServer.broadcastTransaction(transaction)
 })
 
 //  @route                  POST  /api/v2/blockchain/forcesync

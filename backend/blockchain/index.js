@@ -1,5 +1,7 @@
 const Block = require('./block')
 const blockchain = require('../models/blockchain')
+let nodename = process.env.NODE_NAME || 'NODE1'
+const NODE_NAME = nodename.trim()
 
 class Blockchain {
   constructor() {
@@ -14,9 +16,9 @@ class Blockchain {
   async init() {
     // blockchain.sync()
     let blockCount = await blockchain.count()
-    if (blockCount == 0) {
+    if (blockCount == 0 && this.chain.length == 0) {
       this.chain = [Block.genesis()]
-    } else {
+    } else if (NODE_NAME == 'NODE1') {
       this.chain = await this.readData()
     }
     // setTimeout(() => {
@@ -106,11 +108,10 @@ class Blockchain {
     }
 
     console.log('newChain.length2: ', newChain.length)
-    console.log('this.chain.length2: ', this.chain.length)
-
     console.log('Replacing blockchain with the new chain')
     this.chain = newChain
-    if (this.chain) this.writeDB(this.chain)
+    console.log('this.chain.length2: ', this.chain.length)
+    // if (this.chain) this.writeDB(this.chain)
   }
 
   async writeDB(chain) {
@@ -137,22 +138,22 @@ class Blockchain {
     if (lastRecord) {
       var curBlock_lasthash = lastRecord.hash
     } else {
-      let blockCreated = await blockchain.create(Block.genesis())
-      if (blockCreated) {
-        chain.map((item) => {
-          blockchain
-            .create(item)
-            .then((result) => {
-              console.log(
-                'write data in blockCreated to DB successful: ',
-                result,
-              )
-            })
-            .catch((error) => {
-              console.log('write data in blockCreated to DB failed: ', error)
-            })
-        })
-      }
+      // let blockCreated = await blockchain.create(Block.genesis())
+      // if (blockCreated) {
+      chain.map((item) => {
+        blockchain
+          .create(item)
+          .then((result) => {
+            console.log('write data in blockCreated to DB successful: ', result)
+          })
+          .catch((error) => {
+            console.log(
+              'write data in blockCreated to DB failed: ',
+              error.toString(),
+            )
+          })
+      })
+      // }
     }
     console.log('Block_lasthash: ', curBlock_lasthash)
 

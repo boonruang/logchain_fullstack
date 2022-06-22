@@ -5,9 +5,23 @@ const Block = require('../blockchain/block')
 let nodename = process.env.NODE_NAME || 'NODE1'
 const NODE_NAME = nodename.trim()
 
+const MESSAGE_TYPES = {
+  chain: 'CHAIN',
+  transaction: 'TRANSACTION',
+}
+
 class P2pServer {
   constructor(blockchain) {
     this.blockchain = blockchain
+    this.transactionPool = [
+      {
+        user: 'mr.test',
+        action: 'action test',
+        actionvalue: 'action value test',
+        actiondate: '2565/06/22',
+        actiontime: '11:46:25.30',
+      },
+    ]
     this.sockets = []
   }
 
@@ -43,6 +57,14 @@ class P2pServer {
   messageHandler(socket) {
     socket.on('message', (message) => {
       const data = JSON.parse(message)
+      switch (data.type) {
+        case MESSAGE_TYPES.chain:
+          this.blockchain.replaceChain(data.chain)
+          break
+        case MESSAGE_TYPES.transaction:
+          // this.transactionPool.updateOrAddTransaction(data.transaction)
+          break
+      }
       console.log('Data msg in msgHandler:', data)
       this.blockchain.replaceChain(data)
     })
@@ -50,13 +72,33 @@ class P2pServer {
 
   sendChain(socket) {
     console.log('In sendChain: ', JSON.stringify(this.blockchain.chain))
-    socket.send(JSON.stringify(this.blockchain.chain))
+    // socket.send(JSON.stringify(this.blockchain.chain))
+    socket.send(
+      JSON.stringify({
+        type: MESSAGE_TYPES.chain,
+        chain: this.blockchain.chain,
+      }),
+    )
+  }
+
+  sendTransaction(socket, transaction) {
+    // socket.send(JSON.stringify(transaction))
+    socket.send(
+      JSON.stringify({
+        type: MESSAGE_TYPES.transaction,
+        transaction: transaction,
+      }),
+    )
   }
 
   syncChains() {
     console.log('peers: ', peers)
     console.log('this.blockchain.chain in syncChain: ', this.blockchain.chain)
     this.sockets.forEach((socket) => this.sendChain(socket))
+  }
+
+  broadcastTransaction(transaction) {
+    this.sockets.forEach((socket) => this.sendTransaction(socket, transaction))
   }
 }
 
