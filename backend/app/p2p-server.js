@@ -41,6 +41,13 @@ class P2pServer {
       console.log('peers in connToPeers: ', peer)
       const socket = new Websocket(peer)
       socket.on('open', () => this.connectSocket(socket))
+      socket.on('connection', (thisws) => {
+        console.log(
+          'New websocket connection from %s:%d',
+          thisws._socket.remoteAddress,
+          thisws._socket.remotePort,
+        )
+      })
     })
   }
 
@@ -67,7 +74,7 @@ class P2pServer {
           console.log('msg type transaction in msgHandler: ', data.transaction)
           break
       }
-      console.log('Data msg in msgHandler:', data)
+      // console.log('Data msg in msgHandler:', data)
       // this.blockchain.replaceChain(data)
     })
   }
