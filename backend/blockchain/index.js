@@ -21,11 +21,7 @@ class Blockchain {
     } else if (NODE_NAME == 'NODE1') {
       this.chain = await this.readData()
     }
-    // setTimeout(() => {
-    //   this.writeDB()
-    // }, 1000)
-    console.log('Write DB in Init()')
-    // this.writeDB(this.chain)
+
     return this.chain
   }
 
@@ -160,7 +156,7 @@ class Blockchain {
         }
       })
     } else {
-      // write chain data to DB to all record from message boardcast
+      // write data in chain to DB from message boardcast
       chain.map((item) => {
         blockchain
           .create(item)
@@ -174,31 +170,7 @@ class Blockchain {
             )
           })
       })
-      // }
     }
-
-    // console.log('Block_lasthash: ', curBlock_lasthash)
-
-    // try {
-    //   chain.map((item) => {
-    //     // console.log('Item: ', item)
-    //     console.log(
-    //       `curLasthash: ${curBlock_lasthash} itemLasthash: ${item.lasthash}`,
-    //     )
-    //     if (curBlock_lasthash === item.lasthash) {
-    //       blockchain
-    //         .create(item)
-    //         .then((result) => {
-    //           console.log('write data per record to DB successful: ', result)
-    //         })
-    //         .catch((error) => {
-    //           console.log('write data per record to DB failed: ', error)
-    //         })
-    //     }
-    //   })
-    // } catch (error) {
-    //   console.log('write data to DB error: ', error.toString)
-    // }
   }
 }
 
