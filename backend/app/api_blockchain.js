@@ -62,7 +62,8 @@ router.post('/mine', JwtMiddleware.checkToken, async (req, res) => {
 //  @access                 Private
 router.post('/transact', (req, res) => {
   const { user, action, actionvalue, actiondate, actiontime } = req.body
-  const transaction = { user, action, actionvalue, actiondate, actiontime, bc }
+  const transaction = { user, action, actionvalue, actiondate, actiontime }
+  res.status(200).json(transaction)
   p2pServer.broadcastTransaction(transaction)
 })
 

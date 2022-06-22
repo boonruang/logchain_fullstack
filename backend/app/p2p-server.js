@@ -60,13 +60,15 @@ class P2pServer {
       switch (data.type) {
         case MESSAGE_TYPES.chain:
           this.blockchain.replaceChain(data.chain)
+          console.log('msg type chain in msgHandler: ', data.chain)
           break
         case MESSAGE_TYPES.transaction:
           // this.transactionPool.updateOrAddTransaction(data.transaction)
+          console.log('msg type transaction in msgHandler: ', data.transaction)
           break
       }
       console.log('Data msg in msgHandler:', data)
-      this.blockchain.replaceChain(data)
+      // this.blockchain.replaceChain(data)
     })
   }
 
@@ -93,11 +95,12 @@ class P2pServer {
 
   syncChains() {
     console.log('peers: ', peers)
-    console.log('this.blockchain.chain in syncChain: ', this.blockchain.chain)
+    console.log('this.blockchain.chain in syncChains: ', this.blockchain.chain)
     this.sockets.forEach((socket) => this.sendChain(socket))
   }
 
   broadcastTransaction(transaction) {
+    console.log('broadcastTransaction: ', transaction)
     this.sockets.forEach((socket) => this.sendTransaction(socket, transaction))
   }
 }
