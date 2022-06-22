@@ -140,15 +140,14 @@ class Blockchain {
       var curBlock_lasthash = lastRecord.hash
       console.log('Block_lasthash: ', curBlock_lasthash)
       chain.map((item) => {
-        // console.log('Item: ', item)
-        console.log(
-          `curLasthash: ${curBlock_lasthash} itemLasthash: ${item.lasthash}`,
-        )
+        // console.log(
+        //   `curLasthash: ${curBlock_lasthash} itemLasthash: ${item.lasthash}`,
+        // )
         if (curBlock_lasthash === item.lasthash) {
           blockchain
             .create(item)
             .then((result) => {
-              console.log('write data per record to DB successful: ', result)
+              // console.log('write data per record to DB successful: ', result)
             })
             .catch((error) => {
               console.log('write data per record to DB failed: ', error)
@@ -161,7 +160,7 @@ class Blockchain {
         blockchain
           .create(item)
           .then((result) => {
-            console.log('write data in blockCreated to DB successful: ', result)
+            // console.log('write data in blockCreated to DB successful: ', result)
           })
           .catch((error) => {
             console.log(
