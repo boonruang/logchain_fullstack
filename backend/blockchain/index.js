@@ -31,7 +31,7 @@ class Blockchain {
 
   async readData() {
     try {
-      const blockChainData = await blockchain.findAll()
+      const blockChainData = await blockchain.findAll({ raw: true })
 
       if (blockChainData) {
         console.log('blockChainData in readData: ', blockChainData)
@@ -111,7 +111,11 @@ class Blockchain {
     console.log('Replacing blockchain with the new chain')
     this.chain = newChain
     console.log('this.chain.length2: ', this.chain.length)
-    // if (this.chain) this.writeDB(this.chain)
+    if (this.chain) {
+      this.writeDB(this.chain)
+    } else {
+      console.log('this.chain false can not write data')
+    }
   }
 
   async writeDB(chain) {
@@ -167,10 +171,10 @@ class Blockchain {
           blockchain
             .create(item)
             .then((result) => {
-              console.log('write data to DB successful: ', result)
+              console.log('write data per record to DB successful: ', result)
             })
             .catch((error) => {
-              console.log('write data to DB failed: ', error)
+              console.log('write data per record to DB failed: ', error)
             })
         }
       })

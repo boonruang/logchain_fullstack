@@ -41,11 +41,11 @@ class P2pServer {
       console.log('peers in connToPeers: ', peer)
       const socket = new Websocket(peer)
       socket.on('open', () => this.connectSocket(socket))
-      socket.on('connection', (thisws) => {
+      socket.on('connection', (ws) => {
         console.log(
           'New websocket connection from %s:%d',
-          thisws._socket.remoteAddress,
-          thisws._socket.remotePort,
+          ws._socket.remoteAddress,
+          ws._socket.remotePort,
         )
       })
     })
@@ -57,6 +57,7 @@ class P2pServer {
     console.log('This.blockchain in conSocket: ', this.blockchain)
     // console.log('Socket: ', socket)
     // console.log('This.socket: ', this.sockets)
+
     this.messageHandler(socket)
     this.sendChain(socket)
   }
