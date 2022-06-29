@@ -25,9 +25,9 @@ npm i uuid --save
 
 npm i jsonwebtoken
 
-
-set NODE_NAME=NODE2 && set HTTP_PORT=3002 && set P2P_PORT=5002 && set PEERS=ws://localhost:5001 && npm run dev 
-set NODE_NAME=NODE3 && set HTTP_PORT=3003 && set P2P_PORT=5003 && set PEERS=ws://localhost:5001,ws://localhost:5002 && npm run dev
+set PEERS=ws://localhost:5001 && npm run dev 
+set NODE_NAME=NODE2 && set HTTP_PORT=3002 && set P2P_PORT=5002 && set PEERS=ws://localhost:5001,ws://localhost:5002 && npm run dev 
+set NODE_NAME=NODE3 && set HTTP_PORT=3003 && set P2P_PORT=5003 && set PEERS=ws://localhost:5001,ws://localhost:5002,ws://localhost:5003 && npm run dev
 
 
 for fakeData testing

@@ -1,27 +1,27 @@
-const SHA256 = require('crypto-js/sha256')
 const { DIFFICULTY, MINE_RATE } = require('../config/bc_config')
+const ChainUtil = require('../utils/chain-util')
+let nodename = process.env.NODE_NAME || 'NODE1'
+const NODE_NAME = nodename.trim()
 
 class Block {
   constructor(
     timestamp,
     hash,
     lasthash,
-    user,
-    action,
-    actionvalue,
-    actiondate,
-    actiontime,
+    data,
+    confirmTimestamp,
+    confirmNode,
+    minetime,
     nonce,
     difficulty,
   ) {
     this.timestamp = timestamp
     this.hash = hash
     this.lasthash = lasthash
-    this.user = user
-    this.action = action
-    this.actionvalue = actionvalue
-    this.actiondate = actiondate
-    this.actiontime = actiontime
+    this.data = data
+    this.confirmTimestamp = confirmTimestamp
+    this.confirmNode = confirmNode || NODE_NAME
+    this.minetime = minetime
     this.nonce = nonce
     this.difficulty = difficulty || DIFFICULTY
   }
@@ -31,13 +31,12 @@ class Block {
         timestamp : ${this.timestamp},
         Hash : ${this.hash.substring(0, 10)},
         Last Hash : ${this.lasthash.substring(0, 10)},
-        User : ${this.user},
-        Action : ${this.action},
-        Action Value : ${this.actionvalue},
-        Action Date : ${this.actiondate},
-        Action Time : ${this.actiontime},
+        confirmed Timestamp : ${this.confirmTimestamp},
+        confirmed Node : ${this.confirmNode},
+        Mine Time : ${this.minetime},
         Nonce : ${this.nonce},
         Difficulty : ${this.difficulty}
+        Data : ${this.data},
         `
   }
 
@@ -45,55 +44,64 @@ class Block {
     return new this(
       1609466949000,
       'F1r5t-h45h',
-      '--------------',
-      'system',
-      'first action',
-      'action one',
-      '2564-01-01',
-      '09:09:09.09',
+      '-----------',
+      [],
+      1609466949000,
+      '-----------',
+      0,
       0,
       DIFFICULTY,
     )
   }
 
   static mineBlock(lastBlock, data) {
-    const { user, action, actionvalue, actiondate, actiontime } = data
     let hash
-    let timestamp
+    let timestamp = Date.now()
+    let confirmTimestamp
+    let confirmNode = NODE_NAME
     let lasthash = lastBlock.hash
     let { difficulty } = lastBlock
+    let minetime = 0
     let nonce = 0
 
     do {
-      nonce++
-      timestamp = Date.now()
-      difficulty = Block.adjustDifficulty(lastBlock, timestamp)
+      nonce = Math.floor(Math.random() * 100000)
+      confirmTimestamp = Date.now()
+      minetime = confirmTimestamp - timestamp
+      difficulty = Block.adjustDifficulty(lastBlock, confirmTimestamp)
       hash = Block.hash(
         timestamp,
         lasthash,
-        user,
-        action,
-        actionvalue,
-        actiondate,
-        actiontime,
+        data,
+        confirmTimestamp,
+        confirmNode,
+        minetime,
         nonce,
         difficulty,
       )
     } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty))
 
-    console.log(
-      `>>> do this noce: ${nonce} Lasttimestamp: ${lastBlock.timestamp} timestamp: ${timestamp} difficulty: ${difficulty} hash: ${hash}`,
-    )
+    // console.log(
+    //   `>>>
+    //   timestamp: ${timestamp}
+    //   hash: ${hash}
+    //   Last Hash : ${lasthash}
+    //   confirmTimestamp: ${confirmTimestamp}
+    //   confirmNode: ${confirmNode}
+    //   minetime: ${minetime}
+    //   nonce: ${nonce}
+    //   difficulty: ${difficulty}
+    //   <<<`,
+    // )
 
     return new this(
       timestamp,
       hash,
       lasthash,
-      user,
-      action,
-      actionvalue,
-      actiondate,
-      actiontime,
+      data,
+      confirmTimestamp,
+      confirmNode,
+      minetime,
       nonce,
       difficulty,
     )
@@ -102,16 +110,15 @@ class Block {
   static hash(
     timestamp,
     lasthash,
-    user,
-    action,
-    actionvalue,
-    actiondate,
-    actiontime,
+    data,
+    confirmTimestamp,
+    confirmNode,
+    minetime,
     nonce,
     difficulty,
   ) {
-    return SHA256(
-      `${timestamp}${lasthash}${user}${action}${actionvalue}${actiondate}${actiontime}${nonce}${difficulty}`,
+    return ChainUtil.hash(
+      `${timestamp}${lasthash}${data}${confirmTimestamp}${confirmNode}${minetime}${nonce}${difficulty}`,
     ).toString()
   }
 
@@ -119,22 +126,21 @@ class Block {
     const {
       timestamp,
       lasthash,
-      user,
-      action,
-      actionvalue,
-      actiondate,
-      actiontime,
+      data,
+      confirmTimestamp,
+      confirmNode,
+      minetime,
       nonce,
       difficulty,
     } = block
+    console.log('block in blockHash function: ', block)
     return Block.hash(
       timestamp,
       lasthash,
-      user,
-      action,
-      actionvalue,
-      actiondate,
-      actiontime,
+      data,
+      confirmTimestamp,
+      confirmNode,
+      minetime,
       nonce,
       difficulty,
     )

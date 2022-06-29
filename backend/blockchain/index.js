@@ -5,12 +5,12 @@ const NODE_NAME = nodename.trim()
 
 class Blockchain {
   constructor() {
-    // this.chain = [Block.genesis()]
+    this.chain = [Block.genesis()]
 
-    this.chain = this.init()
-    setTimeout(() => {
-      console.log('this.chain in constructor: ', this.chain)
-    }, 500)
+    // this.chain = this.init()
+    // setTimeout(() => {
+    //   console.log('this.chain in constructor: ', this.chain)
+    // }, 500)
   }
 
   async init() {
@@ -29,7 +29,7 @@ class Blockchain {
     try {
       const blockChainData = await blockchain.findAll({ raw: true })
 
-      if (blockChainData) {
+      if (blockChainData.length != 0) {
         console.log('blockChainData in readData: ', blockChainData)
         // return blockChainData
         if (this.isValidChain(blockChainData)) {
@@ -40,7 +40,7 @@ class Blockchain {
         }
       } else {
         console.log('Genesis block: ', Block.genesis())
-        return Block.genesis()
+        return [Block.genesis()]
       }
     } catch (error) {
       console.log('getData class error: ', error)
@@ -51,7 +51,7 @@ class Blockchain {
   addBlock(data) {
     const block = Block.mineBlock(this.chain[this.chain.length - 1], data)
     this.chain.push(block)
-    this.writeDB(this.chain)
+    // this.writeDB(this.chain)
     return block
   }
 
@@ -75,7 +75,7 @@ class Blockchain {
   }
 
   replaceChain(newChain) {
-    if (newChain.length <= this.chain.length) {
+    if (newChain.length < this.chain.length) {
       console.log('newChain.length: ', newChain.length)
       console.log('this.chain.length: ', this.chain.length)
       console.log('newChain: ', newChain)
@@ -103,33 +103,33 @@ class Blockchain {
       return
     }
 
+    if (
+      newChain[newChain.length - 1].minetime >
+      this.chain[this.chain.length - 1].minetime
+    ) {
+      console.log('chain not the best one')
+      return
+    }
+
+    console.log('newChain minetime: ', newChain[newChain.length - 1].minetime)
+    console.log(
+      'this.chain minetime: ',
+      this.chain[this.chain.length - 1].minetime,
+    )
+
     console.log('newChain.length2: ', newChain.length)
     console.log('Replacing blockchain with the new chain')
     this.chain = newChain
     console.log('this.chain.length2: ', this.chain.length)
-    if (this.chain) {
-      this.writeDB(this.chain)
-    } else {
-      console.log('this.chain false can not write data')
-    }
+
+    // if (this.chain) {
+    //   this.writeDB(this.chain)
+    // } else {
+    //   console.log('this.chain false can not write data')
+    // }
   }
 
   async writeDB(chain) {
-    // console.log('chain data in writeDB', chain)
-    // const blockCount = await blockchain.count()
-    // console.log('Block Count: ', blockCount)
-    // console.log('Chain: ', chain)
-    // console.log('!!!this.chain!!!: ', this.chain)
-    // console.log('!!!this.chain array[0] !!!: ', this.chain[0])
-    // if (blockCount == 0) {
-    //   const blockCreated = await blockchain.create(this.chain)
-    //   if (blockCreated) {
-    //     console.log('blockCreated')
-    //   } else {
-    //     console.log('block create fail')
-    //   }
-    // }
-
     const lastRecord = await blockchain.findOne({
       limit: 1,
       order: [['timestamp', 'DESC']],

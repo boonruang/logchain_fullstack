@@ -7,8 +7,19 @@ const user = require('../models/user')
 const constants = require('../config/constant')
 const JwtMiddleware = require('../config/Jwt-Middleware')
 const Op = Sequelize.Op
+const Transaction = require('../transaction')
+const TransactionPool = require('../transaction/transaction-pool')
+const tp = new TransactionPool()
 
-// const bc = new Blockchain()
+const transaction = new Transaction()
+
+//  @route                  POST  /api/v2/blockchain/transact
+//  @desc                   Add transaction
+//  @access                 Private
+router.post('/transactadd', JwtMiddleware.checkToken, (req, res) => {
+  const block = bc.addBlock(req.body)
+  res.json(bc.chain)
+})
 
 //  @route                  GET  /api/v2/blockchain/blocks
 //  @desc                   Get blockchain all blocks
@@ -57,14 +68,19 @@ router.post('/mine', JwtMiddleware.checkToken, async (req, res) => {
   }
 })
 
+//  @route                  GET  /api/v2/blockchain/transactions
+//  @desc                   Get transactions
+//  @access                 Private
+router.get('/transactions', (req, res) => {
+  res.json(tp.transactions)
+})
+
 //  @route                  POST  /api/v2/blockchain/transact
 //  @desc                   do transact
 //  @access                 Private
 router.post('/transact', (req, res) => {
-  const { user, action, actionvalue, actiondate, actiontime } = req.body
-  const transaction = { user, action, actionvalue, actiondate, actiontime }
-  res.status(200).json(transaction)
-  p2pServer.broadcastTransaction(transaction)
+  res.status(200).json(req.body)
+  p2pServer.broadcastTransaction(req.body)
 })
 
 //  @route                  POST  /api/v2/blockchain/forcesync

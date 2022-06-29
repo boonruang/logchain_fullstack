@@ -1,5 +1,6 @@
 const express = require('express')
 const P2pServer = require('./p2p-server')
+const TransactionPool = require('../transaction/transaction-pool')
 const cors = require('cors')
 const Blockchain = require('../blockchain')
 const BlockSystem = require('./blocksystem')
@@ -9,6 +10,8 @@ const P2P_PORT = process.env.P2P_PORT || 5001
 let nodename = process.env.NODE_NAME || 'NODE1'
 const NODE_NAME = nodename.trim()
 const app = express()
+const tp = new TransactionPool()
+
 app.use(cors())
 
 app.use(express.urlencoded({ extended: false }))
@@ -20,7 +23,7 @@ const user = require('../models/user')
 user.belongsTo(role)
 
 global.bc = new Blockchain()
-global.p2pServer = new P2pServer(bc)
+global.p2pServer = new P2pServer(bc, tp)
 
 app.use('/api/v2/system', require('./api_system'))
 app.use('/api/v2/blockchain', require('./api_blockchain'))
