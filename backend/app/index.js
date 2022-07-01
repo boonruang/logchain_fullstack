@@ -24,7 +24,6 @@ user.belongsTo(role)
 
 global.bc = new Blockchain()
 global.p2pServer = new P2pServer(bc, tp)
-
 app.use('/api/v2/system', require('./api_system'))
 app.use('/api/v2/blockchain', require('./api_blockchain'))
 app.use('/api/v2/user', require('./api_user'))

@@ -13,14 +13,6 @@ const tp = new TransactionPool()
 
 const transaction = new Transaction()
 
-//  @route                  POST  /api/v2/blockchain/transact
-//  @desc                   Add transaction
-//  @access                 Private
-router.post('/transactadd', JwtMiddleware.checkToken, (req, res) => {
-  const block = bc.addBlock(req.body)
-  res.json(bc.chain)
-})
-
 //  @route                  GET  /api/v2/blockchain/blocks
 //  @desc                   Get blockchain all blocks
 //  @access                 Private

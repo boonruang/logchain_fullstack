@@ -81,6 +81,7 @@ class Blockchain {
       console.log('newChain: ', newChain)
       console.log('this.chain: ', this.chain)
       console.log('Recieved chain is not longer than the current chain.')
+      p2pServer.syncChains()
       return
     } else if (!this.isValidChain(newChain)) {
       console.log('chain[0]: ', JSON.stringify(this.chain[0]))
@@ -104,18 +105,19 @@ class Blockchain {
     }
 
     if (
+      (newChain.length = this.chain.length) &&
       newChain[newChain.length - 1].minetime >
-      this.chain[this.chain.length - 1].minetime
+        this.chain[this.chain.length - 1].minetime
     ) {
       console.log('chain not the best one')
       return
     }
 
-    console.log('newChain minetime: ', newChain[newChain.length - 1].minetime)
-    console.log(
-      'this.chain minetime: ',
-      this.chain[this.chain.length - 1].minetime,
-    )
+    // console.log('newChain minetime: ', newChain[newChain.length - 1].minetime)
+    // console.log(
+    //   'this.chain minetime: ',
+    //   this.chain[this.chain.length - 1].minetime,
+    // )
 
     console.log('newChain.length2: ', newChain.length)
     console.log('Replacing blockchain with the new chain')

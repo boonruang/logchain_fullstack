@@ -133,7 +133,7 @@ class Block {
       nonce,
       difficulty,
     } = block
-    console.log('block in blockHash function: ', block)
+    // console.log('block in blockHash function: ', block)
     return Block.hash(
       timestamp,
       lasthash,

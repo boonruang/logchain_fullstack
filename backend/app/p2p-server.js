@@ -19,20 +19,40 @@ class P2pServer {
     const server = new Websocket.Server({ port: P2P_PORT })
     server.on('connection', (socket) => this.connectSocket(socket))
 
-    console.log('peers in listen: ', peers)
+    // console.log('peers in listen: ', peers)
 
     this.connectToPeers()
+    // this.reconnectToPeers()
 
     console.log(`Listening for peer-to-peer on port ${P2P_PORT}`)
   }
 
   connectToPeers() {
-    peers.forEach((peer) => {
-      console.log('peers in connToPeers: ', peer)
-      const socket = new Websocket(peer)
-      socket.on('open', () => this.connectSocket(socket))
-      this.messageHandler(socket)
-    })
+    setTimeout(() => {
+      peers.forEach((peer) => {
+        console.log('peers in connToPeers: ', peer)
+        const socket = new Websocket(peer)
+        socket.on('open', () => this.connectSocket(socket))
+        // socket.reconnectInterval = 60000
+        this.messageHandler(socket)
+      })
+    }, 30000)
+  }
+
+  reconnectToPeers() {
+    setTimeout(() => {
+      peers.forEach((peer) => {
+        // console.log('peers in reconnectToPeers: ', peer)
+        const socket = new Websocket(peer)
+        socket.on('close', () => this.reconnectSocket(socket))
+        this.messageHandler(socket)
+      })
+    }, 5000)
+  }
+
+  reconnectSocket(socket) {
+    this.sockets.push(socket)
+    this.sendChain(socket)
   }
 
   connectSocket(socket) {
@@ -44,6 +64,7 @@ class P2pServer {
 
     // this.messageHandler(socket)
     this.sendChain(socket)
+    // setInterval(this.syncChains(), 60000)
   }
 
   messageHandler(socket) {
@@ -93,8 +114,8 @@ class P2pServer {
   }
 
   syncChains() {
-    console.log('peers: ', peers)
-    console.log('this.blockchain.chain in syncChains: ', this.blockchain.chain)
+    // console.log('peers: ', peers)
+    // console.log('this.blockchain.chain in syncChains: ', this.blockchain.chain)
     this.sockets.forEach((socket) => this.sendChain(socket))
   }
 
